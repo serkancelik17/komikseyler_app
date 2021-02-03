@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/util/settings.dart';
 
 class PhotoBrowser extends StatefulWidget {
   final List<String> photoAssetPaths;
@@ -37,9 +38,7 @@ class _PhotoBrowserState extends State<PhotoBrowser> {
 
   void _nextImage() {
     setState(() {
-      visiblePhotoIndex = visiblePhotoIndex < widget.photoAssetPaths.length - 1
-          ? visiblePhotoIndex + 1
-          : visiblePhotoIndex;
+      visiblePhotoIndex = visiblePhotoIndex < widget.photoAssetPaths.length - 1 ? visiblePhotoIndex + 1 : visiblePhotoIndex;
     });
   }
 
@@ -79,9 +78,9 @@ class _PhotoBrowserState extends State<PhotoBrowser> {
       fit: StackFit.expand,
       children: <Widget>[
         // Photo
-        new Image.asset(
-          widget.photoAssetPaths[visiblePhotoIndex],
-          fit: BoxFit.cover,
+        new Image.network(
+          Settings.imageAssetsUrl + "/" + widget.photoAssetPaths[visiblePhotoIndex],
+          fit: BoxFit.contain,
         ),
         // Photo indicator
         new Positioned(
@@ -112,9 +111,7 @@ class SelectedPhotoIndicator extends StatelessWidget {
         padding: const EdgeInsets.only(left: 2.0, right: 2.0),
         child: new Container(
           height: 3.0,
-          decoration: new BoxDecoration(
-              color: Colors.black.withOpacity(0.2),
-              borderRadius: new BorderRadius.circular(2.5)),
+          decoration: new BoxDecoration(color: Colors.black.withOpacity(0.2), borderRadius: new BorderRadius.circular(2.5)),
         ),
       ),
     );
@@ -126,16 +123,7 @@ class SelectedPhotoIndicator extends StatelessWidget {
         padding: const EdgeInsets.only(left: 2.0, right: 2.0),
         child: new Container(
           height: 3.0,
-          decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: new BorderRadius.circular(2.5),
-              boxShadow: [
-                new BoxShadow(
-                    color: const Color(0x22000000),
-                    blurRadius: 2.0,
-                    spreadRadius: 0.0,
-                    offset: const Offset(0.0, 1.0))
-              ]),
+          decoration: new BoxDecoration(color: Colors.white, borderRadius: new BorderRadius.circular(2.5), boxShadow: [new BoxShadow(color: const Color(0x22000000), blurRadius: 2.0, spreadRadius: 0.0, offset: const Offset(0.0, 1.0))]),
         ),
       ),
     );
@@ -144,9 +132,7 @@ class SelectedPhotoIndicator extends StatelessWidget {
   List<Widget> _buildIndicators() {
     List<Widget> indicators = [];
     for (int i = 0; i < photoCount; i++) {
-      indicators.add(i == visiblePhotoIndex
-          ? _buildActiveIndicator()
-          : _buildInactiveIndicator());
+      indicators.add(i == visiblePhotoIndex ? _buildActiveIndicator() : _buildInactiveIndicator());
     }
     return indicators;
   }

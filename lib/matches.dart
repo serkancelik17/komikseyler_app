@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-
-import './profiles.dart';
+import 'package:komik_seyler/models/picture.dart';
+import 'package:komik_seyler/repositories/picture_repository.dart';
 
 class MatchEngine extends ChangeNotifier {
   final List<Match> _matches;
@@ -28,17 +28,12 @@ class MatchEngine extends ChangeNotifier {
 }
 
 class Match extends ChangeNotifier {
-  final Profile profile;
+  final Picture picture;
+  final PictureRepository _pictureRepository = PictureRepository();
+
   Decision decision = Decision.indecided;
 
-  Match({this.profile});
-
-  void like() {
-    if (decision == Decision.indecided) {
-      decision = Decision.like;
-      notifyListeners();
-    }
-  }
+  Match({this.picture});
 
   void nope() {
     if (decision == Decision.indecided) {
@@ -47,11 +42,43 @@ class Match extends ChangeNotifier {
     }
   }
 
-  void superLike() {
-    if (decision == Decision.indecided) {
-      decision = Decision.superLike;
+  Future<bool> destroy() async {
+    try {
+      bool result = await _pictureRepository.destroy(pictureId: picture.id);
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
       notifyListeners();
     }
+  }
+
+  Future<bool> favorite({@required bool value}) async {
+    try {
+      bool result = await _pictureRepository.favorite(pictureId: picture.id, value: value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+
+    /*  if (decision == Decision.favorite) {
+      decision = Decision.favorite;
+      notifyListeners();
+    }*/
+  }
+
+  Future<bool> like({@required bool value}) async {
+    try {
+      bool result = await _pictureRepository.like(pictureId: picture.id, value: value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+
+    /*  if (decision == Decision.favorite) {
+      decision = Decision.favorite;
+      notifyListeners();
+    }*/
   }
 
   void reset() {
@@ -66,5 +93,5 @@ enum Decision {
   indecided,
   nope,
   like,
-  superLike,
+  favorite,
 }

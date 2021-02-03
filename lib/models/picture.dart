@@ -30,4 +30,9 @@ class Picture {
         "category_id": categoryId == null ? null : categoryId,
         "path": path == null ? null : path,
       };
+
+  @override
+  String toString() {
+    return 'Picture{id: $id, categoryId: $categoryId, path: $path}';
+  }
 }

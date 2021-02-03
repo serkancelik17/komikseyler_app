@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/main.dart';
+import 'package:komik_seyler/models/picture.dart';
+import 'package:komik_seyler/pictures.dart';
 
 import './cards.dart';
 import './matches.dart';
-import './profiles.dart';
 
 final MatchEngine matchEngine = new MatchEngine(
-    matches: demoProfiles.map((Profile profile) {
-  return Match(profile: profile);
+    matches: demoPictures.map((Picture picture) {
+  return Match(picture: picture);
 }).toList());
 
 class CategoryPictures extends StatefulWidget {
@@ -16,10 +18,10 @@ class CategoryPictures extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PicturesState createState() => _PicturesState();
+  _CategoryPicturesState createState() => _CategoryPicturesState();
 }
 
-class _PicturesState extends State<CategoryPictures> {
+class _CategoryPicturesState extends State<CategoryPictures> {
   Match match = new Match();
 
   Widget _buildAppBar() {
@@ -55,7 +57,7 @@ class _PicturesState extends State<CategoryPictures> {
     );
   }
 
-  Widget _buildBottomBar() {
+  Widget _buildBottomBar(BuildContext context) {
     return BottomAppBar(
         color: Colors.transparent,
         elevation: 0.0,
@@ -64,36 +66,64 @@ class _PicturesState extends State<CategoryPictures> {
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new RoundIconButton.small(
-                icon: Icons.refresh,
-                iconColor: Colors.orange,
-                onPressed: () {},
-              ),
               new RoundIconButton.large(
                 icon: Icons.clear,
                 iconColor: Colors.red,
                 onPressed: () {
-                  matchEngine.currentMatch.nope();
+                  try {
+                    matchEngine.currentMatch.destroy().then((value) {
+                      if (value == true) {
+                        SnackBar _snackBar = SnackBar(content: Text('Destroyed'), backgroundColor: Colors.green);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      } else {
+                        SnackBar _snackBar = SnackBar(content: Text('Destroy Problem!'), backgroundColor: Colors.red);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      }
+                    });
+                  } catch (e) {
+                    throw e;
+                  }
                 },
               ),
               new RoundIconButton.small(
                 icon: Icons.star,
                 iconColor: Colors.blue,
                 onPressed: () {
-                  matchEngine.currentMatch.superLike();
+                  try {
+                    matchEngine.currentMatch.favorite(value: true).then((value) {
+                      print("favorite; value");
+                      if (value == true) {
+                        SnackBar _snackBar = SnackBar(content: Text('Favorited'), backgroundColor: Colors.green);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      } else {
+                        SnackBar _snackBar = SnackBar(content: Text('Favorite Problem!'), backgroundColor: Colors.red);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      }
+                    });
+                  } catch (e) {
+                    throw e;
+                  }
                 },
               ),
               new RoundIconButton.large(
                 icon: Icons.favorite,
                 iconColor: Colors.green,
                 onPressed: () {
-                  matchEngine.currentMatch.like();
+                  try {
+                    matchEngine.currentMatch.like(value: true).then((value) {
+                      print("favorite; value");
+                      if (value == true) {
+                        SnackBar _snackBar = SnackBar(content: Text('Liked'), backgroundColor: Colors.green);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      } else {
+                        SnackBar _snackBar = SnackBar(content: Text('Like Problem!'), backgroundColor: Colors.red);
+                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                      }
+                    });
+                  } catch (e) {
+                    throw e;
+                  }
                 },
-              ),
-              new RoundIconButton.small(
-                icon: Icons.lock,
-                iconColor: Colors.purple,
-                onPressed: () {},
               ),
             ],
           ),
@@ -107,7 +137,7 @@ class _PicturesState extends State<CategoryPictures> {
       body: new CardStack(
         matchEngine: matchEngine,
       ),
-      bottomNavigationBar: _buildBottomBar(),
+      bottomNavigationBar: _buildBottomBar(context),
     );
   }
 }

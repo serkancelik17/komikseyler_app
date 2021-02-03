@@ -5,6 +5,8 @@ import 'package:komik_seyler/repositories/category_repository.dart';
 
 void main() => runApp(MyApp());
 
+final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(child: Categories()),
       ),
+      scaffoldMessengerKey: mainScaffoldMessengerKey,
     );
   }
 }

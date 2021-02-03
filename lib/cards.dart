@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttery_dart2/layout.dart';
-import 'package:komik_seyler/profiles.dart';
+import 'package:komik_seyler/models/picture.dart';
 
 import './matches.dart';
 import './photos.dart';
@@ -29,7 +29,7 @@ class _CardStackState extends State<CardStack> {
     _currentMatch = widget.matchEngine.currentMatch;
     _currentMatch.addListener(_onMatchChange);
 
-    _frontCard = new Key(_currentMatch.profile.name);
+    _frontCard = new Key(_currentMatch.picture.path);
   }
 
   @override
@@ -72,7 +72,7 @@ class _CardStackState extends State<CardStack> {
         _currentMatch.addListener(_onMatchChange);
       }
 
-      _frontCard = new Key(_currentMatch.profile.name);
+      _frontCard = new Key(_currentMatch.picture.path);
     });
   }
 
@@ -85,7 +85,7 @@ class _CardStackState extends State<CardStack> {
       transform: Matrix4.identity()..scale(_nextCardScale, _nextCardScale),
       alignment: Alignment.center,
       child: ProfileCard(
-        profile: widget.matchEngine.nextMatch.profile,
+        picture: widget.matchEngine.nextMatch.picture,
       ),
     );
   }
@@ -93,7 +93,7 @@ class _CardStackState extends State<CardStack> {
   Widget _buildFrontCard() {
     return ProfileCard(
       key: _frontCard,
-      profile: widget.matchEngine.currentMatch.profile,
+      picture: widget.matchEngine.currentMatch.picture,
     );
   }
 
@@ -105,7 +105,7 @@ class _CardStackState extends State<CardStack> {
       case Decision.like:
         return SlideDirection.right;
         break;
-      case Decision.superLike:
+      case Decision.favorite:
         return SlideDirection.up;
         break;
       default:
@@ -127,10 +127,10 @@ class _CardStackState extends State<CardStack> {
         currenMatch.nope();
         break;
       case SlideDirection.right:
-        currenMatch.like();
+        currenMatch.like(value: true);
         break;
       case SlideDirection.up:
-        currenMatch.superLike();
+        currenMatch.favorite(value: true);
         break;
     }
 
@@ -414,9 +414,9 @@ class _DraggableCardState extends State<DraggableCard> with TickerProviderStateM
 }
 
 class ProfileCard extends StatefulWidget {
-  final Profile profile;
+  final Picture picture;
 
-  ProfileCard({Key key, this.profile}) : super(key: key);
+  ProfileCard({Key key, this.picture}) : super(key: key);
 
   @override
   _ProfileCardState createState() => _ProfileCardState();
@@ -425,7 +425,7 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   Widget _buildBackground() {
     return new PhotoBrowser(
-      photoAssetPaths: widget.profile.photos,
+      photoAssetPaths: [widget.picture.path],
       visiblePhotoIndex: 0,
     );
   }
@@ -449,7 +449,9 @@ class _ProfileCardState extends State<ProfileCard> {
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[new Text(widget.profile.name, style: new TextStyle(color: Colors.white, fontSize: 24.0)), new Text(widget.profile.bio, style: new TextStyle(color: Colors.white, fontSize: 18.0))],
+                children: <Widget>[
+                  new Text(widget.picture.path, style: new TextStyle(color: Colors.white, fontSize: 24.0)),
+                ],
               ),
             ),
             new Icon(

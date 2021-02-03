@@ -8,13 +8,24 @@ class ApiProvider implements Provider {
   ///veriyi getir
   Future<String> getResponse(String endpoint) async {
     final url = baseUrl + endpoint;
-    debugPrint("Request Url : " + url);
+    debugPrint("[GET] Request Url : " + url);
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception("Sunucuya bağlanılamadı. Veri getirilemedi.");
+    }
+  }
+
+  Future<String> postResponse(String endpoint) async {
+    final url = baseUrl + endpoint;
+    debugPrint("[POST] Request Url : " + url);
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.post(url);
       if (response.statusCode == 200) {
         return response.body;
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Dosya bulunamadı.");
+        throw Exception("Sunucuya bağlanılamadı. Veri getirilemedi.");
       }
     } catch (e) {
       throw e;
