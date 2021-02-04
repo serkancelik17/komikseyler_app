@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.1
   fluttery_dart2: ^0.0.9
   http: ^0.12.2
+  client_information: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -49,11 +50,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/photo_1.jpg
-    - assets/photo_2.jpg
-    - assets/photo_3.jpg
-    - assets/photo_4.jpg
+  #assets:
+    #- assets/photo_1.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

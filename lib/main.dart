@@ -31,8 +31,6 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Category> categories;
-    //categories = getCategories();
-
     return FutureBuilder(
         future: getCategories(),
         builder: (context, AsyncSnapshot<List<Category>> snapshot) {
@@ -40,15 +38,24 @@ class Categories extends StatelessWidget {
             return Column(
               children: [
                 for (Category category in snapshot.data)
-                  RaisedButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CategoryPictures(
-                                  categoryId: category.id,
-                                ))),
-                    child: Text(category.name),
-                  )
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: RaisedButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryPictures(
+                                    categoryId: category.id,
+                                  ))),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 9,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: Text(category.name),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             );
           } else {

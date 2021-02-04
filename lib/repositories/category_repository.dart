@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:komik_seyler/models/categories.dart';
 import 'package:komik_seyler/models/category_picture.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
@@ -21,13 +22,14 @@ class CategoryRepository {
     return categories;
   }
 
-  pictures(String endpoint) async {
+  pictures({@required int categoryId, int page = 1, int limit = 10}) async {
     CategoryPicture categoryPicture;
+    String endpoint = "/categories/" + categoryId.toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 
     var response = await provider.getResponse(endpoint);
 
     categoryPicture = categoryPictureFromJson(response);
 
-    return categoryPicture;
+    return categoryPicture.data;
   }
 }

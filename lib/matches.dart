@@ -1,27 +1,34 @@
 import 'package:flutter/widgets.dart';
 import 'package:komik_seyler/models/picture.dart';
+import 'package:komik_seyler/repositories/category_repository.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 
 class MatchEngine extends ChangeNotifier {
-  final List<Match> _matches;
-  int _currrentMatchIndex;
-  int _nextMatchIndex;
+  List<Match> _matches = [];
+  int currrentMatchIndex;
+  int nextMatchIndex;
+  CategoryRepository _categoryRepository = CategoryRepository();
 
-  MatchEngine({
-    List<Match> matches,
-  }) : _matches = matches {
-    _currrentMatchIndex = 0;
-    _nextMatchIndex = 1;
+  List<Match> get matches => _matches;
+
+  set matches(List<Match> value) {
+    _matches = value;
   }
 
-  Match get currentMatch => _matches[_currrentMatchIndex];
-  Match get nextMatch => _matches[_nextMatchIndex];
+  MatchEngine({List<Match> matches}) : _matches = matches {
+    _matches ??= [];
+    currrentMatchIndex = 0;
+    nextMatchIndex = 1;
+  }
+
+  Match get currentMatch => _matches[currrentMatchIndex];
+  Match get nextMatch => _matches[nextMatchIndex];
 
   void cycleMatch() {
     if (currentMatch.decision != Decision.indecided) {
       currentMatch.reset();
-      _currrentMatchIndex = _nextMatchIndex;
-      _nextMatchIndex = _nextMatchIndex < _matches.length - 1 ? _nextMatchIndex + 1 : 0;
+      currrentMatchIndex = nextMatchIndex;
+      nextMatchIndex = nextMatchIndex < _matches.length - 1 ? nextMatchIndex + 1 : 0;
       notifyListeners();
     }
   }
@@ -53,10 +60,10 @@ class Match extends ChangeNotifier {
     }
   }
 
-  Future<bool> favorite({@required bool value}) async {
+  Future<bool> addAction({@required actionName, @required bool value}) async {
     try {
-      bool result = await _pictureRepository.favorite(pictureId: picture.id, value: value);
-      return true;
+      bool result = await _pictureRepository.addAction(actionName: actionName, pictureId: picture.id, value: value);
+      return result;
     } catch (e) {
       return false;
     }
@@ -69,8 +76,8 @@ class Match extends ChangeNotifier {
 
   Future<bool> like({@required bool value}) async {
     try {
-      bool result = await _pictureRepository.like(pictureId: picture.id, value: value);
-      return true;
+      bool result = await _pictureRepository.addAction(actionName: 'like', pictureId: picture.id, value: value);
+      return result;
     } catch (e) {
       return false;
     }

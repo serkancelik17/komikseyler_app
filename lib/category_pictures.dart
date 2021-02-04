@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/main.dart';
 import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/pictures.dart';
+import 'package:komik_seyler/repositories/category_repository.dart';
 
 import './cards.dart';
 import './matches.dart';
 
-final MatchEngine matchEngine = new MatchEngine(
+/*final MatchEngine matchEngine = new MatchEngine(
     matches: demoPictures.map((Picture picture) {
   return Match(picture: picture);
-}).toList());
+}).toList());*/
+MatchEngine matchEngine = new MatchEngine();
 
 class CategoryPictures extends StatefulWidget {
+  final int categoryId;
   CategoryPictures({
-    @required categoryId,
+    @required this.categoryId,
     Key key,
   }) : super(key: key);
 
@@ -23,6 +25,9 @@ class CategoryPictures extends StatefulWidget {
 
 class _CategoryPicturesState extends State<CategoryPictures> {
   Match match = new Match();
+  CategoryRepository _categoryRepository = CategoryRepository();
+  int _page = 1;
+  CardStack _cardStack;
 
   Widget _buildAppBar() {
     return AppBar(
@@ -90,14 +95,12 @@ class _CategoryPicturesState extends State<CategoryPictures> {
                 iconColor: Colors.blue,
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.favorite(value: true).then((value) {
-                      print("favorite; value");
+                    matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((value) {
+                      print("favorite;" + value.toString());
                       if (value == true) {
-                        SnackBar _snackBar = SnackBar(content: Text('Favorited'), backgroundColor: Colors.green);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        _showSnackbar("Favorited", Colors.green);
                       } else {
-                        SnackBar _snackBar = SnackBar(content: Text('Favorite Problem!'), backgroundColor: Colors.red);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        _showSnackbar("Favorited Problem", Colors.red);
                       }
                     });
                   } catch (e) {
@@ -111,13 +114,11 @@ class _CategoryPicturesState extends State<CategoryPictures> {
                 onPressed: () {
                   try {
                     matchEngine.currentMatch.like(value: true).then((value) {
-                      print("favorite; value");
+                      print("like;" + value.toString());
                       if (value == true) {
-                        SnackBar _snackBar = SnackBar(content: Text('Liked'), backgroundColor: Colors.green);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        _showSnackbar("Liked", Colors.green);
                       } else {
-                        SnackBar _snackBar = SnackBar(content: Text('Like Problem!'), backgroundColor: Colors.red);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        _showSnackbar("Liked Problem!", Colors.red);
                       }
                     });
                   } catch (e) {
@@ -131,14 +132,36 @@ class _CategoryPicturesState extends State<CategoryPictures> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMore();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _cardStack = new CardStack(matchEngine: matchEngine, categoryId: widget.categoryId);
     return Scaffold(
       appBar: _buildAppBar(),
-      body: new CardStack(
-        matchEngine: matchEngine,
-      ),
+      body: (matchEngine.matches.length == 0) ? Text("Matchlar Bekleniyor...") : _cardStack,
       bottomNavigationBar: _buildBottomBar(context),
     );
+  }
+
+  Future<void> getMore() async {
+    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: _page++, limit: 5);
+    setState(() {
+      matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
+    });
+  }
+
+  _showSnackbar(String text, Color backgroundColor) {
+    SnackBar _snackBar = SnackBar(
+      content: Text(text),
+      backgroundColor: backgroundColor,
+      duration: Duration(seconds: 1),
+    );
+    mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
   }
 }
 

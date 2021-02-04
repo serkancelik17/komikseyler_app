@@ -29,7 +29,7 @@ class CategoryPicture {
   int from;
   String nextPageUrl;
   String path;
-  int perPage;
+  String perPage;
   dynamic prevPageUrl;
   int to;
 

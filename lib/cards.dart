@@ -3,14 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fluttery_dart2/layout.dart';
 import 'package:komik_seyler/models/picture.dart';
+import 'package:komik_seyler/repositories/category_repository.dart';
 
 import './matches.dart';
 import './photos.dart';
 
 class CardStack extends StatefulWidget {
   final MatchEngine matchEngine;
+  final int categoryId;
+  final CategoryRepository _categoryRepository = CategoryRepository();
+  int _page = 1;
 
-  CardStack({this.matchEngine});
+  CardStack({@required this.matchEngine, @required this.categoryId});
 
   @override
   _CardStackState createState() => _CardStackState();
@@ -127,10 +131,10 @@ class _CardStackState extends State<CardStack> {
         currenMatch.nope();
         break;
       case SlideDirection.right:
-        currenMatch.like(value: true);
+        currenMatch.addAction(actionName: 'like', value: true);
         break;
       case SlideDirection.up:
-        currenMatch.favorite(value: true);
+        currenMatch.addAction(actionName: 'favorite', value: true);
         break;
     }
 
@@ -397,7 +401,7 @@ class _DraggableCardState extends State<DraggableCard> with TickerProviderStateM
             child: new Container(
               key: profileCardKey,
               width: anchorBounds.width,
-              height: anchorBounds.height,
+              height: anchorBounds.height - 100,
               padding: const EdgeInsets.all(16.0),
               child: new GestureDetector(
                 onPanStart: _onPanStart,
@@ -450,14 +454,10 @@ class _ProfileCardState extends State<ProfileCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  new Text(widget.picture.path, style: new TextStyle(color: Colors.white, fontSize: 24.0)),
+                  new Text(widget.picture.path, style: new TextStyle(color: Colors.white, fontSize: 16.0)),
                 ],
               ),
             ),
-            new Icon(
-              Icons.info,
-              color: Colors.white,
-            )
           ],
         ),
       ),
