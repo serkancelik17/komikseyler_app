@@ -6,20 +6,23 @@ import 'package:komik_seyler/repositories/category_repository.dart';
 
 import './cards.dart';
 import './matches.dart';
+import 'models/response.dart';
 
 /*final MatchEngine matchEngine = new MatchEngine(
     matches: demoPictures.map((Picture picture) {
   return Match(picture: picture);
 }).toList());*/
 
-MatchEngine matchEngine = new MatchEngine();
-
 class CategoryPictures extends StatefulWidget {
   final Category category;
+  MatchEngine matchEngine;
+
   CategoryPictures({
     @required this.category,
     Key key,
-  }) : super(key: key);
+  }) : super(key: key) {
+    matchEngine = new MatchEngine();
+  }
 
   @override
   _CategoryPicturesState createState() => _CategoryPicturesState();
@@ -28,7 +31,6 @@ class CategoryPictures extends StatefulWidget {
 class _CategoryPicturesState extends State<CategoryPictures> {
   Match match = new Match();
   CategoryRepository _categoryRepository = CategoryRepository();
-  CardStack _cardStack;
   final pageTextFieldController = TextEditingController();
 
   Widget _buildBottomBar(BuildContext context) {
@@ -43,11 +45,12 @@ class _CategoryPicturesState extends State<CategoryPictures> {
               new RoundIconButton.large(
                 icon: Icons.clear,
                 iconColor: Colors.red,
+                text: "Sil",
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.destroy().then((value) {
+                    widget.matchEngine.currentMatch.destroy().then((value) {
                       if (value == true) {
-                        SnackBar _snackBar = SnackBar(content: Text('Destroyed'), backgroundColor: Colors.green);
+                        SnackBar _snackBar = SnackBar(content: Text('Silindi'), backgroundColor: Colors.green);
                         mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
                       } else {
                         SnackBar _snackBar = SnackBar(content: Text('Destroy Problem!'), backgroundColor: Colors.red);
@@ -62,14 +65,15 @@ class _CategoryPicturesState extends State<CategoryPictures> {
               new RoundIconButton.large(
                 icon: Icons.compare_arrows,
                 iconColor: Colors.blue,
+                text: "Taşı",
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.addAction(actionName: 'move', value: true).then((value) {
-                      print("move;" + value.toString());
-                      if (value == true) {
-                        _showSnackbar("Moved", Colors.green);
+                    widget.matchEngine.currentMatch.addAction(actionName: 'move', value: true).then((Response response) {
+                      print("move;" + response.success.toString());
+                      if (response.success == true) {
+                        _showSnackbar("Taşıma İşaretlendi", Colors.green);
                       } else {
-                        _showSnackbar("Moved Problem", Colors.red);
+                        _showSnackbar(response.message, Colors.red);
                       }
                     });
                   } catch (e) {
@@ -80,14 +84,15 @@ class _CategoryPicturesState extends State<CategoryPictures> {
               new RoundIconButton.large(
                 icon: Icons.favorite,
                 iconColor: Colors.green,
+                text: "Beğen",
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.addAction(actionName: 'like', value: true).then((value) {
-                      print("like;" + value.toString());
-                      if (value == true) {
-                        _showSnackbar("Liked", Colors.green);
+                    widget.matchEngine.currentMatch.addAction(actionName: 'like', value: true).then((Response response) {
+                      print("like;" + response.success.toString());
+                      if (response.success == true) {
+                        _showSnackbar("Beğendiniz", Colors.green);
                       } else {
-                        _showSnackbar("Liked Problem!", Colors.red);
+                        _showSnackbar(response.message, Colors.red);
                       }
                     });
                   } catch (e) {
@@ -98,14 +103,15 @@ class _CategoryPicturesState extends State<CategoryPictures> {
               new RoundIconButton.large(
                 icon: Icons.star,
                 iconColor: Colors.blue,
+                text: "Favori",
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((value) {
-                      print("favorite;" + value.toString());
-                      if (value == true) {
-                        _showSnackbar("Favorited", Colors.green);
+                    widget.matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((Response response) {
+                      print("favorite;" + response.success.toString());
+                      if (response.success == true) {
+                        _showSnackbar("Favorilere Eklediniz", Colors.green);
                       } else {
-                        _showSnackbar("Favorited Problem", Colors.red);
+                        _showSnackbar(response.message, Colors.red);
                       }
                     });
                   } catch (e) {
@@ -134,13 +140,11 @@ class _CategoryPicturesState extends State<CategoryPictures> {
 
   @override
   Widget build(BuildContext context) {
-    _cardStack = new CardStack(matchEngine: matchEngine, categoryId: widget.category.id);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category.name),
       ),
-      body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : _cardStack,
+      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.category.id),
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
@@ -157,7 +161,7 @@ class _CategoryPicturesState extends State<CategoryPictures> {
   Future<void> getInit() async {
     List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.category.id, page: 1);
     setState(() {
-      matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
+      widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
     });
   }
 }
@@ -167,17 +171,20 @@ class RoundIconButton extends StatelessWidget {
   final Color iconColor;
   final double size;
   final VoidCallback onPressed;
+  final String text;
 
   RoundIconButton.large({
     this.icon,
     this.iconColor,
     this.onPressed,
+    this.text,
   }) : size = 60.0;
 
   RoundIconButton.small({
     this.icon,
     this.iconColor,
     this.onPressed,
+    this.text,
   }) : size = 50.0;
 
   RoundIconButton({
@@ -185,6 +192,7 @@ class RoundIconButton extends StatelessWidget {
     this.iconColor,
     this.size,
     this.onPressed,
+    this.text,
   });
 
   @override
@@ -198,9 +206,18 @@ class RoundIconButton extends StatelessWidget {
       child: new RawMaterialButton(
         shape: new CircleBorder(),
         elevation: 0.0,
-        child: new Icon(
-          icon,
-          color: iconColor,
+        child: Column(
+          children: [
+            SizedBox(height: 15),
+            new Icon(
+              icon,
+              color: iconColor,
+            ),
+            Text(
+              text,
+              style: TextStyle(fontSize: 10),
+            ),
+          ],
         ),
         onPressed: onPressed,
       ),

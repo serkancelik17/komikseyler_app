@@ -25,7 +25,7 @@ class ApiProvider implements Provider {
       if (response.statusCode == 200) {
         return response.body;
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Veri getirilemedi.");
+        throw Exception("Sunucuya bağlanılamadı. Veri post edilemedi.");
       }
     } catch (e) {
       throw e;

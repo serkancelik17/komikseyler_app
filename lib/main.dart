@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
 class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Category> categories;
     return FutureBuilder(
         future: getCategories(),
         builder: (context, AsyncSnapshot<List<Category>> snapshot) {
@@ -66,6 +65,6 @@ class Categories extends StatelessWidget {
 
   Future<List<Category>> getCategories() async {
     CategoryRepository catRepo = CategoryRepository();
-    return await catRepo.all();
+    return await catRepo.getCategories();
   }
 }

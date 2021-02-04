@@ -34,6 +34,7 @@ class _PhotoBrowserState extends State<PhotoBrowser> {
     setState(() {
       visiblePhotoIndex = visiblePhotoIndex > 0 ? visiblePhotoIndex - 1 : 0;
     });
+    setState(() {});
   }
 
   void _nextImage() {
@@ -54,6 +55,7 @@ class _PhotoBrowserState extends State<PhotoBrowser> {
             alignment: Alignment.topLeft,
             child: new Container(
               color: Colors.transparent,
+              alignment: Alignment.bottomCenter,
             ),
           ),
         ),

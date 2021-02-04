@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:komik_seyler/models/picture.dart';
+import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 
@@ -62,13 +63,9 @@ class Match extends ChangeNotifier {
     }
   }
 
-  Future<bool> addAction({@required actionName, @required bool value}) async {
-    try {
-      bool result = await _pictureRepository.addAction(actionName: actionName, pictureId: picture.id, value: value);
-      return result;
-    } catch (e) {
-      return false;
-    }
+  Future<Response> addAction({@required actionName, @required bool value}) async {
+    Response response = await _pictureRepository.addAction(actionName: actionName, pictureId: picture.id, value: value);
+    return response;
 
     /*  if (decision == Decision.favorite) {
       decision = Decision.favorite;

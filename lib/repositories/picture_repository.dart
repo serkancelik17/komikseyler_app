@@ -12,26 +12,20 @@ class PictureRepository {
   }
 
   Future<bool> destroy({@required pictureId}) async {
-    String endpoint = '/pictures/' + pictureId.toString() + '/destroy';
+    String endpoint = '/devices/' + await getDeviceId() + '/pictures/' + pictureId.toString() + '/destroy';
     try {
-      String response = await _provider.getResponse(endpoint);
+      Response response = responseFromJson(await _provider.getResponse(endpoint));
     } catch (e) {
       throw e;
     }
   }
 
-  Future<bool> addAction({@required actionName, @required int pictureId, bool value = true}) async {
-    String deviceId = await getDeviceId();
-
-    String endpoint = '/' + deviceId + '/pictures/' + pictureId.toString() + '/actions/' + actionName + '/' + (value ? 'store' : 'destroy');
+  Future<Response> addAction({@required actionName, @required int pictureId, bool value = true}) async {
+    String endpoint = '/devices/' + await getDeviceId() + '/pictures/' + pictureId.toString() + '/actions/' + actionName + '/' + (value ? 'store' : 'destroy');
     try {
-      String response = await _provider.getResponse(endpoint);
-      Response responseJson = responseFromJson(response);
-      if (responseJson.success == true) {
-        return true;
-      } else {
-        return false;
-      }
+      Response response = responseFromJson(await _provider.getResponse(endpoint));
+
+      return response;
     } catch (e) {
       throw e;
     }
