@@ -24,6 +24,7 @@ class _CardStackState extends State<CardStack> {
   Key _frontCard;
   Match _currentMatch;
   double _nextCardScale = 0.0;
+  CategoryRepository _categoryRepository = CategoryRepository();
 
   @override
   void initState() {
@@ -66,6 +67,14 @@ class _CardStackState extends State<CardStack> {
   }
 
   _onMatchEngineChange() {
+    print("action: _onMatchEngineChange");
+    print("nextMatchIndex" + widget.matchEngine.currrentMatchIndex.toString());
+
+    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2) {
+      setState(() {
+        getMore();
+      });
+    }
     setState(() {
       if (_currentMatch != null) {
         _currentMatch.removeListener(_onMatchChange);
@@ -78,6 +87,11 @@ class _CardStackState extends State<CardStack> {
 
       _frontCard = new Key(_currentMatch.picture.path);
     });
+  }
+
+  Future<void> getMore() async {
+    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: ++widget._page);
+    widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
   }
 
   _onMatchChange() {
@@ -395,21 +409,25 @@ class _DraggableCardState extends State<DraggableCard> with TickerProviderStateM
       overlayBuilder: (BuildContext context, Rect anchorBounds, Offset anchor) {
         return CenterAbout(
           position: anchor,
-          child: new Transform(
-            transform: new Matrix4.translationValues(cardOffset.dx, cardOffset.dy, 0.0)..rotateZ(_rotation(anchorBounds)),
-            origin: _rotationOrigin(anchorBounds),
-            child: new Container(
-              key: profileCardKey,
-              width: anchorBounds.width,
-              height: anchorBounds.height - 100,
-              padding: const EdgeInsets.all(16.0),
-              child: new GestureDetector(
-                onPanStart: _onPanStart,
-                onPanUpdate: _onPanUpdate,
-                onPanEnd: _onPanEnd,
-                child: widget.card,
+          child: Column(
+            children: [
+              new Transform(
+                transform: new Matrix4.translationValues(cardOffset.dx, cardOffset.dy, 0.0)..rotateZ(_rotation(anchorBounds)),
+                origin: _rotationOrigin(anchorBounds),
+                child: new Container(
+                  key: profileCardKey,
+                  width: anchorBounds.width,
+                  height: anchorBounds.height - 100,
+                  padding: const EdgeInsets.all(16.0),
+                  child: new GestureDetector(
+                    onPanStart: _onPanStart,
+                    onPanUpdate: _onPanUpdate,
+                    onPanEnd: _onPanEnd,
+                    child: widget.card,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         );
       },
@@ -481,7 +499,7 @@ class _ProfileCardState extends State<ProfileCard> {
             fit: StackFit.expand,
             children: <Widget>[
               _buildBackground(),
-              _buildProfileSynopsis(),
+              //_buildProfileSynopsis(),
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import './matches.dart';
     matches: demoPictures.map((Picture picture) {
   return Match(picture: picture);
 }).toList());*/
+
 MatchEngine matchEngine = new MatchEngine();
 
 class CategoryPictures extends StatefulWidget {
@@ -17,7 +18,9 @@ class CategoryPictures extends StatefulWidget {
   CategoryPictures({
     @required this.categoryId,
     Key key,
-  }) : super(key: key);
+  }) : super(key: key) {
+    matchEngine.matches = [];
+  }
 
   @override
   _CategoryPicturesState createState() => _CategoryPicturesState();
@@ -26,41 +29,8 @@ class CategoryPictures extends StatefulWidget {
 class _CategoryPicturesState extends State<CategoryPictures> {
   Match match = new Match();
   CategoryRepository _categoryRepository = CategoryRepository();
-  int _page = 1;
   CardStack _cardStack;
-
-  Widget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0.0,
-      centerTitle: true,
-      leading: new IconButton(
-        icon: new Icon(
-          Icons.person,
-          color: Colors.grey,
-          size: 40.0,
-        ),
-        onPressed: () {
-          // TODO
-        },
-      ),
-      title: new FlutterLogo(
-        size: 30.0,
-      ),
-      actions: <Widget>[
-        new IconButton(
-          icon: new Icon(
-            Icons.chat_bubble,
-            color: Colors.grey,
-            size: 40.0,
-          ),
-          onPressed: () {
-            // TODO
-          },
-        ),
-      ],
-    );
-  }
+  final pageTextFieldController = TextEditingController();
 
   Widget _buildBottomBar(BuildContext context) {
     return BottomAppBar(
@@ -90,17 +60,17 @@ class _CategoryPicturesState extends State<CategoryPictures> {
                   }
                 },
               ),
-              new RoundIconButton.small(
-                icon: Icons.star,
+              new RoundIconButton.large(
+                icon: Icons.compare_arrows,
                 iconColor: Colors.blue,
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((value) {
-                      print("favorite;" + value.toString());
+                    matchEngine.currentMatch.addAction(actionName: 'move', value: true).then((value) {
+                      print("move;" + value.toString());
                       if (value == true) {
-                        _showSnackbar("Favorited", Colors.green);
+                        _showSnackbar("Moved", Colors.green);
                       } else {
-                        _showSnackbar("Favorited Problem", Colors.red);
+                        _showSnackbar("Moved Problem", Colors.red);
                       }
                     });
                   } catch (e) {
@@ -126,6 +96,24 @@ class _CategoryPicturesState extends State<CategoryPictures> {
                   }
                 },
               ),
+              new RoundIconButton.large(
+                icon: Icons.star,
+                iconColor: Colors.blue,
+                onPressed: () {
+                  try {
+                    matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((value) {
+                      print("favorite;" + value.toString());
+                      if (value == true) {
+                        _showSnackbar("Favorited", Colors.green);
+                      } else {
+                        _showSnackbar("Favorited Problem", Colors.red);
+                      }
+                    });
+                  } catch (e) {
+                    throw e;
+                  }
+                },
+              ),
             ],
           ),
         ));
@@ -135,24 +123,27 @@ class _CategoryPicturesState extends State<CategoryPictures> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMore();
+    getInit();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageTextFieldController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _cardStack = new CardStack(matchEngine: matchEngine, categoryId: widget.categoryId);
+
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: (matchEngine.matches.length == 0) ? Text("Matchlar Bekleniyor...") : _cardStack,
+      appBar: AppBar(
+        title: Text("Komik Şeyler"),
+      ),
+      body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : _cardStack,
       bottomNavigationBar: _buildBottomBar(context),
     );
-  }
-
-  Future<void> getMore() async {
-    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: _page++, limit: 5);
-    setState(() {
-      matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
-    });
   }
 
   _showSnackbar(String text, Color backgroundColor) {
@@ -162,6 +153,13 @@ class _CategoryPicturesState extends State<CategoryPictures> {
       duration: Duration(seconds: 1),
     );
     mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+  }
+
+  Future<void> getInit() async {
+    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: 1);
+    setState(() {
+      matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
+    });
   }
 }
 

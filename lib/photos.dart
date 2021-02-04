@@ -75,7 +75,7 @@ class _PhotoBrowserState extends State<PhotoBrowser> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.loose,
+      fit: StackFit.expand,
       children: <Widget>[
         // Photo
         new Image.network(
