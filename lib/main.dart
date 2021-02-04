@@ -45,7 +45,7 @@ class Categories extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => CategoryPictures(
-                                    categoryId: category.id,
+                                    category: category,
                                   ))),
                       child: Container(
                         height: MediaQuery.of(context).size.height / 9,

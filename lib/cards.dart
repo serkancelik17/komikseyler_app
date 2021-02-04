@@ -145,7 +145,7 @@ class _CardStackState extends State<CardStack> {
         currenMatch.nope();
         break;
       case SlideDirection.right:
-        currenMatch.addAction(actionName: 'like', value: true);
+        currenMatch = widget.matchEngine.nextMatch;
         break;
       case SlideDirection.up:
         currenMatch.addAction(actionName: 'favorite', value: true);

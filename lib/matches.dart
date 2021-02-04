@@ -74,20 +74,6 @@ class Match extends ChangeNotifier {
     }*/
   }
 
-  Future<bool> like({@required bool value}) async {
-    try {
-      bool result = await _pictureRepository.addAction(actionName: 'like', pictureId: picture.id, value: value);
-      return result;
-    } catch (e) {
-      return false;
-    }
-
-    /*  if (decision == Decision.favorite) {
-      decision = Decision.favorite;
-      notifyListeners();
-    }*/
-  }
-
   void reset() {
     if (decision != Decision.indecided) {
       decision = Decision.indecided;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/main.dart';
+import 'package:komik_seyler/models/categories.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
 
@@ -14,13 +15,11 @@ import './matches.dart';
 MatchEngine matchEngine = new MatchEngine();
 
 class CategoryPictures extends StatefulWidget {
-  final int categoryId;
+  final Category category;
   CategoryPictures({
-    @required this.categoryId,
+    @required this.category,
     Key key,
-  }) : super(key: key) {
-    matchEngine.matches = [];
-  }
+  }) : super(key: key);
 
   @override
   _CategoryPicturesState createState() => _CategoryPicturesState();
@@ -83,7 +82,7 @@ class _CategoryPicturesState extends State<CategoryPictures> {
                 iconColor: Colors.green,
                 onPressed: () {
                   try {
-                    matchEngine.currentMatch.like(value: true).then((value) {
+                    matchEngine.currentMatch.addAction(actionName: 'like', value: true).then((value) {
                       print("like;" + value.toString());
                       if (value == true) {
                         _showSnackbar("Liked", Colors.green);
@@ -135,11 +134,11 @@ class _CategoryPicturesState extends State<CategoryPictures> {
 
   @override
   Widget build(BuildContext context) {
-    _cardStack = new CardStack(matchEngine: matchEngine, categoryId: widget.categoryId);
+    _cardStack = new CardStack(matchEngine: matchEngine, categoryId: widget.category.id);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Komik Şeyler"),
+        title: Text(widget.category.name),
       ),
       body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : _cardStack,
       bottomNavigationBar: _buildBottomBar(context),
@@ -156,7 +155,7 @@ class _CategoryPicturesState extends State<CategoryPictures> {
   }
 
   Future<void> getInit() async {
-    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: 1);
+    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.category.id, page: 1);
     setState(() {
       matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
     });
