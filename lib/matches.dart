@@ -25,6 +25,8 @@ class MatchEngine extends ChangeNotifier {
   Match get nextMatch => _matches[nextMatchIndex];
 
   void cycleMatch() {
+    print("Decision: " + currentMatch.decision.toString());
+
     if (currentMatch.decision != Decision.indecided) {
       currentMatch.reset();
       currrentMatchIndex = nextMatchIndex;
