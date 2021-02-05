@@ -30,7 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.1
   fluttery_dart2: ^0.0.9
   http: ^0.12.2
-  client_information: ^1.0.1
+  shared_preferences: ^0.5.12+4
+  ulid: ^1.1.0
 
 dev_dependencies:
   flutter_test:
