@@ -27,11 +27,16 @@ class MatchEngine extends ChangeNotifier {
 
   void cycleMatch() {
     print("Decision: " + currentMatch.decision.toString());
+    print("Matches Length: " + _matches.length.toString());
 
     if (currentMatch.decision != Decision.indecided) {
       currentMatch.reset();
       currrentMatchIndex = nextMatchIndex;
-      nextMatchIndex = nextMatchIndex < _matches.length - 1 ? nextMatchIndex + 1 : 0;
+      if (nextMatchIndex < _matches.length - 1) {
+        nextMatchIndex = nextMatchIndex + 1;
+      } else {
+        throw Exception('Bitti');
+      }
       notifyListeners();
     }
   }

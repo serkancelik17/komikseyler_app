@@ -65,7 +65,7 @@ class _CategoryPicturesState extends State<CategoryPictures> {
               new RoundIconButton.large(
                 icon: Icons.compare_arrows,
                 iconColor: Colors.blue,
-                text: "Taşı",
+                text: "Taşı ",
                 onPressed: () {
                   try {
                     widget.matchEngine.currentMatch.addAction(actionName: 'move', value: true).then((Response response) {
@@ -153,7 +153,7 @@ class _CategoryPicturesState extends State<CategoryPictures> {
     SnackBar _snackBar = SnackBar(
       content: Text(text),
       backgroundColor: backgroundColor,
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 5000),
     );
     mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
   }

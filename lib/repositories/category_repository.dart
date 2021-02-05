@@ -23,7 +23,7 @@ class CategoryRepository {
     return categories;
   }
 
-  pictures({@required int categoryId, int page = 1, int limit = 10}) async {
+  pictures({@required int categoryId, int page = 1, int limit = 250}) async {
     String endpoint = "/devices/" + await Settings.getUuid() + "/categories/" + categoryId.toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 
     String apiResponse = await provider.getResponse(endpoint);

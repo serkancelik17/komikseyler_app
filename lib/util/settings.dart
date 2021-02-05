@@ -14,7 +14,7 @@ class Settings {
       uuid = Ulid().toUuid();
       prefs.setString("uuid", uuid);
     }
-    print("uuid:" + uuid);
+    // print("uuid:" + uuid);
     return uuid;
   }
 }

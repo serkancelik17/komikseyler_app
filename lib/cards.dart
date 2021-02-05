@@ -12,8 +12,6 @@ import './photos.dart';
 class CardStack extends StatefulWidget {
   final MatchEngine matchEngine;
   final int categoryId;
-  final CategoryRepository _categoryRepository = CategoryRepository();
-  int _page = 1;
 
   CardStack({@required this.matchEngine, @required this.categoryId});
 
@@ -70,9 +68,10 @@ class _CardStackState extends State<CardStack> {
 
   _onMatchEngineChange() {
     print("action: _onMatchEngineChange");
-    print("nextMatchIndex" + widget.matchEngine.currrentMatchIndex.toString());
+    print("currentMatchIndex" + widget.matchEngine.currrentMatchIndex.toString());
+    print("widget.matchEngine.matches.length : " + widget.matchEngine.matches.length.toString());
 
-    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 1) {
+    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2) {
       setState(() {
         getMore();
       });
@@ -92,9 +91,10 @@ class _CardStackState extends State<CardStack> {
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId, page: widget._page);
-    widget.matchEngine.matches = [];
-    widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
+    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.categoryId);
+    List<Match> _matches = _pictures.map((Picture picture) => Match(picture: picture)).toList();
+    _matches.removeRange(0, 2); // ilk ikiyi gorduk onlari sil
+    widget.matchEngine.matches.addAll(_matches);
   }
 
   _onMatchChange() {
