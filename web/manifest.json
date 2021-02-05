@@ -1,6 +1,6 @@
 {
-    "name": "komik_seyler",
-    "short_name": "komik_seyler",
+    "name": "Komik Şeyler",
+    "short_name": "Komik Şeyler",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
