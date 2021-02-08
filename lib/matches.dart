@@ -8,6 +8,7 @@ class MatchEngine extends ChangeNotifier {
   List<Match> _matches = [];
   int currrentMatchIndex;
   int nextMatchIndex;
+  int prevMatchIndex;
   CategoryRepository _categoryRepository = CategoryRepository();
 
   List<Match> get matches => _matches;
@@ -24,6 +25,7 @@ class MatchEngine extends ChangeNotifier {
 
   Match get currentMatch => _matches[currrentMatchIndex];
   Match get nextMatch => _matches[nextMatchIndex];
+  Match get prevMatch => _matches[prevMatchIndex];
 
   void cycleMatch() {
     print("Decision: " + currentMatch.decision.toString());
@@ -31,14 +33,21 @@ class MatchEngine extends ChangeNotifier {
 
     if (currentMatch.decision != Decision.indecided) {
       currentMatch.reset();
-      currrentMatchIndex = nextMatchIndex;
       if (nextMatchIndex < _matches.length - 1) {
+        prevMatchIndex = currrentMatchIndex - 1;
+        currrentMatchIndex = nextMatchIndex;
         nextMatchIndex = nextMatchIndex + 1;
       } else {
         throw Exception('Bitti');
       }
-      notifyListeners();
+    } else {
+      if (currrentMatchIndex > 1) {
+        nextMatchIndex = currrentMatchIndex;
+        currrentMatchIndex = prevMatchIndex;
+        prevMatchIndex = prevMatchIndex - 1;
+      }
     }
+    notifyListeners();
   }
 }
 

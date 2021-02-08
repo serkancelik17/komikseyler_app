@@ -99,6 +99,7 @@ class _CardStackState extends State<CardStack> {
 
   _onMatchChange() {
     setState(() {});
+    print("event is:_onMatchChange");
   }
 
   Widget _buildBackCard() {
