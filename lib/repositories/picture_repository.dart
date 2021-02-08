@@ -15,7 +15,7 @@ class PictureRepository {
   }
 
   Future<bool> destroy({@required pictureId}) async {
-    String endpoint = '/devices/' + await Settings.getUuid() + '/pictures/' + pictureId.toString() + '/destroy';
+    String endpoint = '/pictures/' + pictureId.toString() + '/destroy';
     try {
       Response response = responseFromJson(await _provider.getResponse(endpoint));
     } catch (e) {

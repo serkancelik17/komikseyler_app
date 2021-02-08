@@ -25,7 +25,6 @@ class MatchEngine extends ChangeNotifier {
 
   Match get currentMatch => _matches[currrentMatchIndex];
   Match get nextMatch => _matches[nextMatchIndex];
-  Match get prevMatch => _matches[prevMatchIndex];
 
   void cycleMatch() {
     print("Decision: " + currentMatch.decision.toString());
@@ -44,7 +43,10 @@ class MatchEngine extends ChangeNotifier {
       if (currrentMatchIndex > 1) {
         nextMatchIndex = currrentMatchIndex;
         currrentMatchIndex = prevMatchIndex;
-        prevMatchIndex = prevMatchIndex - 1;
+        if (currrentMatchIndex > 0)
+          prevMatchIndex = prevMatchIndex - 1;
+        else
+          prevMatchIndex = 0;
       }
     }
     notifyListeners();
