@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/matches.dart';
 import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/partials/RoundIconButton.dart';
-import 'package:komik_seyler/partials/snackBar.dart';
-
-import '../main.dart';
+import 'package:komik_seyler/util/helpers.dart';
 
 class BottomBar extends StatefulWidget {
   final MatchEngine matchEngine;
@@ -34,11 +32,9 @@ class _BottomBarState extends State<BottomBar> {
                   try {
                     widget.matchEngine.currentMatch.destroy().then((value) {
                       if (value == true) {
-                        SnackBar _snackBar = SnackBar(content: Text('Silindi'), backgroundColor: Colors.green);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
                       } else {
-                        SnackBar _snackBar = SnackBar(content: Text('Destroy Problem!'), backgroundColor: Colors.red);
-                        mainScaffoldMessengerKey.currentState.showSnackBar(_snackBar);
+                        Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
                       }
                     });
                   } catch (e) {
@@ -55,9 +51,9 @@ class _BottomBarState extends State<BottomBar> {
                     widget.matchEngine.currentMatch.addAction(actionName: 'move', value: true).then((Response response) {
                       print("move;" + response.success.toString());
                       if (response.success == true) {
-                        ShowSnackBar("Taşıma İşaretlendi", Colors.green);
+                        Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
                       } else {
-                        ShowSnackBar(response.message, Colors.red);
+                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
                       }
                     });
                   } catch (e) {
@@ -74,9 +70,9 @@ class _BottomBarState extends State<BottomBar> {
                     widget.matchEngine.currentMatch.addAction(actionName: 'like', value: true).then((Response response) {
                       print("like;" + response.success.toString());
                       if (response.success == true) {
-                        ShowSnackBar("Beğendiniz", Colors.green);
+                        Helpers.showSnackBar(context: context, text: "Beğendiniz", backgroundColor: Colors.green);
                       } else {
-                        ShowSnackBar(response.message, Colors.red);
+                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
                       }
                     });
                   } catch (e) {
@@ -93,9 +89,9 @@ class _BottomBarState extends State<BottomBar> {
                     widget.matchEngine.currentMatch.addAction(actionName: 'favorite', value: true).then((Response response) {
                       print("favorite;" + response.success.toString());
                       if (response.success == true) {
-                        ShowSnackBar("Favorilere Eklediniz", Colors.green);
+                        Helpers.showSnackBar(context: context, text: "Favorilere Eklendi", backgroundColor: Colors.green);
                       } else {
-                        ShowSnackBar(response.message, Colors.red);
+                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
                       }
                     });
                   } catch (e) {
