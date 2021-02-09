@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
-import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/repositories/action_repository.dart';
 
 import './cards.dart';
 import './matches.dart';
@@ -24,7 +24,7 @@ class ActionPictures extends StatefulWidget {
 
 class _ActionPicturesState extends State<ActionPictures> {
   Match match = new Match();
-  CategoryRepository _categoryRepository = CategoryRepository();
+  ActionRepository _actionRepository = ActionRepository();
   final pageTextFieldController = TextEditingController();
 
   @override
@@ -48,12 +48,12 @@ class _ActionPicturesState extends State<ActionPictures> {
         title: Text(widget.action.title),
       ),
       body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.action.id),
-      bottomNavigationBar: BottomBar(context: context, matchEngine: widget.matchEngine),
+      bottomNavigationBar: BottomBar(context: context, currentMatch: widget.matchEngine.currentMatch ?? null),
     );
   }
 
   Future<void> getInit() async {
-    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.action.id, page: 1);
+    List<Picture> _pictures = await _actionRepository.pictures(action: widget.action, page: 1);
     setState(() {
       widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
     });

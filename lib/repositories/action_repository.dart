@@ -23,8 +23,8 @@ class ActionRepository {
     return action;
   }
 
-  pictures({@required int actionId, int page = 1, int limit = 20}) async {
-    String endpoint = "/devices/" + await Settings.getUuid() + "/actions/" + actionId.toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
+  pictures({@required Local.Action action, int page = 1, int limit = 20}) async {
+    String endpoint = "/devices/" + await Settings.getUuid() + "/actions/" + action.id.toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
     String apiResponse = await provider.getResponse(endpoint);
     List<Picture> pictures = (responseFromJson(apiResponse)).data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;

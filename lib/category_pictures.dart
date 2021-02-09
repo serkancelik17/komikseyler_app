@@ -24,11 +24,10 @@ class CategoryPictures extends StatefulWidget {
   }
 
   @override
-  _CategoryPicturesState createState() => _CategoryPicturesState();
+  CategoryPicturesState createState() => CategoryPicturesState();
 }
 
-class _CategoryPicturesState extends State<CategoryPictures> {
-  Match match = new Match();
+class CategoryPicturesState extends State<CategoryPictures> {
   CategoryRepository _categoryRepository = CategoryRepository();
   final pageTextFieldController = TextEditingController();
 
@@ -48,12 +47,13 @@ class _CategoryPicturesState extends State<CategoryPictures> {
 
   @override
   Widget build(BuildContext context) {
+    print("----tazelendim----");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category.name),
       ),
-      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.category.id),
-      bottomNavigationBar: BottomBar(context: context, matchEngine: widget.matchEngine),
+      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(parent: this, matchEngine: widget.matchEngine, categoryId: widget.category.id),
+      bottomNavigationBar: (widget.matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: widget.matchEngine.currentMatch) : null,
     );
   }
 

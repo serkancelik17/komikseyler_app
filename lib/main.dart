@@ -52,7 +52,7 @@ class Categories extends StatelessWidget {
                                         category: category,
                                       ))),
                           child: Container(
-                            height: MediaQuery.of(context).size.height / 12,
+                            height: MediaQuery.of(context).size.height / 13,
                             width: MediaQuery.of(context).size.width,
                             child: Center(
                               child: Text(category.name),
@@ -60,44 +60,60 @@ class Categories extends StatelessWidget {
                           ),
                         ),
                       ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: RaisedButton(
+                        onPressed: () async {
+                          Local.Action _action = await getAction(actionName: 'like');
+                          return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 13,
+                            child: Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.favorite, color: Colors.green),
+                                Text("Beğendiklerim"),
+                              ],
+                            ))),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: RaisedButton(
+                        onPressed: () async {
+                          Local.Action _action = await getAction(actionName: 'favorite');
+                          return Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ActionPictures(action: _action),
+                            ),
+                          );
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 13,
+                            child: Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.star, color: Colors.blue),
+                                Text("Favorilerim"),
+                              ],
+                            ))),
+                      ),
+                    )
                   ],
                 );
               } else {
-                return CircularProgressIndicator();
+                return Container(
+                  height: MediaQuery.of(context).size.height / 1.5,
+                  child: Center(child: CircularProgressIndicator()),
+                );
               }
             }),
-        RaisedButton(
-          onPressed: () async {
-            Local.Action _action = await getAction(actionName: 'like');
-            return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));
-          },
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.favorite, color: Colors.green),
-                  Text("Beğendiklerim"),
-                ],
-              ))),
-        ),
-        RaisedButton(
-          onPressed: () async {
-            Local.Action _action = await getAction(actionName: 'favorite');
-            return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));
-          },
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.star, color: Colors.blue),
-                  Text("Favorilerim"),
-                ],
-              ))),
-        )
       ],
     );
   }

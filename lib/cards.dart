@@ -2,18 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttery_dart2/layout.dart';
+import 'package:komik_seyler/category_pictures.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
-import 'package:komik_seyler/repositories/picture_repository.dart';
 
 import './matches.dart';
 import './photos.dart';
 
 class CardStack extends StatefulWidget {
+  final CategoryPicturesState parent;
   final MatchEngine matchEngine;
   final int categoryId;
 
-  CardStack({@required this.matchEngine, @required this.categoryId});
+  CardStack({@required this.parent, @required this.matchEngine, @required this.categoryId});
 
   @override
   _CardStackState createState() => _CardStackState();
@@ -24,7 +25,6 @@ class _CardStackState extends State<CardStack> {
   Match _currentMatch;
   double _nextCardScale = 0.0;
   CategoryRepository _categoryRepository = CategoryRepository();
-  PictureRepository _pictureRepository = PictureRepository();
 
   @override
   void initState() {
@@ -70,6 +70,8 @@ class _CardStackState extends State<CardStack> {
     print("action: _onMatchEngineChange");
     print("currentMatchIndex" + widget.matchEngine.currrentMatchIndex.toString());
     print("widget.matchEngine.matches.length : " + widget.matchEngine.matches.length.toString());
+
+    widget.parent.setState(() {});
 
     if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2) {
       setState(() {
@@ -142,23 +144,22 @@ class _CardStackState extends State<CardStack> {
   }
 
   void _onSlideComplete(SlideDirection direction) {
-    Match currenMatch = widget.matchEngine.currentMatch;
+    Match currentMatch = widget.matchEngine.currentMatch;
 
     //Add Hit
-    _pictureRepository.addAction(actionName: 'hit', pictureId: widget.matchEngine.currentMatch.picture.id);
+    //_pictureRepository.addAction(actionName: 'hit', pictureId: widget.matchEngine.currentMatch.picture.id);
 
     switch (direction) {
       case SlideDirection.left:
-        currenMatch.nope();
+        currentMatch.nope();
         break;
       case SlideDirection.right:
-        currenMatch = widget.matchEngine.nextMatch;
+        currentMatch = widget.matchEngine.nextMatch;
         break;
       case SlideDirection.up:
-        currenMatch.addAction(actionName: 'favorite', value: true);
+        currentMatch.addAction(actionName: 'favorite', value: true);
         break;
     }
-
     widget.matchEngine.cycleMatch();
   }
 
