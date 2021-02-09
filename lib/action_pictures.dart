@@ -47,14 +47,15 @@ class _ActionPicturesState extends State<ActionPictures> {
       appBar: AppBar(
         title: Text(widget.action.title),
       ),
-      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.action.id),
-      bottomNavigationBar: BottomBar(context: context, currentMatch: widget.matchEngine.currentMatch ?? null),
+      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.action.id, parent: this),
+      bottomNavigationBar: (widget.matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: widget.matchEngine.currentMatch) : null,
     );
   }
 
   Future<void> getInit() async {
     List<Picture> _pictures = await _actionRepository.pictures(action: widget.action, page: 1);
     setState(() {
+      widget.matchEngine.matches = [];
       widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
     });
   }

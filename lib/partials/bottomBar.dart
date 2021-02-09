@@ -69,18 +69,7 @@ class _BottomBarState extends State<BottomBar> {
                 textColor: ((widget.currentMatch != null && widget.currentMatch.picture.userLikesCount > 0) ? Colors.white : Colors.green),
                 text: "Beğen(" + (((widget.currentMatch != null) ? widget.currentMatch.picture.likesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
-                  try {
-                    widget.currentMatch.addAction(actionName: 'like', value: true).then((Response response) {
-                      print("like;" + response.success.toString());
-                      if (response.success == true) {
-                        Helpers.showSnackBar(context: context, text: "Beğendiniz", backgroundColor: Colors.green);
-                      } else {
-                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
-                      }
-                    });
-                  } catch (e) {
-                    throw e;
-                  }
+                  toggleAction('like');
                 },
               ),
               new RoundIconButton.large(
@@ -90,26 +79,30 @@ class _BottomBarState extends State<BottomBar> {
                 textColor: ((widget.currentMatch != null && widget.currentMatch.picture.userFavoritesCount > 0) ? Colors.white : Colors.blue),
                 text: "Favori(" + (((widget.currentMatch != null) ? widget.currentMatch.picture.favoritesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
-                  try {
-                    widget.currentMatch.addAction(actionName: 'favorite', value: true).then((Response response) {
-                      print("favorite;" + response.success.toString());
-                      if (response.success == true) {
-                        setState(() {
-                          widget.currentMatch.picture.userFavoritesCount += 1;
-                        });
-                        Helpers.showSnackBar(context: context, text: "Favorilere Eklendi", backgroundColor: Colors.green);
-                      } else {
-                        widget.currentMatch.picture.userFavoritesCount -= 1;
-                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
-                      }
-                    });
-                  } catch (e) {
-                    throw e;
-                  }
+                  toggleAction('favorite');
                 },
               ),
             ],
           ),
         ));
+  }
+
+  bool toggleAction(String actionName) {
+    bool willAdd;
+    setState(() {
+      if (actionName == 'like') {
+        willAdd = (widget.currentMatch.picture.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.currentMatch.picture.userLikesCount = (willAdd) ? 1 : 0;
+        widget.currentMatch.picture.likesCount += (willAdd) ? 1 : -1;
+      } else if (actionName == 'favorite') {
+        willAdd = (widget.currentMatch.picture.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.currentMatch.picture.userFavoritesCount = (willAdd) ? 1 : 0;
+        widget.currentMatch.picture.favoritesCount += (willAdd) ? 1 : -1;
+      }
+    });
+    widget.currentMatch.addAction(actionName: actionName, value: willAdd).then((Response response) {
+      print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
+    });
+    return true;
   }
 }

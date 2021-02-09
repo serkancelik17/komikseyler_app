@@ -10,7 +10,7 @@ import './matches.dart';
 import './photos.dart';
 
 class CardStack extends StatefulWidget {
-  final CategoryPicturesState parent;
+  final State parent;
   final MatchEngine matchEngine;
   final int categoryId;
 
@@ -73,7 +73,7 @@ class _CardStackState extends State<CardStack> {
 
     widget.parent.setState(() {});
 
-    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2) {
+    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2 && widget.parent is CategoryPicturesState) {
       setState(() {
         getMore();
       });
