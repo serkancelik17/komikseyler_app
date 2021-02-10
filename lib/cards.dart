@@ -68,12 +68,12 @@ class _CardStackState extends State<CardStack> {
 
   _onMatchEngineChange() {
     print("action: _onMatchEngineChange");
-    print("currentMatchIndex" + widget.matchEngine.currrentMatchIndex.toString());
+    print("currentMatchIndex" + widget.matchEngine.currentMatchIndex.toString());
     print("widget.matchEngine.matches.length : " + widget.matchEngine.matches.length.toString());
 
     widget.parent.setState(() {});
 
-    if (widget.matchEngine.currrentMatchIndex == widget.matchEngine.matches.length - 2 && widget.parent is CategoryPicturesState) {
+    if (widget.matchEngine.currentMatchIndex == widget.matchEngine.matches.length - 2 && widget.parent is CategoryPicturesState) {
       setState(() {
         getMore();
       });

@@ -9,20 +9,18 @@ import './matches.dart';
 
 class ActionPictures extends StatefulWidget {
   final Local.Action action;
-  MatchEngine matchEngine;
 
   ActionPictures({
     this.action,
     Key key,
-  }) : super(key: key) {
-    matchEngine = new MatchEngine();
-  }
+  }) : super(key: key);
 
   @override
   _ActionPicturesState createState() => _ActionPicturesState();
 }
 
 class _ActionPicturesState extends State<ActionPictures> {
+  MatchEngine matchEngine = MatchEngine();
   Match match = new Match();
   ActionRepository _actionRepository = ActionRepository();
   final pageTextFieldController = TextEditingController();
@@ -47,16 +45,16 @@ class _ActionPicturesState extends State<ActionPictures> {
       appBar: AppBar(
         title: Text(widget.action.title),
       ),
-      body: (widget.matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: widget.matchEngine, categoryId: widget.action.id, parent: this),
-      bottomNavigationBar: (widget.matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: widget.matchEngine.currentMatch) : null,
+      body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: matchEngine, categoryId: widget.action.id, parent: this),
+      bottomNavigationBar: (matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: matchEngine.currentMatch) : null,
     );
   }
 
   Future<void> getInit() async {
     List<Picture> _pictures = await _actionRepository.pictures(action: widget.action, page: 1);
     setState(() {
-      widget.matchEngine.matches = [];
-      widget.matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
+      matchEngine.matches = [];
+      matchEngine.matches.addAll(_pictures.map((Picture picture) => Match(picture: picture)));
     });
   }
 }

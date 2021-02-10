@@ -1,15 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/response.dart';
-import 'package:komik_seyler/repositories/category_repository.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 
 class MatchEngine extends ChangeNotifier {
   List<Match> _matches = [];
-  int currrentMatchIndex;
+  int currentMatchIndex;
   int nextMatchIndex;
   int prevMatchIndex;
-  CategoryRepository _categoryRepository = CategoryRepository();
 
   List<Match> get matches => _matches;
 
@@ -19,11 +17,11 @@ class MatchEngine extends ChangeNotifier {
 
   MatchEngine({List<Match> matches}) : _matches = matches {
     _matches ??= [];
-    currrentMatchIndex = 0;
+    currentMatchIndex = 0;
     nextMatchIndex = 1;
   }
 
-  Match get currentMatch => _matches[currrentMatchIndex];
+  Match get currentMatch => _matches[currentMatchIndex];
   Match get nextMatch => _matches[nextMatchIndex];
 
   void cycleMatch() {
@@ -33,17 +31,17 @@ class MatchEngine extends ChangeNotifier {
     if (currentMatch.decision != Decision.indecided) {
       currentMatch.reset();
       if (nextMatchIndex < _matches.length - 1) {
-        prevMatchIndex = currrentMatchIndex - 1;
-        currrentMatchIndex = nextMatchIndex;
+        prevMatchIndex = currentMatchIndex - 1;
+        currentMatchIndex = nextMatchIndex;
         nextMatchIndex = nextMatchIndex + 1;
       } else {
         throw Exception('Bitti');
       }
     } else {
-      if (currrentMatchIndex > 1) {
-        nextMatchIndex = currrentMatchIndex;
-        currrentMatchIndex = prevMatchIndex;
-        if (currrentMatchIndex > 0)
+      if (currentMatchIndex > 1) {
+        nextMatchIndex = currentMatchIndex;
+        currentMatchIndex = prevMatchIndex;
+        if (currentMatchIndex > 0)
           prevMatchIndex = prevMatchIndex - 1;
         else
           prevMatchIndex = 0;
@@ -71,7 +69,7 @@ class Match extends ChangeNotifier {
   Future<bool> destroy() async {
     try {
       bool result = await _pictureRepository.destroy(pictureId: picture.id);
-      return true;
+      return result;
     } catch (e) {
       return false;
     } finally {
