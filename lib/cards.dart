@@ -5,6 +5,7 @@ import 'package:fluttery_dart2/layout.dart';
 import 'package:komik_seyler/category_pictures.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/repositories/picture_repository.dart';
 
 import './matches.dart';
 import './photos.dart';
@@ -13,8 +14,11 @@ class CardStack extends StatefulWidget {
   final State parent;
   final MatchEngine matchEngine;
   final int categoryId;
+  PictureRepository pictureRepository;
 
-  CardStack({@required this.parent, @required this.matchEngine, @required this.categoryId});
+  CardStack({@required this.parent, @required this.matchEngine, @required this.categoryId, this.pictureRepository}) {
+    this.pictureRepository ??= PictureRepository();
+  }
 
   @override
   _CardStackState createState() => _CardStackState();
@@ -122,6 +126,8 @@ class _CardStackState extends State<CardStack> {
   }
 
   SlideDirection _desiredSlideOutDirection() {
+    print("action: _desiredSlideOutDirection");
+
     switch (widget.matchEngine.currentMatch.decision) {
       case Decision.nope:
         return SlideDirection.left;
@@ -147,7 +153,7 @@ class _CardStackState extends State<CardStack> {
     Match currentMatch = widget.matchEngine.currentMatch;
 
     //Add Hit
-    //_pictureRepository.addAction(actionName: 'hit', pictureId: widget.matchEngine.currentMatch.picture.id);
+    widget.pictureRepository.addAction(actionName: 'hit', pictureId: widget.matchEngine.currentMatch.picture.id);
 
     switch (direction) {
       case SlideDirection.left:

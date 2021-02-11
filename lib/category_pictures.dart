@@ -3,6 +3,7 @@ import 'package:komik_seyler/models/category.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/util/settings.dart';
 
 import './cards.dart';
 import './matches.dart';
@@ -47,9 +48,7 @@ class CategoryPicturesState extends State<CategoryPictures> {
   Widget build(BuildContext context) {
     print("----tazelendim----");
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.category.name),
-      ),
+      appBar: Settings.buildAppBar(title: widget.category.name),
       body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(parent: this, matchEngine: matchEngine, categoryId: widget.category.id),
       bottomNavigationBar: (matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: matchEngine.currentMatch) : null,
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
@@ -16,5 +17,14 @@ class Settings {
     }
     // print("uuid:" + uuid);
     return uuid;
+  }
+
+  static Widget buildAppBar({title}) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      centerTitle: true,
+      title: Text(title ?? ''),
+    );
   }
 }

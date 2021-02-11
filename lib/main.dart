@@ -5,6 +5,7 @@ import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/category.dart';
 import 'package:komik_seyler/repositories/action_repository.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/util/settings.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,9 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Kategoriler"),
-        ),
+        appBar: Settings.buildAppBar(title: "Komik Şeyler"),
         body: Center(child: Categories()),
       ),
       scaffoldMessengerKey: mainScaffoldMessengerKey,
