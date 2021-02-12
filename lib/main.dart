@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/action_pictures.dart';
 import 'package:komik_seyler/category_pictures.dart';
@@ -42,8 +43,11 @@ class Categories extends StatelessWidget {
                   children: [
                     for (Category category in snapshot.data)
                       Container(
-                        margin: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(5),
                         child: RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          color: Colors.blue.shade300,
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -54,7 +58,10 @@ class Categories extends StatelessWidget {
                             height: MediaQuery.of(context).size.height / 13,
                             width: MediaQuery.of(context).size.width,
                             child: Center(
-                              child: Text(category.name),
+                              child: Text(
+                                category.name,
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
@@ -62,6 +69,8 @@ class Categories extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(10),
                       child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        color: Colors.green,
                         onPressed: () async {
                           Local.Action _action = await getAction(actionName: 'like');
                           return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));
@@ -73,8 +82,11 @@ class Categories extends StatelessWidget {
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.favorite, color: Colors.green),
-                                Text("Beğendiklerim"),
+                                Icon(Icons.favorite, color: Colors.white),
+                                Text(
+                                  " Beğendiklerim",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ],
                             ))),
                       ),
@@ -82,6 +94,8 @@ class Categories extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(10),
                       child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        color: Colors.blue,
                         onPressed: () async {
                           Local.Action _action = await getAction(actionName: 'favorite');
                           return Navigator.push(
@@ -98,8 +112,11 @@ class Categories extends StatelessWidget {
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.star, color: Colors.blue),
-                                Text("Favorilerim"),
+                                Icon(Icons.star, color: Colors.white),
+                                Text(
+                                  "Favorilerim",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ],
                             ))),
                       ),
