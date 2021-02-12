@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
@@ -26,5 +32,23 @@ class Settings {
       centerTitle: true,
       title: Text(title ?? ''),
     );
+  }
+
+  static Future<bool> share(String imageUrl) async {
+    String imageFullUrl = Settings.imageAssetsUrl + "/" + imageUrl;
+    try {
+      var response = await http.get(imageFullUrl);
+      Directory tempDir = await getTemporaryDirectory();
+      String tempPath = tempDir.path;
+
+      File file = new File(join(tempPath, 'shared_image.png'));
+
+      file.writeAsBytesSync(response.bodyBytes);
+
+      Share.shareFiles([file.path]);
+    } catch (e) {
+      throw (e);
+    }
+    return true;
   }
 }

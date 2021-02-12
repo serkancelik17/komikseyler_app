@@ -3,6 +3,7 @@ import 'package:komik_seyler/matches.dart';
 import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/partials/RoundIconButton.dart';
 import 'package:komik_seyler/util/helpers.dart';
+import 'package:komik_seyler/util/settings.dart';
 
 class BottomBar extends StatefulWidget {
   final Match currentMatch;
@@ -80,6 +81,31 @@ class _BottomBarState extends State<BottomBar> {
                 text: "Favori(" + (((widget.currentMatch != null) ? widget.currentMatch.picture.favoritesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
                   toggleAction('favorite');
+                },
+              ),
+              new RoundIconButton.large(
+                icon: Icons.share,
+                iconColor: Colors.blue,
+                text: "Paylaş",
+                onPressed: () {
+                  try {
+                    Settings.share(widget.currentMatch.picture.path);
+                  } catch (e) {
+                    print("(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
+                  }
+/*
+                  try {
+                    widget.currentMatch.destroy().then((value) {
+                      if (value == true) {
+                        Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
+                      } else {
+                        Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
+                      }
+                    });
+                  } catch (e) {
+                    throw e;
+                  }
+*/
                 },
               ),
             ],
