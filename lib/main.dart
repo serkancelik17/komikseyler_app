@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/category_pictures.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/category.dart';
+import 'package:komik_seyler/pictures.dart';
 import 'package:komik_seyler/repositories/action_repository.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
@@ -50,8 +50,8 @@ class Categories extends StatelessWidget {
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CategoryPictures(
-                                        category: category,
+                                  builder: (context) => Pictures(
+                                        section: category,
                                       ))),
                           child: Container(
                             height: MediaQuery.of(context).size.height / 13,
@@ -72,7 +72,7 @@ class Categories extends StatelessWidget {
                         color: Colors.green,
                         onPressed: () async {
                           Local.Action _action = await getAction(actionName: 'like');
-                          /*return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));*/
+                          return Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: _action)));
                         },
                         child: Container(
                             width: MediaQuery.of(context).size.width,
@@ -100,7 +100,7 @@ class Categories extends StatelessWidget {
                           return Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CategoryPictures(category: new Category()) /*ActionPictures(action: _action)*/,
+                              builder: (context) => Pictures(section: _action),
                             ),
                           );
                         },

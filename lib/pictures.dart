@@ -1,28 +1,26 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/category.dart';
+import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
-import 'package:komik_seyler/repositories/category_repository.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
 
 import 'models/picture.dart';
 
-class CategoryPictures extends StatefulWidget {
-  final Category category;
+class Pictures extends StatefulWidget {
+  final Section section;
 
-  CategoryPictures({
-    this.category,
+  Pictures({
+    this.section,
     Key key,
   }) : super(key: key);
 
   @override
-  CategoryPicturesState createState() => CategoryPicturesState();
+  PicturesState createState() => PicturesState();
 }
 
-class CategoryPicturesState extends State<CategoryPictures> {
-  CategoryRepository _categoryRepository = CategoryRepository();
+class PicturesState extends State<Pictures> {
   PictureRepository _pictureRepository = new PictureRepository();
   List<Picture> pictures = [];
   int page = 1;
@@ -43,7 +41,7 @@ class CategoryPicturesState extends State<CategoryPictures> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Settings.buildAppBar(title: widget.category.name),
+      appBar: Settings.buildAppBar(title: widget.section.getTitle()),
       body: CarouselSlider(
         options: CarouselOptions(
           height: 600.0,
@@ -71,7 +69,7 @@ class CategoryPicturesState extends State<CategoryPictures> {
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await _categoryRepository.pictures(categoryId: widget.category.id, page: page++, limit: 20);
+    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
     setState(() {
       pictures.addAll(_pictures);
       //İlk resmi varsayılan vap

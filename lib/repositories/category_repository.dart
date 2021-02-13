@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:komik_seyler/models/category.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/response.dart';
+import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
+import 'package:komik_seyler/repositories/repository.dart';
 import 'package:komik_seyler/util/settings.dart';
 
-class CategoryRepository {
+class CategoryRepository implements Repository {
   ApiProvider provider;
 
   CategoryRepository({this.provider}) {
@@ -23,8 +25,8 @@ class CategoryRepository {
     return categories;
   }
 
-  pictures({@required int categoryId, int page = 1, int limit = 20}) async {
-    String endpoint = "/devices/" + await Settings.getUuid() + "/categories/" + categoryId.toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
+  pictures({@required Section section, int page = 1, int limit = 20}) async {
+    String endpoint = "/devices/" + await Settings.getUuid() + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 
     String apiResponse = await provider.getResponse(endpoint);
 

@@ -4,11 +4,15 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/models/section.dart';
+import 'package:komik_seyler/repositories/action_repository.dart';
+import 'package:komik_seyler/repositories/repository.dart';
+
 Action actionFromJson(String str) => Action.fromJson(json.decode(str));
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
-class Action {
+class Action implements Section {
   Action({
     this.id,
     this.name,
@@ -30,4 +34,19 @@ class Action {
         "name": name == null ? null : name,
         "title": title == null ? null : title,
       };
+
+  @override
+  String getTitle() {
+    return this.title;
+  }
+
+  @override
+  Repository getRepository() {
+    return new ActionRepository();
+  }
+
+  @override
+  int getId() {
+    return this.id;
+  }
 }
