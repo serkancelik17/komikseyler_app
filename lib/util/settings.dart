@@ -47,7 +47,7 @@ class Settings {
 
       Share.shareFiles([file.path]);
     } catch (e) {
-      throw (e);
+      rethrow;
     }
     return true;
   }

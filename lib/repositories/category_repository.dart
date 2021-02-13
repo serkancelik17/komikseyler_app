@@ -13,7 +13,7 @@ class CategoryRepository {
   }
 
   Future<List<Category>> getCategories() async {
-    String endpoint = '/categories';
+    String endpoint = "/devices/" + await Settings.getUuid() + '/categories';
     List<Category> categories = [];
 
     String apiResponse = await provider.getResponse(endpoint);

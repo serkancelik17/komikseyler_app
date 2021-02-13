@@ -126,7 +126,7 @@ class _CardStackState extends State<CardStack> {
   }
 
   SlideDirection _desiredSlideOutDirection() {
-    print("action: _desiredSlideOutDirection");
+    //print("action: _desiredSlideOutDirection");
 
     switch (widget.matchEngine.currentMatch.decision) {
       case Decision.nope:
