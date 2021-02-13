@@ -1,11 +1,9 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/action_repository.dart';
-
-import './cards.dart';
-import './matches.dart';
 
 class ActionPictures extends StatefulWidget {
   final Local.Action action;
@@ -46,7 +44,7 @@ class _ActionPicturesState extends State<ActionPictures> {
         title: Text(widget.action.title),
       ),
       body: (matchEngine.matches.length == 0) ? Center(child: Text("Yükleniyor...")) : new CardStack(matchEngine: matchEngine, categoryId: widget.action.id, parent: this),
-      bottomNavigationBar: (matchEngine.matches.length != 0) ? BottomBar(context: context, currentMatch: matchEngine.currentMatch) : null,
+      bottomNavigationBar: (matchEngine.matches.length != 0) ? BottomBar(context: context, currentPicture: matchEngine.currentMatch) : null,
     );
   }
 
@@ -58,3 +56,4 @@ class _ActionPicturesState extends State<ActionPictures> {
     });
   }
 }
+*/

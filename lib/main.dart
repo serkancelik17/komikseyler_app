@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/action_pictures.dart';
 import 'package:komik_seyler/category_pictures.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/category.dart';
@@ -73,7 +72,7 @@ class Categories extends StatelessWidget {
                         color: Colors.green,
                         onPressed: () async {
                           Local.Action _action = await getAction(actionName: 'like');
-                          return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));
+                          /*return Navigator.push(context, MaterialPageRoute(builder: (context) => ActionPictures(action: _action)));*/
                         },
                         child: Container(
                             width: MediaQuery.of(context).size.width,
@@ -101,7 +100,7 @@ class Categories extends StatelessWidget {
                           return Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ActionPictures(action: _action),
+                              builder: (context) => CategoryPictures(category: new Category()) /*ActionPictures(action: _action)*/,
                             ),
                           );
                         },
