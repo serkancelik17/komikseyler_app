@@ -55,7 +55,7 @@ class _BottomBarState extends State<BottomBar> {
                 text: "Taşı ",
                 onPressed: () {
                   try {
-                    _pictureRepository.addAction(action: new Local.Action(name: 'move'), value: true, picture: widget.currentPicture).then((Response response) {
+                    _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentPicture).then((Response response) {
                       print("move;" + response.success.toString());
                       if (response.success == true) {
                         Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
@@ -131,7 +131,7 @@ class _BottomBarState extends State<BottomBar> {
         widget.currentPicture.favoritesCount += (willAdd) ? 1 : -1;
       }
     });
-    _pictureRepository.addAction(action: new Local.Action(name: 'hit'), value: willAdd, picture: widget.currentPicture).then((Response response) {
+    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), value: willAdd, picture: widget.currentPicture).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
     });
     return true;

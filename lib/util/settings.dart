@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komik_seyler/models/device.dart';
+import 'package:komik_seyler/repositories/device_repository.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -9,7 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
 class Settings {
-  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
+/*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
+  static String imageAssetsUrl = Settings.baseUrl + '/assets/images';*/
+
+  static String baseUrl = 'http://komikseyler.serkancelik.web.local';
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
 
   /// Support on iOS, Android and web project
@@ -23,6 +28,26 @@ class Settings {
     }
     // print("uuid:" + uuid);
     return uuid;
+  }
+
+  static Future<Device> getDevice() async {
+    Device device;
+    final DeviceRepository _deviceRepository = DeviceRepository();
+    device = await _deviceRepository.get(id: 26);
+
+/*    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+    String deviceString = prefs.getString('device');
+    if (deviceString.length != null && deviceString.length > 0) {
+      device = deviceFromJson(deviceString);
+    } else {
+      String uuid = Ulid().toUuid();
+      int deviceId = await _deviceRepository.store(uuid: uuid);
+      device = await _deviceRepository.get(id: deviceId);
+    }
+    print(device.toString());*/
+    return device;
   }
 
   static Widget buildAppBar({title}) {

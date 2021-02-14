@@ -83,7 +83,7 @@ class PicturesState extends State<Pictures> {
       activePicture = pictures[index];
     });
     //Add hit
-    _pictureRepository.addAction(action: new Local.Action(name: 'hit'), picture: pictures[index]);
+    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
     if (index == pictures.length - 2) getMore();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
+import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
@@ -24,7 +25,8 @@ class PictureRepository {
   }
 
   Future<Response> addAction({@required Local.Action action, @required Picture picture, bool value = true}) async {
-    String endpoint = '/devices/' + await Settings.getUuid() + '/pictures/' + picture.id.toString() + '/actions/' + action.name + '/' + (value ? 'store' : 'destroy');
+    Device _device = await Settings.getDevice();
+    String endpoint = '/devices/' + _device.id.toString() + '/pictures/' + picture.id.toString() + '/actions/' + action.id.toString() + '/' + (value ? 'store' : 'destroy');
     try {
       Response response = responseFromJson(await _provider.getResponse(endpoint));
 
