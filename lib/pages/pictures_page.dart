@@ -1,26 +1,25 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
+import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
 
-import 'models/picture.dart';
+final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-class Pictures extends StatefulWidget {
+class PicturesPage extends StatefulWidget {
   final Section section;
 
-  Pictures({
-    this.section,
-    Key key,
-  }) : super(key: key);
+  PicturesPage({this.section});
 
   @override
-  PicturesState createState() => PicturesState();
+  _HomeState createState() => _HomeState();
 }
 
-class PicturesState extends State<Pictures> {
+class _HomeState extends State<PicturesPage> {
   PictureRepository _pictureRepository = new PictureRepository();
   List<Picture> pictures = [];
   int page = 1;
@@ -34,12 +33,9 @@ class PicturesState extends State<Pictures> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    print("section is " + widget.section.toString());
+
     return Scaffold(
       appBar: Settings.buildAppBar(title: widget.section.getTitle()),
       body: CarouselSlider(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../main.dart';
+import 'package:komik_seyler/pages/home_page.dart';
 
 class Helpers {
   static void showSnackBar({@required BuildContext context, @required String text, @required Color backgroundColor}) {

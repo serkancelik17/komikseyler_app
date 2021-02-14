@@ -30,7 +30,7 @@ class Settings {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       centerTitle: true,
-      title: Text(title ?? ''),
+      title: Text(title ?? 'Komik Şeyler'),
     );
   }
 
