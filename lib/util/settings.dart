@@ -33,20 +33,20 @@ class Settings {
   static Future<Device> getDevice() async {
     Device device;
     final DeviceRepository _deviceRepository = DeviceRepository();
-    device = await _deviceRepository.get(id: 26);
+    /* device = await _deviceRepository.get(id: 26);*/
 
-/*    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String deviceString = prefs.getString('device');
-    if (deviceString.length != null && deviceString.length > 0) {
+    if (deviceString != null) {
+      // eğer aygıt kayıtlıysa
       device = deviceFromJson(deviceString);
     } else {
+      //
       String uuid = Ulid().toUuid();
-      int deviceId = await _deviceRepository.store(uuid: uuid);
-      device = await _deviceRepository.get(id: deviceId);
+      device = await _deviceRepository.store(uuid: uuid);
+      prefs.setString("device", deviceToJson(device));
     }
-    print(device.toString());*/
     return device;
   }
 

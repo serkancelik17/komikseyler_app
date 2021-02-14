@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:komik_seyler/models/device.dart';
-import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
 
 class DeviceRepository {
@@ -16,9 +15,9 @@ class DeviceRepository {
     return _device;
   }
 
-  Future<int> store({@required String uuid}) async {
-    String endpoint = 'devices/' + uuid + '/store';
-    Response response = responseFromJson(await provider.getResponse(endpoint));
-    return response.data[0].id;
+  Future<Device> store({@required String uuid}) async {
+    String endpoint = '/devices/' + uuid + '/store';
+    String apiResponse = await provider.getResponse(endpoint);
+    return deviceFromJson(apiResponse);
   }
 }
