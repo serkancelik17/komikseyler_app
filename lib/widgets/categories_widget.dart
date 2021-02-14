@@ -123,8 +123,13 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   Future<List<Section>> getSections() async {
     List<Section> sections = [];
     CategoryRepository catRepo = CategoryRepository();
-    List<Section> categories = await catRepo.getCategories();
-    sections.addAll(categories);
+    try {
+      List<Section> categories = await catRepo.getCategories();
+      sections.addAll(categories);
+    } catch (error) {
+      Navigator.pushNamed(context, '/error', arguments: error);
+    }
+
     List<Section> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),

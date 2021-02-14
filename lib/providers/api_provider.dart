@@ -1,4 +1,5 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/providers/provider.dart';
@@ -11,19 +12,19 @@ class ApiProvider implements Provider {
 
   ///veriyi getir
   Future<String> getResponse(String endpoint) async {
-    print(await checkConnectivity());
-
-    if (await checkConnectivity() != true) {
-      throw new Exception();
-    }
-
     final url = _apiUrl + endpoint;
     debugPrint("[GET] Request Url : " + url);
-    http.Response response = await http.get(url);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception("Sunucuya bağlanılamadı. Veri getirilemedi.");
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception("Hatalı durum kodu.(" + response.statusCode.toString() + ")");
+      }
+    } on HttpException {
+      throw new Exception('Servis hatası!');
+    } on SocketException {
+      throw Exception('İnternet bağlantısı bulunamadı!');
     }
   }
 
@@ -40,13 +41,5 @@ class ApiProvider implements Provider {
     } catch (e) {
       throw e;
     }
-  }
-
-  Future<bool> checkConnectivity() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      return false;
-    }
-    return true;
   }
 }

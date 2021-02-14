@@ -68,12 +68,16 @@ class _HomeState extends State<PicturesPage> {
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
-    setState(() {
-      pictures.addAll(_pictures);
-      //İlk resmi varsayılan vap
-      if (activePicture == null) activePicture = _pictures[0];
-    });
+    try {
+      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
+      setState(() {
+        pictures.addAll(_pictures);
+        //İlk resmi varsayılan vap
+        if (activePicture == null) activePicture = _pictures[0];
+      });
+    } catch (error) {
+      Navigator.pushReplacementNamed(context, '/error', arguments: error);
+    }
   }
 
   pageChange(int index, CarouselPageChangedReason reason) {
