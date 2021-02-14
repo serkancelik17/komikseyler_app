@@ -1,6 +1,7 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/picture.dart';
@@ -22,6 +23,7 @@ class PicturesPage extends StatefulWidget {
 
 class _HomeState extends State<PicturesPage> {
   PictureRepository _pictureRepository = new PictureRepository();
+  int pictureChangeCount = 0;
   List<Picture> pictures = [];
   int page = 1;
   Picture activePicture;
@@ -37,29 +39,32 @@ class _HomeState extends State<PicturesPage> {
   Widget build(BuildContext context) {
     print("section is " + widget.section.toString());
 
-    return Scaffold(
-      appBar: Settings.buildAppBar(title: widget.section.getTitle()),
-      body: pictures.length > 0
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    onPageChanged: pageChange,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 0.8,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: Settings.buildAppBar(title: widget.section.getTitle()),
+        body: pictures.length > 0
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      onPageChanged: pageChange,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      viewportFraction: 0.8,
+                    ),
+                    items: pictures.map((picture) {
+                      return buildBuilder(picture);
+                    }).toList(),
                   ),
-                  items: pictures.map((picture) {
-                    return buildBuilder(picture);
-                  }).toList(),
-                ),
-                activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
-              ],
-            )
-          : Center(child: CircularProgressIndicator()),
-      bottomNavigationBar: (activePicture is Picture && activePicture.path != 'ads') ? BottomBar(context: context, currentPicture: activePicture) : null,
+                  activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
+                ],
+              )
+            : Center(child: CircularProgressIndicator()),
+        bottomNavigationBar: (activePicture is Picture && activePicture.path != 'ads') ? BottomBar(context: context, currentPicture: activePicture) : null,
+      ),
     );
   }
 
@@ -80,10 +85,10 @@ class _HomeState extends State<PicturesPage> {
 
   Future<void> getMore() async {
     try {
-      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 5);
+      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
       setState(() {
         pictures.addAll(_pictures);
-        pictures.add(Picture(path: 'ads'));
+        if (!kIsWeb) pictures.add(Picture(path: 'ads'));
         //İlk resmi varsayılan vap
         if (activePicture == null) activePicture = _pictures[0];
       });
@@ -93,11 +98,17 @@ class _HomeState extends State<PicturesPage> {
   }
 
   pageChange(int index, CarouselPageChangedReason reason) {
+    pictureChangeCount++;
+
     setState(() {
       activePicture = pictures[index];
     });
-    //Add hit
-    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
     if (index == pictures.length - 2) getMore();
+  }
+
+  Future<bool> _onBackPressed() async {
+    //Add hit
+    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: activePicture);
+    return true;
   }
 }
