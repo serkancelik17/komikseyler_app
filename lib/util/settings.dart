@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:admob_flutter/admob_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/repositories/device_repository.dart';
+import 'package:komik_seyler/util/ad_manager.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -77,11 +80,14 @@ class Settings {
     return true;
   }
 
-/*  static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
+  static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
     if (kIsWeb == false) {
-      return AdmobBanner(
-        adUnitId: bannerAdUnitId ?? AdManager.bannerAdUnitId,
-        adSize: bannerSize ?? AdmobBannerSize.BANNER,
+      return Container(
+        width: 300,
+        child: AdmobBanner(
+          adUnitId: bannerAdUnitId ?? AdManager.bannerAdUnitId,
+          adSize: bannerSize ?? AdmobBannerSize.BANNER,
+        ),
       );
     } else {
       return SizedBox();
@@ -96,5 +102,6 @@ class Settings {
       );
     } else {
       return Text("");
-    }*/
+    }
+  }
 }

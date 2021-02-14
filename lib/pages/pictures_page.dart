@@ -1,3 +1,4 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,39 +40,50 @@ class _HomeState extends State<PicturesPage> {
     return Scaffold(
       appBar: Settings.buildAppBar(title: widget.section.getTitle()),
       body: pictures.length > 0
-          ? CarouselSlider(
-              options: CarouselOptions(
-                height: 600.0,
-                onPageChanged: pageChange,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false,
-                viewportFraction: 0.8,
-              ),
-              items: pictures.map((picture) {
-                String pictureUrl = Settings.imageAssetsUrl + "/" + picture.path;
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      /* decoration: BoxDecoration(color: Colors.amber),*/
-                      child: Image.network(pictureUrl),
-                    );
-                  },
-                );
-              }).toList(),
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    onPageChanged: pageChange,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 0.8,
+                  ),
+                  items: pictures.map((picture) {
+                    return buildBuilder(picture);
+                  }).toList(),
+                ),
+                Settings.getBannerAd(),
+              ],
             )
           : Center(child: CircularProgressIndicator()),
-      bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentPicture: activePicture) : null,
+      bottomNavigationBar: (activePicture is Picture && activePicture.path != 'ads') ? BottomBar(context: context, currentPicture: activePicture) : null,
+    );
+  }
+
+  Builder buildBuilder(Picture picture) {
+    String pictureUrl = Settings.imageAssetsUrl + "/" + picture.path;
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          /* decoration: BoxDecoration(color: Colors.amber),*/
+          child: (picture.path == 'ads') ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : Image.network(pictureUrl),
+        );
+      },
     );
   }
 
   Future<void> getMore() async {
     try {
-      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
+      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 5);
       setState(() {
         pictures.addAll(_pictures);
+        pictures.add(Picture(path: 'ads'));
         //İlk resmi varsayılan vap
         if (activePicture == null) activePicture = _pictures[0];
       });
