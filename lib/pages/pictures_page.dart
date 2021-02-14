@@ -24,7 +24,7 @@ class PicturesPage extends StatefulWidget {
 class _HomeState extends State<PicturesPage> {
   PictureRepository _pictureRepository = new PictureRepository();
   int pictureChangeCount = 0;
-  List<Picture> pictures = [];
+  List<Picture> pictures;
   int page = 1;
   Picture activePicture;
 
@@ -43,26 +43,28 @@ class _HomeState extends State<PicturesPage> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         appBar: Settings.buildAppBar(title: widget.section.getTitle()),
-        body: pictures.length > 0
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      onPageChanged: pageChange,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 0.8,
-                    ),
-                    items: pictures.map((picture) {
-                      return buildBuilder(picture);
-                    }).toList(),
+        body: (pictures == null)
+            ? Center(child: CircularProgressIndicator())
+            : (pictures.length == 0)
+                ? Center(child: Text('Herhangi bir içerik bulunamadı.'))
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          onPageChanged: pageChange,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                          viewportFraction: 0.8,
+                        ),
+                        items: pictures.map((picture) {
+                          return buildBuilder(picture);
+                        }).toList(),
+                      ),
+                      activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
+                    ],
                   ),
-                  activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
-                ],
-              )
-            : Center(child: CircularProgressIndicator()),
         bottomNavigationBar: (activePicture is Picture && activePicture.path != 'ads') ? BottomBar(context: context, currentPicture: activePicture) : null,
       ),
     );
@@ -84,17 +86,19 @@ class _HomeState extends State<PicturesPage> {
   }
 
   Future<void> getMore() async {
-    try {
-      List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
-      setState(() {
-        pictures.addAll(_pictures);
-        if (!kIsWeb) pictures.add(Picture(path: 'ads'));
-        //İlk resmi varsayılan vap
-        if (activePicture == null) activePicture = _pictures[0];
-      });
-    } catch (error) {
+    // try {
+    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
+    setState(() {
+      pictures ??= [];
+      if (_pictures.length > 0) pictures.addAll(_pictures);
+
+      if (!kIsWeb) pictures.add(Picture(path: 'ads'));
+      //İlk resmi varsayılan vap
+      if (activePicture == null && pictures.length > 0) activePicture = _pictures[0];
+    });
+/*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
-    }
+    }*/
   }
 
   pageChange(int index, CarouselPageChangedReason reason) {
