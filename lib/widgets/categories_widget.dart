@@ -1,57 +1,76 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/category.dart';
+import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/repositories/action_repository.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
 
-class CategoriesWidget extends StatelessWidget {
+class CategoriesWidget extends StatefulWidget {
+  @override
+  _CategoriesWidgetState createState() => _CategoriesWidgetState();
+}
+
+class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FutureBuilder(
-            future: getCategories(),
-            builder: (context, AsyncSnapshot<List<Category>> snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    for (Category category in snapshot.data)
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        padding: EdgeInsets.all(5),
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          color: Colors.blue.shade300,
-                          //onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: category))),
-                          onPressed: () => Navigator.pushNamed(context, '/categories', arguments: category),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 13,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: Text(
-                                category.name,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+    return FutureBuilder(
+        future: getSections(),
+        builder: (context, AsyncSnapshot<List<Section>> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: [
+                for (Section section in snapshot.data)
+                  InkWell(
+                    child: ListTile(
+                      leading: getFaIcon(section),
+                      title: Text(section.getTitle()),
+                      trailing: Icon(Icons.arrow_forward_ios_sharp),
+                      contentPadding: EdgeInsets.all(5),
+                    ),
+                    onTap: () => Navigator.pushNamed(context, '/categories', arguments: section),
+                  )
+              ],
+            );
+/*
+            return Column(
+              children: [
+                for (Category category in snapshot.data)
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      color: Colors.blue.shade300,
+                      //onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: category))),
+                      onPressed: () => Navigator.pushNamed(context, '/categories', arguments: category),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 13,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: Text(
+                            category.name,
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        color: Colors.green,
-                        onPressed: () async {
-                          Local.Action _action = await getAction(actionName: 'like');
-                          //return CupertinoPageRoute(builder: (_) => PicturesPage(section: _action);
-                          return Navigator.pushNamed(context, '/categories', arguments: _action);
-                        },
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 13,
-                            child: Center(
-                                child: Row(
+                    ),
+                  ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    color: Colors.green,
+                    onPressed: () async {
+                      Local.Action _action = await getAction(actionName: 'like');
+                      //return CupertinoPageRoute(builder: (_) => PicturesPage(section: _action);
+                      return Navigator.pushNamed(context, '/categories', arguments: _action);
+                    },
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 13,
+                        child: Center(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.favorite, color: Colors.white),
@@ -61,23 +80,23 @@ class CategoriesWidget extends StatelessWidget {
                                 ),
                               ],
                             ))),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        color: Colors.blue,
-                        onPressed: () async {
-                          Local.Action _action = await getAction(actionName: 'favorite');
-                          return Navigator.pushNamed(context, '/categories', arguments: _action);
-                          //return Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: _action)));
-                        },
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 13,
-                            child: Center(
-                                child: Row(
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    color: Colors.blue,
+                    onPressed: () async {
+                      Local.Action _action = await getAction(actionName: 'favorite');
+                      return Navigator.pushNamed(context, '/categories', arguments: _action);
+                      //return Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: _action)));
+                    },
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 13,
+                        child: Center(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.star, color: Colors.white),
@@ -87,28 +106,51 @@ class CategoriesWidget extends StatelessWidget {
                                 ),
                               ],
                             ))),
-                      ),
-                    )
-                  ],
-                );
-              } else {
-                return Container(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-            }),
-      ],
-    );
+                  ),
+                )
+              ],
+            );
+*/
+          } else {
+            return Container(
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+        });
   }
 
-  Future<List<Category>> getCategories() async {
+  Future<List<Section>> getSections() async {
+    List<Section> sections = [];
     CategoryRepository catRepo = CategoryRepository();
-    return await catRepo.getCategories();
+    List<Section> categories = await catRepo.getCategories();
+    sections.addAll(categories);
+    List<Section> additionalSections = [
+      Local.Action(name: "like", title: "Beğendiklerim", id: 99),
+      Local.Action(name: "favorite", title: "Favorilerim", id: 100),
+    ];
+
+    sections.addAll(additionalSections);
+
+    return sections;
   }
 
   Future<Local.Action> getAction({@required actionName}) async {
     ActionRepository _actionRepository = ActionRepository();
     return await _actionRepository.getAction(actionName: actionName);
+  }
+
+  FaIcon getFaIcon(Section section) {
+    Map<int, dynamic> sectionImgMap = {
+      1: {'icon': FontAwesomeIcons.comments},
+      2: {'icon': FontAwesomeIcons.venusMars}, //+18
+      3: {'icon': FontAwesomeIcons.images},
+      4: {'icon': FontAwesomeIcons.camera},
+      5: {'icon': FontAwesomeIcons.film},
+      6: {'icon': FontAwesomeIcons.laughSquint},
+      99: {'icon': FontAwesomeIcons.heart, 'color': Colors.red},
+      100: {'icon': FontAwesomeIcons.star, 'color': Colors.blue},
+    };
+    return FaIcon(sectionImgMap[section.getId()]['icon'] ?? FontAwesomeIcons.folderOpen, size: 30, color: sectionImgMap[section.getId()]['color'] ?? null);
   }
 }

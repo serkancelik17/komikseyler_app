@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/providers/provider.dart';
@@ -6,8 +7,16 @@ import 'package:komik_seyler/util/settings.dart';
 class ApiProvider implements Provider {
   String _apiUrl = Settings.baseUrl + "/api/v1";
 
+  ApiProvider();
+
   ///veriyi getir
   Future<String> getResponse(String endpoint) async {
+    print(await checkConnectivity());
+
+    if (await checkConnectivity() != true) {
+      throw new Exception();
+    }
+
     final url = _apiUrl + endpoint;
     debugPrint("[GET] Request Url : " + url);
     http.Response response = await http.get(url);
@@ -31,5 +40,13 @@ class ApiProvider implements Provider {
     } catch (e) {
       throw e;
     }
+  }
+
+  Future<bool> checkConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    }
+    return true;
   }
 }

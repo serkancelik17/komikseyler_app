@@ -35,6 +35,8 @@ dependencies:
   share: ^0.6.5+4
   path_provider: ^1.6.27
   carousel_slider: ^3.0.0
+  connectivity: ^2.0.2
+  font_awesome_flutter: ^8.11.0
 
 dev_dependencies:
   flutter_test:
