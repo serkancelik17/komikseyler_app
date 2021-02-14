@@ -14,9 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
 class Settings {
-  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
+/*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';*/
 
-  /*  static String baseUrl = 'http://komikseyler.serkancelik.web.local'; */
+  static String baseUrl = 'http://komikseyler.serkancelik.web.local';
 
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
 

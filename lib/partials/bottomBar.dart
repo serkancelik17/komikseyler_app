@@ -75,7 +75,7 @@ class _BottomBarState extends State<BottomBar> {
                 textColor: ((widget.currentPicture != null && widget.currentPicture.userLikesCount > 0) ? Colors.white : Colors.green),
                 text: "Beğen(" + (((widget.currentPicture != null) ? widget.currentPicture.likesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
-                  toggleAction('like');
+                  toggleAction(Local.Action(id: 1, name: 'like'));
                 },
               ),
               new RoundIconButton.large(
@@ -85,7 +85,7 @@ class _BottomBarState extends State<BottomBar> {
                 textColor: ((widget.currentPicture != null && widget.currentPicture.userFavoritesCount > 0) ? Colors.white : Colors.blue),
                 text: "Favori(" + (((widget.currentPicture != null) ? widget.currentPicture.favoritesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
-                  toggleAction('favorite');
+                  toggleAction(Local.Action(id: 2, name: 'favorite'));
                 },
               ),
               new RoundIconButton.large(
@@ -118,20 +118,20 @@ class _BottomBarState extends State<BottomBar> {
         ));
   }
 
-  bool toggleAction(String actionName) {
+  bool toggleAction(Local.Action action) {
     bool willAdd;
     setState(() {
-      if (actionName == 'like') {
+      if (action.name == 'like') {
         willAdd = (widget.currentPicture.userLikesCount == 0) ? true : false; //eklenecek - silinecek
         widget.currentPicture.userLikesCount = (willAdd) ? 1 : 0;
         widget.currentPicture.likesCount += (willAdd) ? 1 : -1;
-      } else if (actionName == 'favorite') {
+      } else if (action.name == 'favorite') {
         willAdd = (widget.currentPicture.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
         widget.currentPicture.userFavoritesCount = (willAdd) ? 1 : 0;
         widget.currentPicture.favoritesCount += (willAdd) ? 1 : -1;
       }
     });
-    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), value: willAdd, picture: widget.currentPicture).then((Response response) {
+    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.currentPicture).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
     });
     return true;
