@@ -11,10 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
 class Settings {
-/*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
-  static String imageAssetsUrl = Settings.baseUrl + '/assets/images';*/
+  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
 
-  static String baseUrl = 'http://komikseyler.serkancelik.web.local';
+  /*  static String baseUrl = 'http://komikseyler.serkancelik.web.local'; */
+
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
 
   /// Support on iOS, Android and web project
@@ -76,4 +76,25 @@ class Settings {
     }
     return true;
   }
+
+/*  static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
+    if (kIsWeb == false) {
+      return AdmobBanner(
+        adUnitId: bannerAdUnitId ?? AdManager.bannerAdUnitId,
+        adSize: bannerSize ?? AdmobBannerSize.BANNER,
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+  static getInitialAd(context) {
+    if (kIsWeb == false) {
+      return AdmobBanner(
+        adUnitId: AdManager.bannerAdUnitId,
+        adSize: AdmobBannerSize.SMART_BANNER(context),
+      );
+    } else {
+      return Text("");
+    }*/
 }

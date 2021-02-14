@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "790054261975",
+    "project_id": "komik-seyler",
+    "storage_bucket": "komik-seyler.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790054261975:android:05667b89b982eb68258c92",
+        "android_client_info": {
+          "package_name": "tr.web.serkancelik.komik_seyler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790054261975-al3l60nvtgf1gpv8pmkqmffc20hfdasc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX16f9E3__TRTp7rQmBXKuIEvXFN2N59g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790054261975-al3l60nvtgf1gpv8pmkqmffc20hfdasc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
