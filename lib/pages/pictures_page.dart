@@ -55,7 +55,7 @@ class _HomeState extends State<PicturesPage> {
                     return buildBuilder(picture);
                   }).toList(),
                 ),
-                Settings.getBannerAd(),
+                activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
               ],
             )
           : Center(child: CircularProgressIndicator()),
@@ -72,7 +72,7 @@ class _HomeState extends State<PicturesPage> {
           height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           /* decoration: BoxDecoration(color: Colors.amber),*/
-          child: (picture.path == 'ads') ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : Image.network(pictureUrl),
+          child: (picture.path == 'ads') ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(pictureUrl)),
         );
       },
     );
