@@ -45,4 +45,10 @@ class Category implements Section {
   int getId() {
     return this.id;
   }
+
+  @override
+  String getUniqueName() {
+    // TODO: implement getName
+    return 'category' + this.getId().toString();
+  }
 }

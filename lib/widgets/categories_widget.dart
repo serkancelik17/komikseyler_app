@@ -126,8 +126,8 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     List<Section> categories = await catRepo.getCategories();
     sections.addAll(categories);
     List<Section> additionalSections = [
-      Local.Action(name: "like", title: "Beğendiklerim", id: 99),
-      Local.Action(name: "favorite", title: "Favorilerim", id: 100),
+      Local.Action(name: "like", title: "Beğendiklerim", id: 1),
+      Local.Action(name: "favorite", title: "Favorilerim", id: 2),
     ];
 
     sections.addAll(additionalSections);
@@ -141,16 +141,16 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   }
 
   FaIcon getFaIcon(Section section) {
-    Map<int, dynamic> sectionImgMap = {
-      1: {'icon': FontAwesomeIcons.comments},
-      2: {'icon': FontAwesomeIcons.venusMars}, //+18
-      3: {'icon': FontAwesomeIcons.images},
-      4: {'icon': FontAwesomeIcons.camera},
-      5: {'icon': FontAwesomeIcons.film},
-      6: {'icon': FontAwesomeIcons.laughSquint},
-      99: {'icon': FontAwesomeIcons.heart, 'color': Colors.red},
-      100: {'icon': FontAwesomeIcons.star, 'color': Colors.blue},
+    Map<String, dynamic> sectionImgMap = {
+      'category1': {'icon': FontAwesomeIcons.comments},
+      'category2': {'icon': FontAwesomeIcons.venusMars}, //+18
+      'category3': {'icon': FontAwesomeIcons.images},
+      'category4': {'icon': FontAwesomeIcons.camera},
+      'category5': {'icon': FontAwesomeIcons.film},
+      'category6': {'icon': FontAwesomeIcons.laughSquint},
+      'action1': {'icon': FontAwesomeIcons.heart, 'color': Colors.red},
+      'action2': {'icon': FontAwesomeIcons.star, 'color': Colors.blue},
     };
-    return FaIcon(sectionImgMap[section.getId()]['icon'] ?? FontAwesomeIcons.folderOpen, size: 30, color: sectionImgMap[section.getId()]['color'] ?? null);
+    return FaIcon(sectionImgMap[section.getUniqueName()]['icon'] ?? FontAwesomeIcons.folderOpen, size: 30, color: sectionImgMap[section.getUniqueName()]['color'] ?? null);
   }
 }

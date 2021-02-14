@@ -49,4 +49,9 @@ class Action implements Section {
   int getId() {
     return this.id;
   }
+
+  @override
+  String getUniqueName() {
+    return 'action' + this.getId().toString();
+  }
 }

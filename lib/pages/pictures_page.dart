@@ -38,29 +38,31 @@ class _HomeState extends State<PicturesPage> {
 
     return Scaffold(
       appBar: Settings.buildAppBar(title: widget.section.getTitle()),
-      body: CarouselSlider(
-        options: CarouselOptions(
-          height: 600.0,
-          onPageChanged: pageChange,
-          enlargeCenterPage: true,
-          enableInfiniteScroll: false,
-          viewportFraction: 0.8,
-        ),
-        items: pictures.map((picture) {
-          String pictureUrl = Settings.imageAssetsUrl + "/" + picture.path;
-          return Builder(
-            builder: (BuildContext context) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                /* decoration: BoxDecoration(color: Colors.amber),*/
-                child: Image.network(pictureUrl),
-              );
-            },
-          );
-        }).toList(),
-      ),
+      body: pictures.length > 0
+          ? CarouselSlider(
+              options: CarouselOptions(
+                height: 600.0,
+                onPageChanged: pageChange,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.8,
+              ),
+              items: pictures.map((picture) {
+                String pictureUrl = Settings.imageAssetsUrl + "/" + picture.path;
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      /* decoration: BoxDecoration(color: Colors.amber),*/
+                      child: Image.network(pictureUrl),
+                    );
+                  },
+                );
+              }).toList(),
+            )
+          : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentPicture: activePicture) : null,
     );
   }
