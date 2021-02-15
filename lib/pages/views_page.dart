@@ -113,11 +113,12 @@ class _HomeState extends State<ViewsPage> {
   }
 
   Future<bool> _onBackPressed() async {
-    //Add hit
+    // if last view is Ad
     if (activeView is Ad) {
       views.removeLast();
       activeView = views.last;
     }
+    //Add hit
     _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: activeView);
     return true;
   }
