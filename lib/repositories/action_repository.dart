@@ -26,7 +26,7 @@ class ActionRepository implements RepositoryAbstract {
     return action;
   }
 
-  Future<List<Picture>> pictures({@required SectionAbstract section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> views({@required SectionAbstract section, int page = 1, int limit = 20}) async {
     Device _device = await Settings.getDevice();
     String endpoint = "/devices/" + _device.id.toString() + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
     String apiResponse = await provider.getResponse(endpoint);

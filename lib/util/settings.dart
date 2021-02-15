@@ -19,7 +19,7 @@ class Settings {
   static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';
 
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
-  static int pagePictureLimit = 20;
+  static int pagePictureLimit = 5;
 
   /// Support on iOS, Android and web project
   static Future<String> getUuid() async {

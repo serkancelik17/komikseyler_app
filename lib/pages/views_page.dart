@@ -7,28 +7,27 @@ import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/ad.dart';
-import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
 
 final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-class PicturesPage extends StatefulWidget {
+class ViewsPage extends StatefulWidget {
   final SectionAbstract section;
 
-  PicturesPage({this.section});
+  ViewsPage({this.section});
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<PicturesPage> {
+class _HomeState extends State<ViewsPage> {
   PictureRepository _pictureRepository = new PictureRepository();
   int pictureChangeCount = 0;
   List<ViewAbstract> views;
   int page = 1;
-  Picture activeView;
+  ViewAbstract activeView;
 
   @override
   void initState() {
@@ -64,10 +63,10 @@ class _HomeState extends State<PicturesPage> {
                           return buildBuilder(view);
                         }).toList(),
                       ),
-                      activeView is Ad ? Settings.getBannerAd() : SizedBox(width: 1),
+                      (activeView is Ad) ? SizedBox(width: 1) : Settings.getBannerAd(),
                     ],
                   ),
-        bottomNavigationBar: (activeView is Picture) ? BottomBar(context: context, currentPicture: activeView) : null,
+        bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentPicture: activeView),
       ),
     );
   }
@@ -88,7 +87,7 @@ class _HomeState extends State<PicturesPage> {
 
   Future<void> getMore() async {
     // try {
-    List<ViewAbstract> _views = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
+    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
     setState(() {
       views ??= [];
       if (_views.length > 0) {

@@ -70,7 +70,7 @@ class PicturesState extends State<Pictures> {
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
+    List<Picture> _pictures = await widget.section.getRepository().views(section: widget.section, page: page++, limit: 20);
     setState(() {
       pictures.addAll(_pictures);
       //İlk resmi varsayılan vap

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/pages/error_page.dart';
 import 'package:komik_seyler/pages/home_page.dart';
-import 'package:komik_seyler/pages/pictures_page.dart';
+import 'package:komik_seyler/pages/views_page.dart';
 
 class AppRouter {
   int fishId;
@@ -19,7 +19,7 @@ class AppRouter {
     switch (settings.name) {
       case '/categories':
         return CupertinoPageRoute(
-          builder: (_) => PicturesPage(section: arguments),
+          builder: (_) => ViewsPage(section: arguments),
         );
         break;
       case '/error':
