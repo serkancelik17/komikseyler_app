@@ -9,7 +9,7 @@ import 'package:komik_seyler/util/settings.dart';
 import 'models/picture.dart';
 
 class Pictures extends StatefulWidget {
-  final SectionAbstact section;
+  final SectionAbstract section;
 
   Pictures({
     this.section,

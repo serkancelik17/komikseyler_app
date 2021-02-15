@@ -26,7 +26,7 @@ class CategoryRepository implements RepositoryAbstract {
     return categoryFromJson(apiResponse);
   }
 
-  Future<List<Picture>> pictures({@required SectionAbstact section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> pictures({@required SectionAbstract section, int page = 1, int limit = 20}) async {
     Device _device = await Settings.getDevice();
     String endpoint = "/devices/" + _device.id.toString() + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 

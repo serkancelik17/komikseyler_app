@@ -4,11 +4,13 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/models/abstracts/view_abstract.dart';
+
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
 String pictureToJson(Picture data) => json.encode(data.toJson());
 
-class Picture {
+class Picture implements ViewAbstract {
   Picture({
     this.id,
     this.categoryId,
@@ -50,5 +52,10 @@ class Picture {
   @override
   String toString() {
     return 'Picture{id: $id, categoryId: $categoryId, path: $path, likesCount: $likesCount, favoritesCount: $favoritesCount, userLikesCount: $userLikesCount, userFavoritesCount: $userFavoritesCount}';
+  }
+
+  @override
+  String getPath() {
+    return this.path;
   }
 }

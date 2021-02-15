@@ -16,11 +16,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: getSections(),
-        builder: (context, AsyncSnapshot<List<SectionAbstact>> snapshot) {
+        builder: (context, AsyncSnapshot<List<SectionAbstract>> snapshot) {
           if (snapshot.hasData) {
             return ListView(
               children: [
-                for (SectionAbstact section in snapshot.data)
+                for (SectionAbstract section in snapshot.data)
                   InkWell(
                     child: ListTile(
                       leading: getFaIcon(section),
@@ -120,17 +120,17 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         });
   }
 
-  Future<List<SectionAbstact>> getSections() async {
-    List<SectionAbstact> sections = [];
+  Future<List<SectionAbstract>> getSections() async {
+    List<SectionAbstract> sections = [];
     CategoryRepository catRepo = CategoryRepository();
     //  try {
-    List<SectionAbstact> categories = await catRepo.getCategories();
+    List<SectionAbstract> categories = await catRepo.getCategories();
     sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);
     }*/
 
-    List<SectionAbstact> additionalSections = [
+    List<SectionAbstract> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),
     ];
@@ -145,7 +145,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     return await _actionRepository.getAction(actionName: actionName);
   }
 
-  FaIcon getFaIcon(SectionAbstact section) {
+  FaIcon getFaIcon(SectionAbstract section) {
     Map<String, dynamic> sectionImgMap = {
       'category1': {'icon': FontAwesomeIcons.comments},
       'category2': {'icon': FontAwesomeIcons.venusMars}, //+18

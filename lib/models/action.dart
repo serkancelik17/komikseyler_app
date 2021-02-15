@@ -12,7 +12,7 @@ Action actionFromJson(String str) => Action.fromJson(json.decode(str));
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
-class Action implements SectionAbstact {
+class Action implements SectionAbstract {
   Action({
     this.id,
     this.name,

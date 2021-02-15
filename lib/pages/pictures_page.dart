@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
+import 'package:komik_seyler/models/ad.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
@@ -13,7 +15,7 @@ import 'package:komik_seyler/util/settings.dart';
 final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class PicturesPage extends StatefulWidget {
-  final SectionAbstact section;
+  final SectionAbstract section;
 
   PicturesPage({this.section});
 
@@ -24,9 +26,9 @@ class PicturesPage extends StatefulWidget {
 class _HomeState extends State<PicturesPage> {
   PictureRepository _pictureRepository = new PictureRepository();
   int pictureChangeCount = 0;
-  List<Picture> pictures;
+  List<ViewAbstract> views;
   int page = 1;
-  Picture activePicture;
+  Picture activeView;
 
   @override
   void initState() {
@@ -43,9 +45,9 @@ class _HomeState extends State<PicturesPage> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         appBar: Settings.buildAppBar(title: widget.section.getTitle()),
-        body: (pictures == null)
+        body: (views == null)
             ? Center(child: CircularProgressIndicator())
-            : (pictures.length == 0)
+            : (views.length == 0)
                 ? Center(child: Text('Herhangi bir içerik bulunamadı.'))
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -58,20 +60,19 @@ class _HomeState extends State<PicturesPage> {
                           enableInfiniteScroll: false,
                           viewportFraction: 0.8,
                         ),
-                        items: pictures.map((picture) {
-                          return buildBuilder(picture);
+                        items: views.map((view) {
+                          return buildBuilder(view);
                         }).toList(),
                       ),
-                      activePicture.path != 'ads' ? Settings.getBannerAd() : SizedBox(width: 1),
+                      activeView is Ad ? Settings.getBannerAd() : SizedBox(width: 1),
                     ],
                   ),
-        bottomNavigationBar: (activePicture is Picture && activePicture.path != 'ads') ? BottomBar(context: context, currentPicture: activePicture) : null,
+        bottomNavigationBar: (activeView is Picture) ? BottomBar(context: context, currentPicture: activeView) : null,
       ),
     );
   }
 
-  Builder buildBuilder(Picture picture) {
-    String pictureUrl = Settings.imageAssetsUrl + "/" + picture.path;
+  Builder buildBuilder(ViewAbstract view) {
     return Builder(
       builder: (BuildContext context) {
         return Container(
@@ -79,7 +80,7 @@ class _HomeState extends State<PicturesPage> {
           height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           /* decoration: BoxDecoration(color: Colors.amber),*/
-          child: (picture.path == 'ads') ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(pictureUrl)),
+          child: (view is Ad) ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(Settings.imageAssetsUrl + "/" + view.getPath())),
         );
       },
     );
@@ -87,16 +88,16 @@ class _HomeState extends State<PicturesPage> {
 
   Future<void> getMore() async {
     // try {
-    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
+    List<ViewAbstract> _views = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
     setState(() {
-      pictures ??= [];
-      if (_pictures.length > 0) {
+      views ??= [];
+      if (_views.length > 0) {
         //İlk resmi varsayılan vap
-        if (pictures.length == 0) activePicture = _pictures[0];
-        pictures.addAll(_pictures);
+        if (views.length == 0) activeView = _views[0];
+        views.addAll(_views);
       }
 
-      if (!kIsWeb && pictures.length > 0) pictures.add(Picture(path: 'ads'));
+      if (!kIsWeb && views.length > 0) views.add(Ad());
     });
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
@@ -107,14 +108,14 @@ class _HomeState extends State<PicturesPage> {
     pictureChangeCount++;
 
     setState(() {
-      activePicture = pictures[index];
+      activeView = views[index];
     });
-    if (index == pictures.length - 2) getMore();
+    if (index == views.length - 2) getMore();
   }
 
   Future<bool> _onBackPressed() async {
     //Add hit
-    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: activePicture);
+    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: activeView);
     return true;
   }
 }

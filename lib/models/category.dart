@@ -12,7 +12,7 @@ List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(s
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Category implements SectionAbstact {
+class Category implements SectionAbstract {
   Category({
     this.id,
     this.name,
