@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
+import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/response.dart';
 import 'package:komik_seyler/partials/RoundIconButton.dart';
@@ -18,11 +19,19 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   PictureRepository _pictureRepository = PictureRepository();
+  Device _device = new Device();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDevice();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("Bottombar picture : " + widget.currentView.toString());
-    print(widget.currentView.toString());
+/*    print("Bottombar picture : " + widget.currentView.toString());
+    print(widget.currentView.toString());*/
     return BottomAppBar(
         color: Colors.transparent,
         elevation: 0.0,
@@ -31,43 +40,45 @@ class _BottomBarState extends State<BottomBar> {
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new RoundIconButton.large(
-                icon: Icons.clear,
-                iconColor: Colors.red,
-                text: "Sil",
-                onPressed: () {
-                  try {
-                    _pictureRepository.destroy(pictureId: widget.currentView.id).then((value) {
-                      if (value == true) {
-                        Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
-                      } else {
-                        Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
-                      }
-                    });
-                  } catch (e) {
-                    throw e;
-                  }
-                },
-              ),
-              new RoundIconButton.large(
-                icon: Icons.compare_arrows,
-                iconColor: Colors.blue,
-                text: "Taşı ",
-                onPressed: () {
-                  try {
-                    _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentView).then((Response response) {
-                      print("move;" + response.success.toString());
-                      if (response.success == true) {
-                        Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
-                      } else {
-                        Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
-                      }
-                    });
-                  } catch (e) {
-                    throw e;
-                  }
-                },
-              ),
+              if (_device.isAdmin == 1)
+                new RoundIconButton.large(
+                  icon: Icons.clear,
+                  iconColor: Colors.red,
+                  text: "Sil",
+                  onPressed: () {
+                    try {
+                      _pictureRepository.destroy(pictureId: widget.currentView.id).then((value) {
+                        if (value == true) {
+                          Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
+                        } else {
+                          Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
+                        }
+                      });
+                    } catch (e) {
+                      throw e;
+                    }
+                  },
+                ),
+              if (_device.isAdmin == 1)
+                new RoundIconButton.large(
+                  icon: Icons.compare_arrows,
+                  iconColor: Colors.blue,
+                  text: "Taşı ",
+                  onPressed: () {
+                    try {
+                      _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentView).then((Response response) {
+                        print("move;" + response.success.toString());
+                        if (response.success == true) {
+                          Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
+                        } else {
+                          Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
+                        }
+                      });
+                    } catch (e) {
+                      throw e;
+                    }
+                  },
+                ),
               new RoundIconButton.large(
                 icon: Icons.favorite,
                 boxColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.green : Colors.white),
@@ -98,19 +109,6 @@ class _BottomBarState extends State<BottomBar> {
                   } catch (e) {
                     print("(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
                   }
-/*
-                  try {
-                    widget.currentMatch.destroy().then((value) {
-                      if (value == true) {
-                        Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
-                      } else {
-                        Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
-                      }
-                    });
-                  } catch (e) {
-                    throw e;
-                  }
-*/
                 },
               ),
             ],
@@ -135,5 +133,9 @@ class _BottomBarState extends State<BottomBar> {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
     });
     return true;
+  }
+
+  getDevice() async {
+    _device = await Settings.getDevice();
   }
 }

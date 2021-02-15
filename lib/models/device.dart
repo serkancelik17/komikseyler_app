@@ -11,27 +11,31 @@ String deviceToJson(Device data) => json.encode(data.toJson());
 class Device {
   Device({
     this.id,
-    this.deviceId,
+    this.uuid,
     this.isAdmin,
     this.note,
+    this.showAd,
   });
 
   int id;
-  String deviceId;
+  String uuid;
   int isAdmin;
   dynamic note;
+  int showAd;
 
   factory Device.fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],
-        deviceId: json["device_id"] == null ? null : json["device_id"],
-        isAdmin: json["is_admin"] == null ? null : json["is_admin"],
+        uuid: json["uuid"] == null ? null : json["uuid"],
+        isAdmin: json["is_admin"] == null ? 0 : json["is_admin"],
         note: json["note"],
+        showAd: json["show_ad"] == null ? 1 : json["sho_ad"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "device_id": deviceId == null ? null : deviceId,
-        "is_admin": isAdmin == null ? null : isAdmin,
+        "uuid": uuid == null ? null : uuid,
+        "is_admin": isAdmin == null ? 0 : isAdmin,
         "note": note,
+        "show_ad": showAd == null ? 1 : showAd,
       };
 }

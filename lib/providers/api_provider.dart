@@ -28,12 +28,15 @@ class ApiProvider implements Provider {
     }
   }
 
-  Future<String> postResponse(String endpoint) async {
+  Future<String> postResponse(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);
+    debugPrint("[POST] Request Url Body : " + body);
     try {
-      http.Response response = await http.post(url);
+      http.Response response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
+        print("response" + response.toString());
         return response.body;
       } else {
         throw Exception("Sunucuya bağlanılamadı. Veri post edilemedi.");

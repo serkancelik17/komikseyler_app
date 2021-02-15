@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -22,35 +23,51 @@ class Settings {
   static int pagePictureLimit = 5;
 
   /// Support on iOS, Android and web project
-  static Future<String> getUuid() async {
-    String uuid;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    uuid = prefs.getString('uuid');
-    if (uuid == null) {
-      uuid = Ulid().toUuid();
-      prefs.setString("uuid", uuid);
+  static Future<String> getIUuid() async {
+    String identifier;
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        identifier = build.androidId; //UUID for Android
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        identifier = data.identifierForVendor; //UUID for iOS
+      } else {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        identifier = prefs.getString('uuid');
+        if (identifier == null) {
+          identifier = Ulid().toUuid();
+          prefs.setString("uuid", identifier);
+        }
+      }
+      return identifier;
+    } catch (e) {
+      rethrow;
     }
-    // print("uuid:" + uuid);
-    return uuid;
   }
 
   static Future<Device> getDevice() async {
     Device device;
     final DeviceRepository _deviceRepository = DeviceRepository();
-    /* device = await _deviceRepository.get(id: 26);*/
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      int deviceId = prefs.getInt('deviceId');
 
-    String deviceString = prefs.getString('device');
-    if (deviceString != null) {
-      // eğer aygıt kayıtlıysa
-      device = deviceFromJson(deviceString);
-    } else {
-      //
-      String uuid = Ulid().toUuid();
-      device = await _deviceRepository.store(uuid: uuid);
-      prefs.setString("device", deviceToJson(device));
+      if (deviceId != null) {
+        // device onceden kayıtlıysa
+        device = await _deviceRepository.get(id: deviceId);
+      } else {
+        String uuid = await Settings.getIUuid();
+        device = await _deviceRepository.store(device: Device(uuid: uuid));
+        prefs.setInt("deviceId", device.id);
+      }
+    } catch (e) {
+      throw e;
     }
+
     return device;
   }
 

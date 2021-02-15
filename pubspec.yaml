@@ -38,6 +38,7 @@ dependencies:
   connectivity: ^2.0.2
   font_awesome_flutter: ^8.11.0
   admob_flutter: ^1.0.1
+  device_info: ^1.0.0
 
 dev_dependencies:
   flutter_test:

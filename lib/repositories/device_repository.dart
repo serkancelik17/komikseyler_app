@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/models/picture.dart';
@@ -18,9 +20,9 @@ class DeviceRepository {
     return _device;
   }
 
-  Future<Device> store({@required String uuid}) async {
-    String endpoint = '/devices/' + uuid + '/store';
-    String apiResponse = await provider.getResponse(endpoint);
+  Future<Device> store({@required Device device}) async {
+    String endpoint = '/devices';
+    String apiResponse = await provider.postResponse(endpoint, jsonEncode(device));
     return deviceFromJson(apiResponse);
   }
 
