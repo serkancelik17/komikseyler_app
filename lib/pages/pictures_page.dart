@@ -3,9 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
@@ -13,7 +13,7 @@ import 'package:komik_seyler/util/settings.dart';
 final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class PicturesPage extends StatefulWidget {
-  final Section section;
+  final SectionAbstact section;
 
   PicturesPage({this.section});
 
@@ -87,7 +87,7 @@ class _HomeState extends State<PicturesPage> {
 
   Future<void> getMore() async {
     // try {
-    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 5);
+    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
     setState(() {
       pictures ??= [];
       if (_pictures.length > 0) {

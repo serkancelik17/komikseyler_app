@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/repositories/action_repository.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
 
@@ -16,11 +16,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: getSections(),
-        builder: (context, AsyncSnapshot<List<Section>> snapshot) {
+        builder: (context, AsyncSnapshot<List<SectionAbstact>> snapshot) {
           if (snapshot.hasData) {
             return ListView(
               children: [
-                for (Section section in snapshot.data)
+                for (SectionAbstact section in snapshot.data)
                   InkWell(
                     child: ListTile(
                       leading: getFaIcon(section),
@@ -120,17 +120,17 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         });
   }
 
-  Future<List<Section>> getSections() async {
-    List<Section> sections = [];
+  Future<List<SectionAbstact>> getSections() async {
+    List<SectionAbstact> sections = [];
     CategoryRepository catRepo = CategoryRepository();
     //  try {
-    List<Section> categories = await catRepo.getCategories();
+    List<SectionAbstact> categories = await catRepo.getCategories();
     sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);
     }*/
 
-    List<Section> additionalSections = [
+    List<SectionAbstact> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),
     ];
@@ -145,7 +145,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     return await _actionRepository.getAction(actionName: actionName);
   }
 
-  FaIcon getFaIcon(Section section) {
+  FaIcon getFaIcon(SectionAbstact section) {
     Map<String, dynamic> sectionImgMap = {
       'category1': {'icon': FontAwesomeIcons.comments},
       'category2': {'icon': FontAwesomeIcons.venusMars}, //+18

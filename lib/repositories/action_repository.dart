@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
 import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/models/response.dart';
-import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
-import 'package:komik_seyler/repositories/repository.dart';
+import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
 import 'package:komik_seyler/util/settings.dart';
 
-class ActionRepository implements Repository {
+class ActionRepository implements RepositoryAbstract {
   ApiProvider provider;
 
   ActionRepository({this.provider}) {
@@ -26,7 +26,7 @@ class ActionRepository implements Repository {
     return action;
   }
 
-  pictures({@required Section section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> pictures({@required SectionAbstact section, int page = 1, int limit = 20}) async {
     Device _device = await Settings.getDevice();
     String endpoint = "/devices/" + _device.id.toString() + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
     String apiResponse = await provider.getResponse(endpoint);

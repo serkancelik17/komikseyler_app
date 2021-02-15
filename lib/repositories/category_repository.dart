@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/category.dart';
 import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/providers/api_provider.dart';
-import 'package:komik_seyler/repositories/repository.dart';
+import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
 import 'package:komik_seyler/util/settings.dart';
 
-class CategoryRepository implements Repository {
+class CategoryRepository implements RepositoryAbstract {
   ApiProvider provider;
 
   CategoryRepository({this.provider}) {
@@ -26,7 +26,7 @@ class CategoryRepository implements Repository {
     return categoryFromJson(apiResponse);
   }
 
-  Future<List<Picture>> pictures({@required Section section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> pictures({@required SectionAbstact section, int page = 1, int limit = 20}) async {
     Device _device = await Settings.getDevice();
     String endpoint = "/devices/" + _device.id.toString() + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 

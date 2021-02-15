@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/section.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/picture_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
@@ -9,7 +9,7 @@ import 'package:komik_seyler/util/settings.dart';
 import 'models/picture.dart';
 
 class Pictures extends StatefulWidget {
-  final Section section;
+  final SectionAbstact section;
 
   Pictures({
     this.section,

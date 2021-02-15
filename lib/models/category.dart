@@ -4,15 +4,15 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/models/section.dart';
+import 'package:komik_seyler/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
 import 'package:komik_seyler/repositories/category_repository.dart';
-import 'package:komik_seyler/repositories/repository.dart';
 
 List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category.fromJson(x)));
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Category implements Section {
+class Category implements SectionAbstact {
   Category({
     this.id,
     this.name,
@@ -37,7 +37,7 @@ class Category implements Section {
   }
 
   @override
-  Repository getRepository() {
+  RepositoryAbstract getRepository() {
     return new CategoryRepository();
   }
 
