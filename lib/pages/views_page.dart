@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/models/ad.dart';
 import 'package:komik_seyler/models/device.dart';
+import 'package:komik_seyler/models/picture.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/device_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
@@ -15,6 +19,11 @@ final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class ViewsPage extends StatefulWidget {
   final SectionAbstract section;
+
+  final _productIds = {'subscription_yearly'};
+  InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
+  StreamSubscription<List<PurchaseDetails>> _subscription;
+  List<ProductDetails> _products = [];
 
   ViewsPage({this.section});
 
@@ -36,6 +45,17 @@ class _HomeState extends State<ViewsPage> {
     super.initState();
     getDevice();
     getMore();
+
+    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
+
+    widget._subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      widget._subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+    initStoreInfo();
   }
 
   @override
@@ -63,15 +83,10 @@ class _HomeState extends State<ViewsPage> {
                         return buildBuilder(view);
                       }).toList(),
                     ),
-                    (activeView is Ad || _device.showAd == 0)
-                        ? ElevatedButton(
-                            onPressed: () {}, child: Text('Reklamları Kaldır'))
-                        : Settings.getBannerAd(),
+                    (activeView is Ad || _device.showAd == 0) ? ElevatedButton(onPressed: _buyProduct, child: Text('Reklamları Kaldır')) : Settings.getBannerAd(),
                   ],
                 ),
-      bottomNavigationBar: (activeView is Ad)
-          ? null
-          : BottomBar(context: context, currentView: activeView),
+      bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentView: activeView),
     );
   }
 
@@ -83,14 +98,7 @@ class _HomeState extends State<ViewsPage> {
           height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           /* decoration: BoxDecoration(color: Colors.amber),*/
-          child: (view is Ad)
-              ? Settings.getBannerAd(
-                  bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
-              : InteractiveViewer(
-                  maxScale: 4,
-                  minScale: 1,
-                  child: Image.network(
-                      Settings.imageAssetsUrl + "/" + view.getPath())),
+          child: (view is Ad) ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(Settings.imageAssetsUrl + "/" + view.getPath())),
         );
       },
     );
@@ -98,10 +106,7 @@ class _HomeState extends State<ViewsPage> {
 
   Future<void> getMore() async {
     // try {
-    List<ViewAbstract> _views = await widget.section.getRepository().views(
-        section: widget.section,
-        page: page++,
-        limit: Settings.pagePictureLimit);
+    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
     setState(() {
       views ??= [];
       if (_views.length > 0) {
@@ -124,7 +129,7 @@ class _HomeState extends State<ViewsPage> {
       activeView = views[index];
     });
     //Update lastView
-    _deviceRepository.updateLastView(picture: activeView);
+    if (activeView is Picture) _deviceRepository.updateLastView(picture: activeView);
 
     if (index == views.length - 2) getMore();
   }
@@ -132,5 +137,37 @@ class _HomeState extends State<ViewsPage> {
   getDevice() async {
     _device = await Settings.getDevice();
     setState(() {});
+  }
+
+  initStoreInfo() async {
+    ProductDetailsResponse productDetailResponse = await widget._connection.queryProductDetails(widget._productIds);
+    if (productDetailResponse.error == null) {
+      setState(() {
+        widget._products = productDetailResponse.productDetails;
+      });
+    }
+  }
+
+  _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        // show progress bar or something
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          // show error message or failure icon
+        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+          // show success message and deliver the product.
+        }
+      }
+    });
+  }
+
+  _buyProduct() {
+    if (widget._products.length > 0) {
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: widget._products[0]);
+      widget._connection.buyConsumable(purchaseParam: purchaseParam);
+    } else {
+      print("HATA: Product bulunamadı");
+    }
   }
 }
