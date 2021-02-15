@@ -19,7 +19,8 @@ class ApiProvider implements Provider {
       if (response.statusCode == 200) {
         return response.body;
       } else {
-        throw Exception("Hatalı durum kodu.(" + response.statusCode.toString() + ")");
+        throw Exception(
+            "Hatalı durum kodu.(" + response.statusCode.toString() + ")");
       }
     } on HttpException {
       throw new Exception('Servis hatası!');
@@ -34,7 +35,8 @@ class ApiProvider implements Provider {
     debugPrint("[POST] Request Url : " + url);
     debugPrint("[POST] Request Url Body : " + body);
     try {
-      http.Response response = await http.post(url, headers: headers, body: body);
+      http.Response response =
+          await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         print("response" + response.toString());
         return response.body;

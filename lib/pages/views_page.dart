@@ -63,10 +63,15 @@ class _HomeState extends State<ViewsPage> {
                         return buildBuilder(view);
                       }).toList(),
                     ),
-                    (activeView is Ad || _device.showAd == 0) ? RaisedButton(onPressed: () {}, child: Text('Reklamları Kaldır')) : Settings.getBannerAd(),
+                    (activeView is Ad || _device.showAd == 0)
+                        ? ElevatedButton(
+                            onPressed: () {}, child: Text('Reklamları Kaldır'))
+                        : Settings.getBannerAd(),
                   ],
                 ),
-      bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentView: activeView),
+      bottomNavigationBar: (activeView is Ad)
+          ? null
+          : BottomBar(context: context, currentView: activeView),
     );
   }
 
@@ -78,7 +83,14 @@ class _HomeState extends State<ViewsPage> {
           height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           /* decoration: BoxDecoration(color: Colors.amber),*/
-          child: (view is Ad) ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(Settings.imageAssetsUrl + "/" + view.getPath())),
+          child: (view is Ad)
+              ? Settings.getBannerAd(
+                  bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
+              : InteractiveViewer(
+                  maxScale: 4,
+                  minScale: 1,
+                  child: Image.network(
+                      Settings.imageAssetsUrl + "/" + view.getPath())),
         );
       },
     );
@@ -86,7 +98,10 @@ class _HomeState extends State<ViewsPage> {
 
   Future<void> getMore() async {
     // try {
-    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
+    List<ViewAbstract> _views = await widget.section.getRepository().views(
+        section: widget.section,
+        page: page++,
+        limit: Settings.pagePictureLimit);
     setState(() {
       views ??= [];
       if (_views.length > 0) {

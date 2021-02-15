@@ -19,16 +19,23 @@ class CategoryRepository implements RepositoryAbstract {
     Device _device = await Settings.getDevice();
     print(_device.toString());
     String endpoint = "/devices/" + _device.uuid + '/categories';
-    List<Category> categories = [];
 
     String apiResponse = await provider.getResponse(endpoint);
 
     return categoryFromJson(apiResponse);
   }
 
-  Future<List<Picture>> views({@required SectionAbstract section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> views(
+      {@required SectionAbstract section, int page = 1, int limit = 20}) async {
     Device _device = await Settings.getDevice();
-    String endpoint = "/devices/" + _device.uuid + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
+    String endpoint = "/devices/" +
+        _device.uuid +
+        "/categories/" +
+        section.getId().toString() +
+        "/pictures?page=" +
+        page.toString() +
+        "&limit=" +
+        limit.toString();
 
     String apiResponse = await provider.getResponse(endpoint);
     List<Picture> pictures = pictureFromJson(apiResponse);

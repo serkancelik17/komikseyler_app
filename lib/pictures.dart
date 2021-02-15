@@ -65,12 +65,16 @@ class PicturesState extends State<Pictures> {
           );
         }).toList(),
       ),
-      bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentView: activePicture) : null,
+      bottomNavigationBar: (activePicture is Picture)
+          ? BottomBar(context: context, currentView: activePicture)
+          : null,
     );
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await widget.section.getRepository().views(section: widget.section, page: page++, limit: 20);
+    List<Picture> _pictures = await widget.section
+        .getRepository()
+        .views(section: widget.section, page: page++, limit: 20);
     setState(() {
       pictures.addAll(_pictures);
       //İlk resmi varsayılan vap
@@ -83,7 +87,8 @@ class PicturesState extends State<Pictures> {
       activePicture = pictures[index];
     });
     //Add hit
-    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
+    _pictureRepository.addAction(
+        action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
     if (index == pictures.length - 2) getMore();
   }
 }

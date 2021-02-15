@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/util/settings.dart';
 
 class ErrorPage extends StatefulWidget {
-  Exception error;
+  final Exception error;
 
   ErrorPage({@required this.error});
 
@@ -21,7 +21,7 @@ class _HomeState extends State<ErrorPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(widget.error.toString()),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, '/'),
               child: Text('Tekrar Dene'),
             ),

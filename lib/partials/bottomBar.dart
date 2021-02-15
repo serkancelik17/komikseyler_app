@@ -47,11 +47,19 @@ class _BottomBarState extends State<BottomBar> {
                   text: "Sil",
                   onPressed: () {
                     try {
-                      _pictureRepository.destroy(pictureId: widget.currentView.id).then((value) {
+                      _pictureRepository
+                          .destroy(pictureId: widget.currentView.id)
+                          .then((value) {
                         if (value == true) {
-                          Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
+                          Helpers.showSnackBar(
+                              context: context,
+                              text: "Silindi",
+                              backgroundColor: Colors.green);
                         } else {
-                          Helpers.showSnackBar(context: context, text: 'Destroy Problem!', backgroundColor: Colors.red);
+                          Helpers.showSnackBar(
+                              context: context,
+                              text: 'Destroy Problem!',
+                              backgroundColor: Colors.red);
                         }
                       });
                     } catch (e) {
@@ -66,12 +74,23 @@ class _BottomBarState extends State<BottomBar> {
                   text: "Taşı ",
                   onPressed: () {
                     try {
-                      _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentView).then((Response response) {
+                      _pictureRepository
+                          .addAction(
+                              action: new Local.Action(id: 4, name: 'move'),
+                              value: true,
+                              picture: widget.currentView)
+                          .then((Response response) {
                         print("move;" + response.success.toString());
                         if (response.success == true) {
-                          Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
+                          Helpers.showSnackBar(
+                              context: context,
+                              text: "Taşıma İşaretlendi",
+                              backgroundColor: Colors.green);
                         } else {
-                          Helpers.showSnackBar(context: context, text: response.message, backgroundColor: Colors.red);
+                          Helpers.showSnackBar(
+                              context: context,
+                              text: response.message,
+                              backgroundColor: Colors.red);
                         }
                       });
                     } catch (e) {
@@ -81,20 +100,48 @@ class _BottomBarState extends State<BottomBar> {
                 ),
               new RoundIconButton.large(
                 icon: Icons.favorite,
-                boxColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.green : Colors.white),
-                iconColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.white : Colors.green),
-                textColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.white : Colors.green),
-                text: "Beğen(" + (((widget.currentView != null) ? widget.currentView.likesCount ?? 0 : 0)).toString() + ")",
+                boxColor: ((widget.currentView != null &&
+                        widget.currentView.userLikesCount > 0)
+                    ? Colors.green
+                    : Colors.white),
+                iconColor: ((widget.currentView != null &&
+                        widget.currentView.userLikesCount > 0)
+                    ? Colors.white
+                    : Colors.green),
+                textColor: ((widget.currentView != null &&
+                        widget.currentView.userLikesCount > 0)
+                    ? Colors.white
+                    : Colors.green),
+                text: "Beğen(" +
+                    (((widget.currentView != null)
+                            ? widget.currentView.likesCount ?? 0
+                            : 0))
+                        .toString() +
+                    ")",
                 onPressed: () {
                   toggleAction(Local.Action(id: 1, name: 'like'));
                 },
               ),
               new RoundIconButton.large(
                 icon: Icons.star,
-                boxColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.blue : Colors.white),
-                iconColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-                textColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-                text: "Favori(" + (((widget.currentView != null) ? widget.currentView.favoritesCount ?? 0 : 0)).toString() + ")",
+                boxColor: ((widget.currentView != null &&
+                        widget.currentView.userFavoritesCount > 0)
+                    ? Colors.blue
+                    : Colors.white),
+                iconColor: ((widget.currentView != null &&
+                        widget.currentView.userFavoritesCount > 0)
+                    ? Colors.white
+                    : Colors.blue),
+                textColor: ((widget.currentView != null &&
+                        widget.currentView.userFavoritesCount > 0)
+                    ? Colors.white
+                    : Colors.blue),
+                text: "Favori(" +
+                    (((widget.currentView != null)
+                            ? widget.currentView.favoritesCount ?? 0
+                            : 0))
+                        .toString() +
+                    ")",
                 onPressed: () {
                   toggleAction(Local.Action(id: 2, name: 'favorite'));
                 },
@@ -107,7 +154,8 @@ class _BottomBarState extends State<BottomBar> {
                   try {
                     Settings.share(widget.currentView.path);
                   } catch (e) {
-                    print("(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
+                    print(
+                        "(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
                   }
                 },
               ),
@@ -120,17 +168,26 @@ class _BottomBarState extends State<BottomBar> {
     bool willAdd;
     setState(() {
       if (action.name == 'like') {
-        willAdd = (widget.currentView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+        willAdd = (widget.currentView.userLikesCount == 0)
+            ? true
+            : false; //eklenecek - silinecek
         widget.currentView.userLikesCount = (willAdd) ? 1 : 0;
         widget.currentView.likesCount += (willAdd) ? 1 : -1;
       } else if (action.name == 'favorite') {
-        willAdd = (widget.currentView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+        willAdd = (widget.currentView.userFavoritesCount == 0)
+            ? true
+            : false; //eklenecek - silinecek
         widget.currentView.userFavoritesCount = (willAdd) ? 1 : 0;
         widget.currentView.favoritesCount += (willAdd) ? 1 : -1;
       }
     });
-    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.currentView).then((Response response) {
-      print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
+    _pictureRepository
+        .addAction(action: action, value: willAdd, picture: widget.currentView)
+        .then((Response response) {
+      print("response.success;" +
+          response.success.toString() +
+          ";value:" +
+          willAdd.toString());
     });
     return true;
   }

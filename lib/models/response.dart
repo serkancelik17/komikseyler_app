@@ -21,13 +21,16 @@ class Response {
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
         success: json["success"] == null ? null : json["success"],
-        data: json["data"] == null ? null : List.from(json["data"].map((x) => x)),
+        data:
+            json["data"] == null ? null : List.from(json["data"].map((x) => x)),
         message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "success": success == null ? null : success,
-        "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null
+            ? null
+            : List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
       };
 }

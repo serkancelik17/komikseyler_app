@@ -17,18 +17,30 @@ class PictureRepository {
   Future<bool> destroy({@required pictureId}) async {
     String endpoint = '/pictures/' + pictureId.toString() + '/destroy';
     try {
-      Response response = responseFromJson(await _provider.getResponse(endpoint));
+      Response response =
+          responseFromJson(await _provider.getResponse(endpoint));
       return response.success;
     } catch (e) {
       throw e;
     }
   }
 
-  Future<Response> addAction({@required Local.Action action, @required Picture picture, bool value = true}) async {
+  Future<Response> addAction(
+      {@required Local.Action action,
+      @required Picture picture,
+      bool value = true}) async {
     Device _device = await Settings.getDevice();
-    String endpoint = '/devices/' + _device.uuid + '/pictures/' + picture.id.toString() + '/actions/' + action.id.toString() + '/' + (value ? 'store' : 'destroy');
+    String endpoint = '/devices/' +
+        _device.uuid +
+        '/pictures/' +
+        picture.id.toString() +
+        '/actions/' +
+        action.id.toString() +
+        '/' +
+        (value ? 'store' : 'destroy');
     try {
-      Response response = responseFromJson(await _provider.getResponse(endpoint));
+      Response response =
+          responseFromJson(await _provider.getResponse(endpoint));
 
       return response;
     } catch (e) {

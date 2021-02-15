@@ -6,7 +6,8 @@ import 'dart:convert';
 
 import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 
-List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
+List<Picture> pictureFromJson(String str) =>
+    List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
 String pictureToJson(Picture data) => json.encode(data.toJson());
 
@@ -34,9 +35,13 @@ class Picture implements ViewAbstract {
         categoryId: json["category_id"] == null ? null : json["category_id"],
         path: json["path"] == null ? null : json["path"],
         likesCount: json["likes_count"] == null ? null : json["likes_count"],
-        favoritesCount: json["favorites_count"] == null ? null : json["favorites_count"],
-        userLikesCount: json["user_likes_count"] == null ? null : json["user_likes_count"],
-        userFavoritesCount: json["user_favorites_count"] == null ? null : json["user_favorites_count"],
+        favoritesCount:
+            json["favorites_count"] == null ? null : json["favorites_count"],
+        userLikesCount:
+            json["user_likes_count"] == null ? null : json["user_likes_count"],
+        userFavoritesCount: json["user_favorites_count"] == null
+            ? null
+            : json["user_favorites_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,7 +51,8 @@ class Picture implements ViewAbstract {
         "likes_count": likesCount == null ? null : likesCount,
         "favorites_count": favoritesCount == null ? null : favoritesCount,
         "user_likes_count": userLikesCount == null ? null : userLikesCount,
-        "user_favorites_count": userFavoritesCount == null ? null : userFavoritesCount,
+        "user_favorites_count":
+            userFavoritesCount == null ? null : userFavoritesCount,
       };
 
   @override

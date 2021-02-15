@@ -28,7 +28,8 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                       trailing: Icon(Icons.arrow_forward_ios_sharp),
                       contentPadding: EdgeInsets.all(5),
                     ),
-                    onTap: () => Navigator.pushNamed(context, '/categories', arguments: section),
+                    onTap: () => Navigator.pushNamed(context, '/categories',
+                        arguments: section),
                   )
               ],
             );
@@ -156,6 +157,10 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
       'action1': {'icon': FontAwesomeIcons.heart, 'color': Colors.red},
       'action2': {'icon': FontAwesomeIcons.star, 'color': Colors.blue},
     };
-    return FaIcon(sectionImgMap[section.getUniqueName()]['icon'] ?? FontAwesomeIcons.folderOpen, size: 30, color: sectionImgMap[section.getUniqueName()]['color'] ?? null);
+    return FaIcon(
+        sectionImgMap[section.getUniqueName()]['icon'] ??
+            FontAwesomeIcons.folderOpen,
+        size: 30,
+        color: sectionImgMap[section.getUniqueName()]['color'] ?? null);
   }
 }
