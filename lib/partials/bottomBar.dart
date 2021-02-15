@@ -8,9 +8,9 @@ import 'package:komik_seyler/util/helpers.dart';
 import 'package:komik_seyler/util/settings.dart';
 
 class BottomBar extends StatefulWidget {
-  final Picture currentPicture;
+  final Picture currentView;
   final BuildContext context;
-  BottomBar({@required this.context, @required this.currentPicture});
+  BottomBar({@required this.context, @required this.currentView});
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -21,8 +21,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    print("Bottombar picture : " + widget.currentPicture.toString());
-    print(widget.currentPicture.toString());
+    print("Bottombar picture : " + widget.currentView.toString());
+    print(widget.currentView.toString());
     return BottomAppBar(
         color: Colors.transparent,
         elevation: 0.0,
@@ -37,7 +37,7 @@ class _BottomBarState extends State<BottomBar> {
                 text: "Sil",
                 onPressed: () {
                   try {
-                    _pictureRepository.destroy(pictureId: widget.currentPicture.id).then((value) {
+                    _pictureRepository.destroy(pictureId: widget.currentView.id).then((value) {
                       if (value == true) {
                         Helpers.showSnackBar(context: context, text: "Silindi", backgroundColor: Colors.green);
                       } else {
@@ -55,7 +55,7 @@ class _BottomBarState extends State<BottomBar> {
                 text: "Taşı ",
                 onPressed: () {
                   try {
-                    _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentPicture).then((Response response) {
+                    _pictureRepository.addAction(action: new Local.Action(id: 4, name: 'move'), value: true, picture: widget.currentView).then((Response response) {
                       print("move;" + response.success.toString());
                       if (response.success == true) {
                         Helpers.showSnackBar(context: context, text: "Taşıma İşaretlendi", backgroundColor: Colors.green);
@@ -70,20 +70,20 @@ class _BottomBarState extends State<BottomBar> {
               ),
               new RoundIconButton.large(
                 icon: Icons.favorite,
-                boxColor: ((widget.currentPicture != null && widget.currentPicture.userLikesCount > 0) ? Colors.green : Colors.white),
-                iconColor: ((widget.currentPicture != null && widget.currentPicture.userLikesCount > 0) ? Colors.white : Colors.green),
-                textColor: ((widget.currentPicture != null && widget.currentPicture.userLikesCount > 0) ? Colors.white : Colors.green),
-                text: "Beğen(" + (((widget.currentPicture != null) ? widget.currentPicture.likesCount ?? 0 : 0)).toString() + ")",
+                boxColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.green : Colors.white),
+                iconColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.white : Colors.green),
+                textColor: ((widget.currentView != null && widget.currentView.userLikesCount > 0) ? Colors.white : Colors.green),
+                text: "Beğen(" + (((widget.currentView != null) ? widget.currentView.likesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
                   toggleAction(Local.Action(id: 1, name: 'like'));
                 },
               ),
               new RoundIconButton.large(
                 icon: Icons.star,
-                boxColor: ((widget.currentPicture != null && widget.currentPicture.userFavoritesCount > 0) ? Colors.blue : Colors.white),
-                iconColor: ((widget.currentPicture != null && widget.currentPicture.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-                textColor: ((widget.currentPicture != null && widget.currentPicture.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-                text: "Favori(" + (((widget.currentPicture != null) ? widget.currentPicture.favoritesCount ?? 0 : 0)).toString() + ")",
+                boxColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.blue : Colors.white),
+                iconColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
+                textColor: ((widget.currentView != null && widget.currentView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
+                text: "Favori(" + (((widget.currentView != null) ? widget.currentView.favoritesCount ?? 0 : 0)).toString() + ")",
                 onPressed: () {
                   toggleAction(Local.Action(id: 2, name: 'favorite'));
                 },
@@ -94,7 +94,7 @@ class _BottomBarState extends State<BottomBar> {
                 text: "Paylaş",
                 onPressed: () {
                   try {
-                    Settings.share(widget.currentPicture.path);
+                    Settings.share(widget.currentView.path);
                   } catch (e) {
                     print("(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
                   }
@@ -122,16 +122,16 @@ class _BottomBarState extends State<BottomBar> {
     bool willAdd;
     setState(() {
       if (action.name == 'like') {
-        willAdd = (widget.currentPicture.userLikesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.currentPicture.userLikesCount = (willAdd) ? 1 : 0;
-        widget.currentPicture.likesCount += (willAdd) ? 1 : -1;
+        willAdd = (widget.currentView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.currentView.userLikesCount = (willAdd) ? 1 : 0;
+        widget.currentView.likesCount += (willAdd) ? 1 : -1;
       } else if (action.name == 'favorite') {
-        willAdd = (widget.currentPicture.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.currentPicture.userFavoritesCount = (willAdd) ? 1 : 0;
-        widget.currentPicture.favoritesCount += (willAdd) ? 1 : -1;
+        willAdd = (widget.currentView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.currentView.userFavoritesCount = (willAdd) ? 1 : 0;
+        widget.currentView.favoritesCount += (willAdd) ? 1 : -1;
       }
     });
-    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.currentPicture).then((Response response) {
+    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.currentView).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
     });
     return true;

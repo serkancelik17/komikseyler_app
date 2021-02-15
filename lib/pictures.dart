@@ -65,7 +65,7 @@ class PicturesState extends State<Pictures> {
           );
         }).toList(),
       ),
-      bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentPicture: activePicture) : null,
+      bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentView: activePicture) : null,
     );
   }
 

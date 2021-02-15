@@ -66,7 +66,7 @@ class _HomeState extends State<ViewsPage> {
                       (activeView is Ad) ? SizedBox(width: 1) : Settings.getBannerAd(),
                     ],
                   ),
-        bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentPicture: activeView),
+        bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentView: activeView),
       ),
     );
   }
@@ -114,6 +114,10 @@ class _HomeState extends State<ViewsPage> {
 
   Future<bool> _onBackPressed() async {
     //Add hit
+    if (activeView is Ad) {
+      views.removeLast();
+      activeView = views.last;
+    }
     _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: activeView);
     return true;
   }
