@@ -87,14 +87,16 @@ class _HomeState extends State<PicturesPage> {
 
   Future<void> getMore() async {
     // try {
-    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 20);
+    List<Picture> _pictures = await widget.section.getRepository().pictures(section: widget.section, page: page++, limit: 5);
     setState(() {
       pictures ??= [];
-      if (_pictures.length > 0) pictures.addAll(_pictures);
+      if (_pictures.length > 0) {
+        //İlk resmi varsayılan vap
+        if (pictures.length == 0) activePicture = _pictures[0];
+        pictures.addAll(_pictures);
+      }
 
-      if (!kIsWeb) pictures.add(Picture(path: 'ads'));
-      //İlk resmi varsayılan vap
-      if (activePicture == null && pictures.length > 0) activePicture = _pictures[0];
+      if (!kIsWeb && pictures.length > 0) pictures.add(Picture(path: 'ads'));
     });
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);

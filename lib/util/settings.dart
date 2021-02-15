@@ -16,7 +16,7 @@ import 'package:ulid/ulid.dart';
 class Settings {
 /*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';*/
 
-  static String baseUrl = 'http://komikseyler.serkancelik.web.local';
+  static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';
 
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
 
