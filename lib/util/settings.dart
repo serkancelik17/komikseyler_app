@@ -16,8 +16,8 @@ import 'package:ulid/ulid.dart';
 
 class Settings {
 /*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';*/
-
   static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';
+/*  static String baseUrl = 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public';*/
 
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
   static int pagePictureLimit = 5;
@@ -54,16 +54,11 @@ class Settings {
     final SharedPreferences prefs = await _prefs;
 
     try {
-      int deviceId = prefs.getInt('deviceId');
+      String uuid = prefs.getString('uuid');
 
-      if (deviceId != null) {
-        // device onceden kayıtlıysa
-        device = await _deviceRepository.get(id: deviceId);
-      } else {
-        String uuid = await Settings.getIUuid();
-        device = await _deviceRepository.store(device: Device(uuid: uuid));
-        prefs.setInt("deviceId", device.id);
-      }
+      // device onceden kayıtlıysa
+      device = await _deviceRepository.get(uuid: uuid);
+      prefs.setString("uuid", device.uuid);
     } catch (e) {
       throw e;
     }

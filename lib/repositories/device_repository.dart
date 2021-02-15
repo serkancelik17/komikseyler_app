@@ -14,10 +14,14 @@ class DeviceRepository {
     this.provider ??= ApiProvider();
   }
 
-  Future<Device> get({@required int id}) async {
-    String endPoint = "/devices/" + id.toString();
-    Device _device = deviceFromJson(await provider.getResponse(endPoint));
-    return _device;
+  Future<Device> get({@required String uuid}) async {
+    String endPoint = "/devices/" + uuid;
+    try {
+      Device _device = deviceFromJson(await provider.getResponse(endPoint));
+      return _device;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<Device> store({@required Device device}) async {
@@ -28,7 +32,7 @@ class DeviceRepository {
 
   Future<Response> updateLastView({@required Picture picture}) async {
     Device _device = await Settings.getDevice();
-    String endpoint = '/devices/' + _device.id.toString() + '/update_last_view/' + picture.id.toString();
+    String endpoint = '/devices/' + _device.uuid + '/update_last_view/' + picture.id.toString();
     try {
       Response response = responseFromJson(await provider.getResponse(endpoint));
 

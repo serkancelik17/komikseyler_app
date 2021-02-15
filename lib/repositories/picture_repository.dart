@@ -26,7 +26,7 @@ class PictureRepository {
 
   Future<Response> addAction({@required Local.Action action, @required Picture picture, bool value = true}) async {
     Device _device = await Settings.getDevice();
-    String endpoint = '/devices/' + _device.id.toString() + '/pictures/' + picture.id.toString() + '/actions/' + action.id.toString() + '/' + (value ? 'store' : 'destroy');
+    String endpoint = '/devices/' + _device.uuid + '/pictures/' + picture.id.toString() + '/actions/' + action.id.toString() + '/' + (value ? 'store' : 'destroy');
     try {
       Response response = responseFromJson(await _provider.getResponse(endpoint));
 
