@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/models/ad.dart';
+import 'package:komik_seyler/models/device.dart';
 import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/device_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
@@ -27,11 +28,13 @@ class _HomeState extends State<ViewsPage> {
   List<ViewAbstract> views;
   int page = 1;
   ViewAbstract activeView;
+  Device _device = new Device();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getDevice();
     getMore();
   }
 
@@ -60,7 +63,7 @@ class _HomeState extends State<ViewsPage> {
                         return buildBuilder(view);
                       }).toList(),
                     ),
-                    (activeView is Ad) ? SizedBox(width: 1) : Settings.getBannerAd(),
+                    (activeView is Ad || _device.showAd == 0) ? RaisedButton(onPressed: () {}, child: Text('Reklamları Kaldır')) : Settings.getBannerAd(),
                   ],
                 ),
       bottomNavigationBar: (activeView is Ad) ? null : BottomBar(context: context, currentView: activeView),
@@ -92,7 +95,7 @@ class _HomeState extends State<ViewsPage> {
         views.addAll(_views);
       }
 
-      if (!kIsWeb && views.length > 0) views.add(Ad());
+      if (!kIsWeb && views.length > 0 && _device.showAd == 1) views.add(Ad());
     });
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
@@ -109,5 +112,10 @@ class _HomeState extends State<ViewsPage> {
     _deviceRepository.updateLastView(picture: activeView);
 
     if (index == views.length - 2) getMore();
+  }
+
+  getDevice() async {
+    _device = await Settings.getDevice();
+    setState(() {});
   }
 }

@@ -28,7 +28,7 @@ class Device {
         uuid: json["uuid"] == null ? null : json["uuid"],
         isAdmin: json["is_admin"] == null ? 0 : json["is_admin"],
         note: json["note"],
-        showAd: json["show_ad"] == null ? 1 : json["sho_ad"],
+        showAd: json["show_ad"] == null ? 1 : json["show_ad"],
       );
 
   Map<String, dynamic> toJson() => {
