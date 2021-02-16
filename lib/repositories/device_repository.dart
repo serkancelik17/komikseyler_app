@@ -16,30 +16,27 @@ class DeviceRepository {
 
   Future<Device> get({@required String uuid}) async {
     String endPoint = "/devices/" + uuid;
-    try {
-      Device _device = deviceFromJson(await provider.getResponse(endPoint));
-      return _device;
-    } catch (e) {
+    print("devices.get : " + endPoint);
+    // try {
+    String response = await provider.getResponse(endPoint);
+    Device _device = deviceFromJson(response);
+    return _device;
+/*    } catch (e) {
       throw e;
-    }
+    }*/
   }
 
   Future<Device> store({@required Device device}) async {
     String endpoint = '/devices';
-    String apiResponse =
-        await provider.postResponse(endpoint, jsonEncode(device));
+    String apiResponse = await provider.postResponse(endpoint, jsonEncode(device));
     return deviceFromJson(apiResponse);
   }
 
   Future<Response> updateLastView({@required Picture picture}) async {
     Device _device = await Settings.getDevice();
-    String endpoint = '/devices/' +
-        _device.uuid +
-        '/update_last_view/' +
-        picture.id.toString();
+    String endpoint = '/devices/' + _device.uuid + '/update_last_view/' + picture.id.toString();
     try {
-      Response response =
-          responseFromJson(await provider.getResponse(endpoint));
+      Response response = responseFromJson(await provider.getResponse(endpoint));
 
       return response;
     } catch (e) {

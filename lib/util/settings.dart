@@ -23,45 +23,48 @@ class Settings {
   static int pagePictureLimit = 5;
 
   /// Support on iOS, Android and web project
-  static Future<String> getIUuid() async {
+  static Future<String> getUuid() async {
     String identifier;
-    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
-    try {
-      if (Platform.isAndroid) {
+    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    //try {
+    if (Platform.isAndroid) {
+      try {
         var build = await deviceInfoPlugin.androidInfo;
         identifier = build.androidId; //UUID for Android
-      } else if (Platform.isIOS) {
-        var data = await deviceInfoPlugin.iosInfo;
-        identifier = data.identifierForVendor; //UUID for iOS
-      } else {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        identifier = prefs.getString('uuid');
-        if (identifier == null) {
-          identifier = Ulid().toUuid();
-          prefs.setString("uuid", identifier);
-        }
+      } catch (e) {
+        throw e;
       }
-      return identifier;
-    } catch (e) {
-      rethrow;
+    } else if (Platform.isIOS) {
+      var data = await deviceInfoPlugin.iosInfo;
+      identifier = data.identifierForVendor; //UUID for iOS
+    } else {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      identifier = prefs.getString('uuid');
+      if (identifier == null) {
+        identifier = Ulid().toUuid();
+        prefs.setString("uuid", identifier);
+      }
     }
+    return identifier;
+    /*   } catch (e) {
+      rethrow;
+    }*/
   }
 
   static Future<Device> getDevice() async {
     Device device;
-    final DeviceRepository _deviceRepository = DeviceRepository();
+    DeviceRepository _deviceRepository = DeviceRepository();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await _prefs;
+    SharedPreferences prefs = await _prefs;
 
-    try {
-      String uuid = prefs.getString('uuid');
+    // try {
+    String uuid = prefs.getString('uuid') ?? await Settings.getUuid();
 
-      // device onceden kayıtlıysa
-      device = await _deviceRepository.get(uuid: uuid);
-      prefs.setString("uuid", device.uuid);
-    } catch (e) {
+    device = await _deviceRepository.get(uuid: uuid);
+    prefs.setString("uuid", device.uuid);
+    /*   } catch (e) {
       throw e;
-    }
+    }*/
 
     return device;
   }

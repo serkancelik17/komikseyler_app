@@ -28,90 +28,10 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                       trailing: Icon(Icons.arrow_forward_ios_sharp),
                       contentPadding: EdgeInsets.all(5),
                     ),
-                    onTap: () => Navigator.pushNamed(context, '/categories',
-                        arguments: section),
+                    onTap: () => Navigator.pushNamed(context, '/categories', arguments: section),
                   )
               ],
             );
-/*
-            return Column(
-              children: [
-                for (Category category in snapshot.data)
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(5),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                      color: Colors.blue.shade300,
-                      //onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: category))),
-                      onPressed: () => Navigator.pushNamed(context, '/categories', arguments: category),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 13,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: Text(
-                            category.name,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    color: Colors.green,
-                    onPressed: () async {
-                      Local.Action _action = await getAction(actionName: 'like');
-                      //return CupertinoPageRoute(builder: (_) => PicturesPage(section: _action);
-                      return Navigator.pushNamed(context, '/categories', arguments: _action);
-                    },
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 13,
-                        child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.favorite, color: Colors.white),
-                                Text(
-                                  " Beğendiklerim",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ))),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    color: Colors.blue,
-                    onPressed: () async {
-                      Local.Action _action = await getAction(actionName: 'favorite');
-                      return Navigator.pushNamed(context, '/categories', arguments: _action);
-                      //return Navigator.push(context, MaterialPageRoute(builder: (context) => Pictures(section: _action)));
-                    },
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 13,
-                        child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.star, color: Colors.white),
-                                Text(
-                                  "Favorilerim",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ))),
-                  ),
-                )
-              ],
-            );
-*/
           } else {
             return Container(
               height: MediaQuery.of(context).size.height / 1.5,
@@ -157,10 +77,6 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
       'action1': {'icon': FontAwesomeIcons.heart, 'color': Colors.red},
       'action2': {'icon': FontAwesomeIcons.star, 'color': Colors.blue},
     };
-    return FaIcon(
-        sectionImgMap[section.getUniqueName()]['icon'] ??
-            FontAwesomeIcons.folderOpen,
-        size: 30,
-        color: sectionImgMap[section.getUniqueName()]['color'] ?? null);
+    return FaIcon(sectionImgMap[section.getUniqueName()]['icon'] ?? FontAwesomeIcons.folderOpen, size: 30, color: sectionImgMap[section.getUniqueName()]['color'] ?? null);
   }
 }
