@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/util/settings.dart';
 import 'package:komik_seyler/widgets/categories_widget.dart';
 
-final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
 class HomePage extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();

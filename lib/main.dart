@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/pages/home_page.dart';
 import 'package:komik_seyler/routers/app_router.dart';
 
 void main() => runApp(MyApp());
@@ -21,7 +20,6 @@ class _HomeState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: _appRouter.onGenerateRoute,
-      scaffoldMessengerKey: mainScaffoldMessengerKey,
     );
   }
 }

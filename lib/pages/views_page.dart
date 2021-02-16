@@ -15,8 +15,6 @@ import 'package:komik_seyler/partials/bottomBar.dart';
 import 'package:komik_seyler/repositories/device_repository.dart';
 import 'package:komik_seyler/util/settings.dart';
 
-final mainScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
 class ViewsPage extends StatefulWidget {
   final SectionAbstract section;
 
