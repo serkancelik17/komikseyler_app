@@ -15,8 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
 class Settings {
-/*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';*/
-  static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';
+  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';
+/*  static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';*/
   /* static String baseUrl = 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public';*/
 
   static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
@@ -94,20 +94,6 @@ class Settings {
       rethrow;
     }
     return true;
-  }
-
-  static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
-    if (kIsWeb == false) {
-      return Container(
-        width: 300,
-        child: AdmobBanner(
-          adUnitId: bannerAdUnitId ?? AdManager.bannerAdUnitId,
-          adSize: bannerSize ?? AdmobBannerSize.BANNER,
-        ),
-      );
-    } else {
-      return SizedBox();
-    }
   }
 
   static getInitialAd(context) {

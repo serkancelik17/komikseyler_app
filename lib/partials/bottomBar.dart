@@ -50,7 +50,7 @@ class _BottomBarState extends State<BottomBar> {
                   onPressed: () {
                     try {
                       _pictureRepository.destroy(pictureId: widget.currentView.id).then((Response response) {
-                        print("move;" + response.success.toString());
+                        print("destroy;" + response.success.toString());
                         setState(() {
                           destroyBoxColor = (destroyBoxColor == Colors.white) ? Colors.red : Colors.white;
                         });

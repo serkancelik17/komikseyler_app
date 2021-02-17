@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/pages/error_page.dart';
-import 'package:komik_seyler/pages/home_page.dart';
-import 'package:komik_seyler/pages/views_page.dart';
+import 'package:komik_seyler/ui/pages/views_page.dart';
+import 'package:komik_seyler/ui/templates/views_template.dart';
 
 class AppRouter {
   int fishId;
@@ -18,16 +18,16 @@ class AppRouter {
     print(settings.name);
     switch (settings.name) {
       case '/categories':
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => ViewsPage(section: arguments),
         );
         break;
       case '/error':
-        return CupertinoPageRoute(
+        return MaterialPageRoute(
           builder: (_) => ErrorPage(error: arguments),
         );
         break;
     }
-    return CupertinoPageRoute(builder: (_) => HomePage());
+    return MaterialPageRoute(builder: (_) => ViewsTemplate());
   }
 }
