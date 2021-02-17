@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 
 import 'package:admob_flutter/admob_flutter.dart';
@@ -95,7 +96,9 @@ class _HomeState extends State<ViewsPage> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.symmetric(horizontal: 5.0),
-          /* decoration: BoxDecoration(color: Colors.amber),*/
+          */
+/* decoration: BoxDecoration(color: Colors.amber),*/ /*
+
           child: (view is Ad) ? Settings.getBannerAd(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE) : InteractiveViewer(maxScale: 4, minScale: 1, child: Image.network(Settings.imageAssetsUrl + "/" + view.getPath())),
         );
       },
@@ -115,9 +118,11 @@ class _HomeState extends State<ViewsPage> {
 
       if (!kIsWeb && views.length > 0 && _device.showAd == 1) views.add(Ad());
     });
+*/
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
-    }*/
+    }*/ /*
+
   }
 
   pageChange(int index, CarouselPageChangedReason reason) {
@@ -169,3 +174,4 @@ class _HomeState extends State<ViewsPage> {
     }
   }
 }
+*/

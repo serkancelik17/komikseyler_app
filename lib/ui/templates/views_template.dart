@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/models/ad.dart';
@@ -22,11 +23,6 @@ import 'package:komik_seyler/util/settings.dart';
 class ViewsTemplate extends StatefulWidget {
   final SectionAbstract section;
 
-  final _productIds = {'subscription_yearly'};
-/*  InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
-  StreamSubscription<List<PurchaseDetails>> _subscription;
-  List<ProductDetails> _products = [];*/
-
   ViewsTemplate({SectionAbstract section}) : section = section ?? Local.Category(id: 1, name: '{title}');
 
   @override
@@ -41,12 +37,27 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   ViewAbstract activeView;
   Device _device = new Device();
 
+  final _productIds = {'subscription_yearly'};
+  InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
+  StreamSubscription<List<PurchaseDetails>> _subscription;
+  List<ProductDetails> _products = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDevice();
     getMore();
+
+    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
+    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+    initStoreInfo();
   }
 
   @override
@@ -63,7 +74,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ViewsSliderOrganism(views: views, onPageChange: onPageChange),
-                    (activeView is Ad || _device.showAd == 0) ? ButtonAtom(onPressed: () {}, child: TextAtom('Reklamları Kaldır')) : BannerAtom(),
+                    (activeView is Ad || _device.showAd == 0) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom('Reklamları Kaldır')) : BannerAtom(),
                   ],
                 ),
       bottomNavigationBar: (activeView is Picture) ? BottomAppBarOrganism(context: context, activeView: activeView) : null,
@@ -105,11 +116,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     if (index == views.length - 2) getMore();
   }
 
-/*  initStoreInfo() async {
-    ProductDetailsResponse productDetailResponse = await widget._connection.queryProductDetails(widget._productIds);
+  initStoreInfo() async {
+    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_productIds);
     if (productDetailResponse.error == null) {
       setState(() {
-        widget._products = productDetailResponse.productDetails;
+        _products = productDetailResponse.productDetails;
       });
     }
   }
@@ -129,11 +140,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   }
 
   _buyProduct() {
-    if (widget._products.length > 0) {
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: widget._products[0]);
-      widget._connection.buyConsumable(purchaseParam: purchaseParam);
+    if (_products.length > 0) {
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: _products[0]);
+      _connection.buyConsumable(purchaseParam: purchaseParam);
     } else {
       print("HATA: Product bulunamadı");
     }
-  }*/
+  }
 }
