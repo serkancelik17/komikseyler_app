@@ -7,14 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/models/abstracts/view_abstract.dart';
-import 'package:komik_seyler/models/ad.dart';
-import 'package:komik_seyler/models/device.dart';
-import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/partials/bottomBar.dart';
-import 'package:komik_seyler/repositories/device_repository.dart';
-import 'package:komik_seyler/util/settings.dart';
+import 'package:komik_seyler/business.models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business.models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business.models/ad.dart';
+import 'package:komik_seyler/business.models/device.dart';
+import 'package:komik_seyler/business.models/picture.dart';
+import 'package:komik_seyler/old.partials/bottomBar.dart';
+import 'package:komik_seyler/business.repositories/device_repository.dart';
+import 'package:komik_seyler/business.util/settings.dart';
 
 class ViewsPage extends StatefulWidget {
   final SectionAbstract section;

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/repositories/action_repository.dart';
-import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/repositories/action_repository.dart';
+import 'package:komik_seyler/business/repositories/category_repository.dart';
 
 class CategoriesWidget extends StatefulWidget {
   @override

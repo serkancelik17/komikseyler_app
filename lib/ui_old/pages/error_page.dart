@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/util/settings.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 class ErrorPage extends StatefulWidget {
   final Exception error;

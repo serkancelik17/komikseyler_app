@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
-import 'package:komik_seyler/repositories/category_repository.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/category_repository.dart';
 
 List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category.fromJson(x)));
 

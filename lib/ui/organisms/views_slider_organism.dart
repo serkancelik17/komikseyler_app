@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/ui/molecules/slide.dart';
 
 class ViewsSliderOrganism extends StatefulWidget {

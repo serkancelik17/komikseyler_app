@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
-import 'package:komik_seyler/repositories/action_repository.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/action_repository.dart';
 
 Action actionFromJson(String str) => Action.fromJson(json.decode(str));
 

@@ -1,11 +1,11 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/abstracts/view_abstract.dart';
-import 'package:komik_seyler/models/ad.dart';
+import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/ad.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/container_atom.dart';
 import 'package:komik_seyler/ui/atoms/image_network_atom.dart';
-import 'package:komik_seyler/util/settings.dart';
 
 class Slide extends StatelessWidget {
   final ViewAbstract view;

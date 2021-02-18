@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
 
 abstract class SectionAbstract {
   int getId();

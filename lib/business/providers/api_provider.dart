@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:komik_seyler/providers/provider.dart';
-import 'package:komik_seyler/util/settings.dart';
+import 'package:komik_seyler/business/providers/provider.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 class ApiProvider implements Provider {
   String _apiUrl = Settings.baseUrl + "/api/v1";

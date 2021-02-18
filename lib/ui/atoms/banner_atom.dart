@@ -1,6 +1,6 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/util/ad_manager.dart';
+import 'package:komik_seyler/business/util/ad_manager.dart';
 
 class BannerAtom extends StatelessWidget {
   final String bannerAdUnitId;

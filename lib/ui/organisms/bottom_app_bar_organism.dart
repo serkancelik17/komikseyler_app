@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/device.dart';
-import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/models/response.dart';
-import 'package:komik_seyler/repositories/picture_repository.dart';
+import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/models/response.dart';
+import 'package:komik_seyler/business/repositories/picture_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/round_icon_button.dart';
-import 'package:komik_seyler/util/settings.dart';
 
 class BottomAppBarOrganism extends StatefulWidget {
   final Picture activeView;

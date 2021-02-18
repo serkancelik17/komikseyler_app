@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/ui/molecules/linkable_list_tile.dart';
 
 class HomeListViewOrganism extends StatelessWidget {

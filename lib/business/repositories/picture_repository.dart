@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/models/device.dart';
-import 'package:komik_seyler/models/picture.dart';
-import 'package:komik_seyler/models/response.dart';
-import 'package:komik_seyler/providers/api_provider.dart';
-import 'package:komik_seyler/providers/provider.dart';
-import 'package:komik_seyler/util/settings.dart';
+import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/models/response.dart';
+import 'package:komik_seyler/business/providers/api_provider.dart';
+import 'package:komik_seyler/business/providers/provider.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 class PictureRepository {
   Provider _provider;

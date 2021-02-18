@@ -1,21 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/models/category.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/repositories/category_repository.dart';
 import 'package:komik_seyler/ui/templates/home_template.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<SectionAbstract> sections = [];
+  @override
+  Future<void> initState() {
+    // TODO: implement initState
+    super.initState();
+    getSections;
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<SectionAbstract> sections = [
-      Category(id: 1, name: 'Karikatürler'),
-      Category(id: 1, name: 'Karikatürler +18'),
-    ];
-
     return Container(
       child: HomeTemplate(
         sections: sections,
         title: "Komik Şeyler",
       ),
     );
+  }
+
+  Future<bool> get getSections async {
+    CategoryRepository catRepo = CategoryRepository();
+    //  try {
+    List<SectionAbstract> categories = await catRepo.getCategories();
+    sections.addAll(categories);
+/*    } catch (error) {
+      Navigator.pushNamed(context, '/error', arguments: error);
+    }*/
+
+    List<SectionAbstract> additionalSections = [
+      Local.Action(name: "like", title: "Beğendiklerim", id: 1),
+      Local.Action(name: "favorite", title: "Favorilerim", id: 2),
+    ];
+    sections.addAll(additionalSections);
+
+    setState(() {});
+
+    return true;
   }
 }

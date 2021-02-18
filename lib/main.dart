@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/routers/app_router.dart';
+import 'package:komik_seyler/business/routers/app_router.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/pages/error_page.dart';
-import 'package:komik_seyler/pages/home_page.dart';
+import 'package:komik_seyler/ui/pages/home_page.dart';
 import 'package:komik_seyler/ui/pages/views_page.dart';
+import 'package:komik_seyler/ui_old/pages/error_page.dart';
 
 class AppRouter {
   int fishId;

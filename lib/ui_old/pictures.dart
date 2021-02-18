@@ -1,12 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/models/action.dart' as Local;
-import 'package:komik_seyler/partials/bottomBar.dart';
-import 'package:komik_seyler/repositories/picture_repository.dart';
-import 'package:komik_seyler/util/settings.dart';
-
-import 'models/picture.dart';
+import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/repositories/picture_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komik_seyler/ui_old/partials/bottomBar.dart';
 
 class Pictures extends StatefulWidget {
   final SectionAbstract section;
@@ -65,16 +64,12 @@ class PicturesState extends State<Pictures> {
           );
         }).toList(),
       ),
-      bottomNavigationBar: (activePicture is Picture)
-          ? BottomBar(context: context, currentView: activePicture)
-          : null,
+      bottomNavigationBar: (activePicture is Picture) ? BottomBar(context: context, currentView: activePicture) : null,
     );
   }
 
   Future<void> getMore() async {
-    List<Picture> _pictures = await widget.section
-        .getRepository()
-        .views(section: widget.section, page: page++, limit: 20);
+    List<Picture> _pictures = await widget.section.getRepository().views(section: widget.section, page: page++, limit: 20);
     setState(() {
       pictures.addAll(_pictures);
       //İlk resmi varsayılan vap
@@ -87,8 +82,7 @@ class PicturesState extends State<Pictures> {
       activePicture = pictures[index];
     });
     //Add hit
-    _pictureRepository.addAction(
-        action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
+    _pictureRepository.addAction(action: new Local.Action(id: 3, name: 'hit'), picture: pictures[index]);
     if (index == pictures.length - 2) getMore();
   }
 }

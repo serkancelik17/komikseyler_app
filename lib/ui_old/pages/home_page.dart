@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/util/settings.dart';
-import 'package:komik_seyler/widgets/categories_widget.dart';
+import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komik_seyler/ui_old/widgets/categories_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
