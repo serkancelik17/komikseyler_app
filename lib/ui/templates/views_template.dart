@@ -74,7 +74,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ViewsSliderOrganism(views: views, onPageChange: onPageChange),
-                    (activeView is Ad || _device.showAd == 0) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom('Reklamları Kaldır')) : BannerAtom(),
+                    (_device.showAd == 1) ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom('Reklamları Kaldır')) : BannerAtom()) : Text(""),
                   ],
                 ),
       bottomNavigationBar: (activeView is Picture) ? BottomAppBarOrganism(context: context, activeView: activeView) : null,
@@ -101,7 +101,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
   getDevice() async {
     _device = await Settings.getDevice();
-    setState(() {});
   }
 
   onPageChange(int index, CarouselPageChangedReason reason) {
@@ -125,6 +124,15 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     }
   }
 
+  removeAds() async {
+    try {
+      await _deviceRepository.update(device: _device, patch: {'show_ad': 0});
+    } catch (e) {
+      print(e.toString());
+    }
+    Navigator.pushNamed(context, "/");
+  }
+
   _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
@@ -132,8 +140,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           // show error message or failure icon
+          showPaymentErrorAlertDialog(context);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           // show success message and deliver the product.
+          // showPaymentSuccessAlertDialog(context);
+          removeAds();
         }
       }
     });
@@ -146,5 +157,59 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     } else {
       print("HATA: Product bulunamadı");
     }
+  }
+
+  showPaymentErrorAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Ödeme Alınamadı."),
+      content: Text("Ödemeniz herhangi bir nedenle alınamadı. Lütfen tekrar deneyiniz."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showPaymentSuccessAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Ödeme Alındı."),
+      content: Text("Tüm reklamlar kaldırıldı. Ödeme için teşekkürler."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

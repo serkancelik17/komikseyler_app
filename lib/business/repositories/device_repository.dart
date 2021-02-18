@@ -32,6 +32,12 @@ class DeviceRepository {
     return deviceFromJson(apiResponse);
   }
 
+  Future<Device> update({@required Device device, @required Map<String, dynamic> patch}) async {
+    String endpoint = '/devices/' + device.uuid.toString();
+    String apiResponse = await provider.pathcResponse(endpoint, jsonEncode(patch));
+    return deviceFromJson(apiResponse);
+  }
+
   Future<Response> updateLastView({@required Picture picture}) async {
     Device _device = await Settings.getDevice();
     String endpoint = '/devices/' + _device.uuid + '/update_last_view/' + picture.id.toString();

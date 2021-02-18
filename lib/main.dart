@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/routers/app_router.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  ///Include this in main() so purchases are enabled
+  InAppPurchaseConnection.enablePendingPurchases();
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
