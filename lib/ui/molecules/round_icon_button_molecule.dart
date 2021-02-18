@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class RoundIconButton extends StatelessWidget {
+class RoundIconButtonMolecule extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final Color boxColor;
@@ -10,7 +10,7 @@ class RoundIconButton extends StatelessWidget {
   final String text;
   final Color textColor;
 
-  RoundIconButton.large({
+  RoundIconButtonMolecule.large({
     this.icon,
     this.iconColor,
     this.boxColor,
@@ -19,7 +19,7 @@ class RoundIconButton extends StatelessWidget {
     this.textColor,
   }) : size = 60.0;
 
-  RoundIconButton.small({
+  RoundIconButtonMolecule.small({
     this.icon,
     this.iconColor,
     this.boxColor,
@@ -28,7 +28,7 @@ class RoundIconButton extends StatelessWidget {
     this.textColor,
   }) : size = 50.0;
 
-  RoundIconButton({
+  RoundIconButtonMolecule({
     this.icon,
     this.iconColor,
     this.boxColor,

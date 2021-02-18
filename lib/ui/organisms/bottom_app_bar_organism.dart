@@ -5,7 +5,7 @@ import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/repositories/picture_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/ui/molecules/round_icon_button.dart';
+import 'package:komik_seyler/ui_old/partials/RoundIconButton.dart';
 
 class BottomAppBarOrganism extends StatefulWidget {
   final Picture activeView;

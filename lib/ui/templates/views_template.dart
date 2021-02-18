@@ -15,7 +15,7 @@ import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
-import 'package:komik_seyler/ui/molecules/center_text.dart';
+import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/bottom_app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/views_slider_organism.dart';
@@ -64,17 +64,17 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarOrganism(
-        title: CenterText(widget.section.getTitle()),
+        title: CenterTextMolecule(widget.section.getTitle()),
       ),
       body: (views == null)
           ? Center(child: CircularProgressIndicator())
           : (views.length == 0)
-              ? CenterText("Herhangi bir içerik bulunamadı.")
+              ? CenterTextMolecule("Herhangi bir içerik bulunamadı.")
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ViewsSliderOrganism(views: views, onPageChange: onPageChange),
-                    (_device.showAd == 1) ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom('Reklamları Kaldır')) : BannerAtom()) : Text(""),
+                    (_device.showAd == 1) ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom()) : Text(""),
                   ],
                 ),
       bottomNavigationBar: (activeView is Picture) ? BottomAppBarOrganism(context: context, activeView: activeView) : null,

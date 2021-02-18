@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/routers/app_router.dart';
+import 'package:komik_seyler/ui/themes/custom_theme.dart';
 
 void main() {
   ///Include this in main() so purchases are enabled
@@ -21,10 +22,7 @@ class _HomeState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Komik Şeyler',
-      theme: ThemeData(
-        primaryColorBrightness: Brightness.light,
-        primarySwatch: Colors.blue,
-      ),
+      theme: CustomTheme.lightTheme,
       onGenerateRoute: _appRouter.onGenerateRoute,
     );
   }

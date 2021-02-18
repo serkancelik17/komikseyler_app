@@ -7,10 +7,10 @@ import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/container_atom.dart';
 import 'package:komik_seyler/ui/atoms/image_network_atom.dart';
 
-class Slide extends StatelessWidget {
+class SlideMolecule extends StatelessWidget {
   final ViewAbstract view;
 
-  Slide({@required this.view});
+  SlideMolecule({@required this.view});
 
   @override
   Widget build(BuildContext context) {
