@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/pages/home_page.dart';
+import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/ui/pages/views_page.dart';
 import 'package:komik_seyler/ui_old/pages/error_page.dart';
 
@@ -28,7 +28,7 @@ class AppRouter {
         );
         break;
     }
-    // return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Karikatürler")));
-    return MaterialPageRoute(builder: (_) => HomePage());
+    return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Film Replikleri")));
+    //return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

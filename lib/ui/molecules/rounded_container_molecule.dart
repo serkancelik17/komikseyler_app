@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/atoms/sized_box_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
-class GridListItemMolecule extends StatelessWidget {
-  final Widget icon;
-  final String text;
+class RoundedContainerMolecule extends StatelessWidget {
   final VoidCallback onTap;
-  final double fontSize;
+  final Widget child;
 
-  GridListItemMolecule({@required this.icon, @required this.text, this.onTap, this.fontSize});
+  RoundedContainerMolecule({this.onTap, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +30,7 @@ class GridListItemMolecule extends StatelessWidget {
                 offset: Offset(-5, -5), // Shadow position
               ),
             ]),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            SizedBoxAtom(
-              height: 20,
-            ),
-            TextAtom(
-              text: text,
-              fontSize: fontSize,
-              color: CustomColors.lightPurple,
-            ),
-          ],
-        ),
+        child: child,
       ),
       onTap: onTap,
     );

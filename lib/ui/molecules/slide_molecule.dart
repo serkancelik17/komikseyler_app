@@ -6,6 +6,7 @@ import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/container_atom.dart';
 import 'package:komik_seyler/ui/atoms/image_network_atom.dart';
+import 'package:komik_seyler/ui/molecules/rounded_container_molecule.dart';
 
 class SlideMolecule extends StatelessWidget {
   final ViewAbstract view;
@@ -14,15 +15,14 @@ class SlideMolecule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ContainerAtom(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      margin: EdgeInsets.symmetric(horizontal: 5.0),
-      child: (view is Ad)
-          ? BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
-          : ImageNetworkAtom(
-              url: Settings.imageAssetsUrl + "/" + view.getPath(),
-            ),
+    return RoundedContainerMolecule(
+      child: ContainerAtom(
+        child: (view is Ad)
+            ? BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
+            : ImageNetworkAtom(
+                url: Settings.imageAssetsUrl + "/" + view.getPath(),
+              ),
+      ),
     );
   }
 }

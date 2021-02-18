@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/repositories/category_repository.dart';
-import 'package:komik_seyler/ui/molecules/two_color_text_molecule.dart';
+import 'package:komik_seyler/ui/molecules/text_two_word_color_molecule.dart';
 import 'package:komik_seyler/ui/templates/home_template.dart';
+import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       child: HomeTemplate(
         sections: sections,
-        title: TwoColorTextMolecule(text1: "Komik", text2: "Şeyler", mainAxisAlignment: MainAxisAlignment.center),
+        title: TextTwoWordColorMolecule(texts: ["Komik", "Şeyler"], colors: [Colors.black, CustomColors.purple], mainAxisAlignment: MainAxisAlignment.center),
       ),
     );
   }

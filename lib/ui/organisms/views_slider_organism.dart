@@ -18,11 +18,11 @@ class _ViewsSliderOrganismState extends State<ViewsSliderOrganism> {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: MediaQuery.of(context).size.height * 0.6,
+        height: MediaQuery.of(context).size.height * 0.65,
         onPageChanged: widget.onPageChange,
         enlargeCenterPage: true,
         enableInfiniteScroll: false,
-        viewportFraction: 0.8,
+        viewportFraction: 1,
       ),
       items: widget.views.map((view) {
         return SlideMolecule(view: view);

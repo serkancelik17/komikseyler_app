@@ -16,9 +16,11 @@ import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
+import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/bottom_app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/views_slider_organism.dart';
+import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionAbstract section;
@@ -64,14 +66,19 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarOrganism(
-        title: CenterTextMolecule(widget.section.getTitle()),
+        title: CenterMolecule(TextOneWordTwoColorMolecule(
+          text: widget.section.getTitle(),
+          colors: [
+            Colors.black,
+            CustomColors.purple,
+          ],
+        )),
       ),
       body: (views == null)
           ? Center(child: CircularProgressIndicator())
           : (views.length == 0)
-              ? CenterTextMolecule("Herhangi bir içerik bulunamadı.")
+              ? CenterMolecule(TextAtom(text: "Herhangi bir içerik bulunamadı."))
               : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ViewsSliderOrganism(views: views, onPageChange: onPageChange),
                     (_device.showAd == 1) ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom()) : Text(""),

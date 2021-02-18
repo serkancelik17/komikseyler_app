@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
 
-class CenterTextMolecule extends StatelessWidget {
-  final String text;
+class CenterMolecule extends StatelessWidget {
+  final Widget child;
 
-  CenterTextMolecule(this.text);
+  CenterMolecule(this.child);
 
   @override
   Widget build(BuildContext context) {
-    return CenterAtom(child: TextAtom(text: text));
+    return CenterAtom(child: child);
   }
 }

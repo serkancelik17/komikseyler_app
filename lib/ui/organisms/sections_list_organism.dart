@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/ui/atoms/column_atom.dart';
+import 'package:komik_seyler/ui/atoms/sized_box_atom.dart';
+import 'package:komik_seyler/ui/atoms/text_atom.dart';
 import 'package:komik_seyler/ui/molecules/gradient_icon_molecule.dart';
-import 'package:komik_seyler/ui/molecules/grid_list_item_molecule.dart';
+import 'package:komik_seyler/ui/molecules/rounded_container_molecule.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class SectionListOrganism extends StatelessWidget {
@@ -18,23 +21,42 @@ class SectionListOrganism extends StatelessWidget {
         ),
         itemCount: sections.length,
         itemBuilder: (context, index) {
-          return GridListItemMolecule(
-            fontSize: 16,
-            icon: GradientIconMolecule(
-              icon: sections[index].getIcon(),
-              size: 50,
-              gradient: LinearGradient(
-                colors: [
-                  CustomColors.purple,
-                  CustomColors.lightPurple,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            text: sections[index].getTitle(),
+          return RoundedContainerMolecule(
+            child: buildWidget(index),
             onTap: () => Navigator.pushNamed(context, '/categories', arguments: sections[index]),
           );
         });
+  }
+
+  GradientIconMolecule buildIcon(int index) {
+    return GradientIconMolecule(
+      icon: sections[index].getIcon(),
+      size: 50,
+      gradient: LinearGradient(
+        colors: [
+          CustomColors.purple,
+          CustomColors.lightPurple,
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    );
+  }
+
+  Widget buildWidget(int index) {
+    return ColumnAtom(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        buildIcon(index),
+        SizedBoxAtom(
+          height: 20,
+        ),
+        TextAtom(
+          text: sections[index].getTitle(),
+          fontSize: 16,
+          color: CustomColors.lightPurple,
+        ),
+      ],
+    );
   }
 }
