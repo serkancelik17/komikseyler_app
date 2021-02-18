@@ -28,6 +28,7 @@ class AppRouter {
         );
         break;
     }
+    // return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Karikatürler")));
     return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

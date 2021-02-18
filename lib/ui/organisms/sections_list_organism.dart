@@ -11,14 +11,6 @@ class SectionListOrganism extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gradient = LinearGradient(
-      colors: <Color>[
-        CustomColors.purple,
-        CustomColors.lightPurple,
-      ],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-    );
     return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -28,7 +20,18 @@ class SectionListOrganism extends StatelessWidget {
         itemBuilder: (context, index) {
           return GridListItemMolecule(
             fontSize: 16,
-            icon: GradientIconMolecule(icon: sections[index].getIcon(), size: 50, gradient: gradient),
+            icon: GradientIconMolecule(
+              icon: sections[index].getIcon(),
+              size: 50,
+              gradient: LinearGradient(
+                colors: [
+                  CustomColors.purple,
+                  CustomColors.lightPurple,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             text: sections[index].getTitle(),
             onTap: () => Navigator.pushNamed(context, '/categories', arguments: sections[index]),
           );
