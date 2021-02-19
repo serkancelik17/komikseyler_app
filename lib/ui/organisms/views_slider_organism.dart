@@ -22,7 +22,7 @@ class _ViewsSliderOrganismState extends State<ViewsSliderOrganism> {
         onPageChanged: widget.onPageChange,
         enlargeCenterPage: true,
         enableInfiniteScroll: false,
-        viewportFraction: 1,
+        viewportFraction: 0.9,
       ),
       items: widget.views.map((view) {
         return SlideMolecule(view: view);

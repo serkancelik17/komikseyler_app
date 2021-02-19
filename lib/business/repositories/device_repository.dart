@@ -34,19 +34,24 @@ class DeviceRepository {
 
   Future<Device> update({@required Device device, @required Map<String, dynamic> patch}) async {
     String endpoint = '/devices/' + device.uuid.toString();
-    String apiResponse = await provider.pathcResponse(endpoint, jsonEncode(patch));
+    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
     return deviceFromJson(apiResponse);
   }
 
-  Future<Response> updateLastView({@required Picture picture}) async {
-    Device _device = await Settings.getDevice();
-    String endpoint = '/devices/' + _device.uuid + '/update_last_view/' + picture.id.toString();
-    try {
-      Response response = responseFromJson(await provider.getResponse(endpoint));
+  Future<Response> logUpdate({@required Picture picture, int viewCount}) async {
+    String _uuid = await Settings.getUuid();
+    print(_uuid.toString());
+    Map<String, dynamic> patch = {'category_id': picture.categoryId, 'last_view_picture_id': picture.id, 'view_count': viewCount};
+    String endpoint = '/devices/' + _uuid + '/logs';
+    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
+    return responseFromJson(apiResponse);
+  }
 
-      return response;
-    } catch (e) {
-      throw e;
-    }
+  Future<Response> logUpdateViewCount({@required Picture picture}) async {
+    String _uuid = await Settings.getUuid();
+    print(_uuid.toString());
+    String endpoint = '/devices/' + _uuid + '/logs/pictures/' + picture.id.toString() + '/update_view_count';
+    String apiResponse = await provider.patchResponse(endpoint, '{}');
+    return responseFromJson(apiResponse);
   }
 }

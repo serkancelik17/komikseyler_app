@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/category.dart';
+import 'package:komik_seyler/ui/pages/home_page.dart';
 import 'package:komik_seyler/ui/pages/views_page.dart';
-import 'package:komik_seyler/ui_old/pages/error_page.dart';
 
 class AppRouter {
   int fishId;
@@ -19,16 +18,16 @@ class AppRouter {
     switch (settings.name) {
       case '/categories':
         return MaterialPageRoute(
-          builder: (_) => ViewsPage(section: arguments),
+          builder: (_) => ViewsPage(section: arguments[0], device: arguments[1]),
         );
         break;
-      case '/error':
+/*      case '/error':
         return MaterialPageRoute(
           builder: (_) => ErrorPage(error: arguments),
         );
-        break;
+        break;*/
     }
-    return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Film Replikleri")));
-    //return MaterialPageRoute(builder: (_) => HomePage());
+    //return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Film Replikleri")));
+    return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

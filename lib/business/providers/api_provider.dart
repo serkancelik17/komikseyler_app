@@ -44,7 +44,7 @@ class ApiProvider implements Provider {
     }
   }
 
-  Future<String> pathcResponse(String endpoint, String body) async {
+  Future<String> patchResponse(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);

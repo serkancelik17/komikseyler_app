@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
@@ -28,8 +27,9 @@ class ActionRepository implements RepositoryAbstract {
   }
 
   Future<List<ViewAbstract>> views({@required SectionAbstract section, int page = 1, int limit = 20}) async {
-    Device _device = await Settings.getDevice();
-    String endpoint = "/devices/" + _device.id.toString() + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
+    String _uuid = await Settings.getUuid();
+    print(_uuid.toString());
+    String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
     String apiResponse = await provider.getResponse(endpoint);
     List<Picture> pictures = (responseFromJson(apiResponse)).data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;

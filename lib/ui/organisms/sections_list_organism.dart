@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/ui/atoms/column_atom.dart';
 import 'package:komik_seyler/ui/atoms/sized_box_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
@@ -9,8 +10,9 @@ import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class SectionListOrganism extends StatelessWidget {
   final List<SectionAbstract> sections;
+  final Device device;
 
-  SectionListOrganism({@required this.sections});
+  SectionListOrganism({@required this.sections, @required this.device});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SectionListOrganism extends StatelessWidget {
         itemBuilder: (context, index) {
           return RoundedContainerMolecule(
             child: buildWidget(index),
-            onTap: () => Navigator.pushNamed(context, '/categories', arguments: sections[index]),
+            onTap: () => Navigator.pushNamed(context, '/categories', arguments: [sections[index], device]),
           );
         });
   }

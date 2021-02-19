@@ -18,14 +18,15 @@ import 'package:komik_seyler/ui/atoms/text_atom.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
 import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
-import 'package:komik_seyler/ui/organisms/bottom_app_bar_organism.dart';
+import 'package:komik_seyler/ui/organisms/bottom_navigation_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/views_slider_organism.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionAbstract section;
+  final Device device;
 
-  ViewsTemplate({SectionAbstract section}) : section = section ?? Local.Category(id: 1, name: '{title}');
+  ViewsTemplate({@required SectionAbstract section, @required this.device}) : section = section ?? Local.Category(id: 1, name: '{title}');
 
   @override
   _ViewsTemplateState createState() => _ViewsTemplateState();
@@ -37,7 +38,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   List<ViewAbstract> views;
   int page = 1;
   ViewAbstract activeView;
-  Device _device = new Device();
+  Device _device;
 
   final _productIds = {'subscription_yearly'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
@@ -48,8 +49,9 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDevice();
-    getMore();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      getMore();
+    });
 
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
@@ -81,10 +83,12 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
               : Column(
                   children: [
                     ViewsSliderOrganism(views: views, onPageChange: onPageChange),
-                    (_device.showAd == 1) ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom()) : Text(""),
+                    (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))
+                        ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom())
+                        : Text(""),
                   ],
                 ),
-      bottomNavigationBar: (activeView is Picture) ? BottomAppBarOrganism(context: context, activeView: activeView) : null,
+      bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
     );
   }
 
@@ -99,15 +103,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         views.addAll(_views);
       }
 
-      if (!kIsWeb && views.length > 0 && _device.showAd == 1) views.add(Ad());
+      if (!kIsWeb && views.length > 0 && (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))) views.add(Ad());
     });
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
     }*/
-  }
-
-  getDevice() async {
-    _device = await Settings.getDevice();
   }
 
   onPageChange(int index, CarouselPageChangedReason reason) {
@@ -117,7 +117,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       activeView = views[index];
     });
     //Update lastView
-    if (activeView is Picture) _deviceRepository.updateLastView(picture: activeView);
+    if (activeView is Picture) _deviceRepository.logUpdateViewCount(picture: activeView);
 
     if (index == views.length - 2) getMore();
   }
@@ -133,6 +133,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
   removeAds() async {
     try {
+      //@TODO device.option icine aktarilacak.
       await _deviceRepository.update(device: _device, patch: {'show_ad': 0});
     } catch (e) {
       print(e.toString());

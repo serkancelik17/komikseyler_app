@@ -8,6 +8,7 @@ class CustomTheme {
         //2
         primaryColor: CustomColors.grey,
         scaffoldBackgroundColor: CustomColors.grey,
+        bottomAppBarColor: CustomColors.grey,
         fontFamily: 'VarelaRound', //3
         buttonTheme: ButtonThemeData(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),

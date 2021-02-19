@@ -4,19 +4,27 @@ import 'package:komik_seyler/ui/themes/custom_colors.dart';
 class RoundedContainerMolecule extends StatelessWidget {
   final VoidCallback onTap;
   final Widget child;
+  final double borderRadius;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final double width;
+  final double height;
 
-  RoundedContainerMolecule({this.onTap, this.child});
+  RoundedContainerMolecule({this.onTap, this.child, this.borderRadius = 20, this.margin = const EdgeInsets.all(10), this.padding = const EdgeInsets.all(5), this.width, this.height});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: margin,
+        padding: padding,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
             //border: Border.all(color: Colors.red, width: 5),
             color: CustomColors.grey,
             borderRadius: BorderRadius.all(
-              Radius.circular(20),
+              Radius.circular(this.borderRadius),
             ),
             boxShadow: [
               BoxShadow(

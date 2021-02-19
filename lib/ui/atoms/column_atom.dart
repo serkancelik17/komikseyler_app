@@ -6,7 +6,7 @@ class ColumnAtom extends StatelessWidget {
   final Key key;
   final MainAxisSize mainAxisSize;
 
-  ColumnAtom({this.mainAxisAlignment, this.children, this.key, this.mainAxisSize = MainAxisSize.max});
+  ColumnAtom({this.mainAxisAlignment = MainAxisAlignment.start, this.children, this.key, this.mainAxisSize = MainAxisSize.max});
 
   @override
   Widget build(BuildContext context) {

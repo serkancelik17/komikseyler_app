@@ -12,30 +12,54 @@ class Device {
   Device({
     this.id,
     this.uuid,
-    this.isAdmin,
     this.note,
-    this.showAd,
+    this.option,
   });
 
   int id;
   String uuid;
-  int isAdmin;
   dynamic note;
-  int showAd;
+  Option option;
 
   factory Device.fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],
         uuid: json["uuid"] == null ? null : json["uuid"],
-        isAdmin: json["is_admin"] == null ? 0 : json["is_admin"],
         note: json["note"],
-        showAd: json["show_ad"] == null ? 1 : json["show_ad"],
+        option: json["option"] == null ? null : Option.fromJson(json["option"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "uuid": uuid == null ? null : uuid,
-        "is_admin": isAdmin == null ? 0 : isAdmin,
         "note": note,
-        "show_ad": showAd == null ? 1 : showAd,
+        "option": option == null ? null : option.toJson(),
+      };
+}
+
+class Option {
+  Option({
+    this.id,
+    this.deviceUuid,
+    this.isAdmin,
+    this.adsShowAfter,
+  });
+
+  int id;
+  String deviceUuid;
+  int isAdmin;
+  DateTime adsShowAfter;
+
+  factory Option.fromJson(Map<String, dynamic> json) => Option(
+        id: json["id"] == null ? null : json["id"],
+        deviceUuid: json["device_uuid"] == null ? null : json["device_uuid"],
+        isAdmin: json["is_admin"] == null ? null : json["is_admin"],
+        adsShowAfter: json["ads_show_after"] == null ? null : DateTime.parse(json["ads_show_after"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "device_uuid": deviceUuid == null ? null : deviceUuid,
+        "is_admin": isAdmin == null ? null : isAdmin,
+        "ads_show_after": adsShowAfter == null ? null : adsShowAfter.toIso8601String(),
       };
 }
