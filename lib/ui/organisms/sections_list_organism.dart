@@ -33,7 +33,7 @@ class SectionListOrganism extends StatelessWidget {
   GradientIconMolecule buildIcon(int index) {
     return GradientIconMolecule(
       icon: sections[index].getIcon(),
-      size: 50,
+      size: 45,
       gradient: LinearGradient(
         colors: [
           CustomColors.purple,

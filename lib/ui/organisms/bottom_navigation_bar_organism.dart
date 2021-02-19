@@ -43,68 +43,39 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
               RoundedButtonMolecule(
                 iconData: FontAwesomeIcons.exchangeAlt,
                 onTap: () {
-                  toggleAction(Local.Action(id: 4, name: 'move'));
+                  toggleAction(action: Local.Action(id: 4, name: 'move'));
                 },
                 text: "Taşı",
               ),
             RoundedButtonMolecule(
+              badgeCount: widget.activeView.likesCount,
               iconData: FontAwesomeIcons.heart,
               activeIconData: FontAwesomeIcons.solidHeart,
               onTap: () {
-                toggleAction(Local.Action(id: 1, name: 'like'));
+                toggleAction(action: Local.Action(id: 1, name: 'like'));
               },
-              active: (widget.activeView.userLikesCount > 0),
+              active: (widget.activeView.userLikesCount != 0),
               text: "Beğen",
             ),
             RoundedButtonMolecule(
+              badgeCount: widget.activeView.favoritesCount,
               iconData: FontAwesomeIcons.star,
               activeIconData: FontAwesomeIcons.solidStar,
               onTap: () {
-                toggleAction(Local.Action(id: 2, name: 'favorite'));
+                toggleAction(action: Local.Action(id: 2, name: 'favorite'));
               },
               text: "Favori",
-              active: (widget.activeView.userFavoritesCount > 0),
+              active: (widget.activeView.userFavoritesCount != 0),
             ),
             RoundedButtonMolecule(
+              badgeCount: widget.activeView.sharesCount,
+              active: (widget.activeView.userSharesCount != 0),
               iconData: FontAwesomeIcons.shareAlt,
               onTap: () {
-                addAction(action: Local.Action(id: 5, name: 'share'), picture: widget.activeView);
+                toggleAction(action: Local.Action(id: 5, name: 'share'));
               },
               text: "Paylaş",
             ),
-            /*
-            new RoundIconButton.large(
-              icon: Icons.favorite,
-              boxColor: ((widget.activeView != null && widget.activeView.userLikesCount > 0) ? Colors.green : Colors.white),
-              iconColor: ((widget.activeView != null && widget.activeView.userLikesCount > 0) ? Colors.white : Colors.green),
-              textColor: ((widget.activeView != null && widget.activeView.userLikesCount > 0) ? Colors.white : Colors.green),
-              text: "Beğen(" + (((widget.activeView != null) ? widget.activeView.likesCount ?? 0 : 0)).toString() + ")",
-              onPressed: () {
-                toggleAction(Local.Action(id: 1, name: 'like'));
-              },
-            ),
-            new RoundIconButton.large(
-              icon: Icons.star,
-              boxColor: ((widget.activeView != null && widget.activeView.userFavoritesCount > 0) ? Colors.blue : Colors.white),
-              iconColor: ((widget.activeView != null && widget.activeView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-              textColor: ((widget.activeView != null && widget.activeView.userFavoritesCount > 0) ? Colors.white : Colors.blue),
-              text: "Favori(" + (((widget.activeView != null) ? widget.activeView.favoritesCount ?? 0 : 0)).toString() + ")",
-              onPressed: () {
-                toggleAction(Local.Action(id: 2, name: 'favorite'));
-              },
-            ),
-            new RoundIconButton.large(
-              icon: Icons.share,
-              iconColor: Colors.blue,
-              text: "Paylaş",
-              onPressed: () {
-                try {
-                  Settings.share(widget.activeView.path);
-                } catch (e) {
-                  print("(Paylaşılırken bir hat oluştu. Resim paylaşılamadı.)");
-                }
-              },
-            ),*/
           ],
         ),
       ),
@@ -121,7 +92,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
         });*/
       });
     } catch (e) {
-      toggleAction(action);
+      toggleAction(action: action);
       throw e;
     }
   }
@@ -140,21 +111,27 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     }
   }
 
-  bool toggleAction(Local.Action action) {
+  bool toggleAction({@required Local.Action action}) {
     bool willAdd;
-    if (action.name == 'like') {
-      willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
-      widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
-      widget.activeView.likesCount += (willAdd) ? 1 : -1;
-    } else if (action.name == 'favorite') {
-      willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
-      widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
-      widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
-    }
-    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
-      print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
+    print(widget.activeView.toString());
+    setState(() {
+      if (action.name == 'like') {
+        willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
+        widget.activeView.likesCount += (willAdd) ? 1 : -1;
+      } else if (action.name == 'favorite') {
+        willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
+        widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
+      } else if (action.name == 'share') {
+        willAdd = (widget.activeView.userSharesCount == 0) ? true : false; //eklenecek - silinecek
+        widget.activeView.userSharesCount = (willAdd) ? 1 : 0;
+        widget.activeView.sharesCount += (willAdd) ? 1 : -1;
+      }
+      _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
+        print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
+      });
     });
-    setState(() {});
     return true;
   }
 }

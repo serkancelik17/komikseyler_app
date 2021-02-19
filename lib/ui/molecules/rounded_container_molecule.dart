@@ -29,7 +29,6 @@ class RoundedContainerMolecule extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: CustomColors.darkGrey,
-                blurRadius: 5,
                 offset: Offset(5, 5), // Shadow position
               ),
               BoxShadow(

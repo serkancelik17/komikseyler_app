@@ -8,7 +8,7 @@ import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
-String pictureToJson(Picture data) => json.encode(data.toJson());
+String pictureToJson(List<Picture> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Picture implements ViewAbstract {
   Picture({
@@ -17,8 +17,10 @@ class Picture implements ViewAbstract {
     this.path,
     this.likesCount,
     this.favoritesCount,
+    this.sharesCount,
     this.userLikesCount,
     this.userFavoritesCount,
+    this.userSharesCount,
   });
 
   int id;
@@ -26,17 +28,21 @@ class Picture implements ViewAbstract {
   String path;
   int likesCount;
   int favoritesCount;
+  int sharesCount;
   int userLikesCount;
   int userFavoritesCount;
+  int userSharesCount;
 
   factory Picture.fromJson(Map<String, dynamic> json) => Picture(
         id: json["id"] == null ? null : json["id"],
         categoryId: json["category_id"] == null ? null : json["category_id"],
         path: json["path"] == null ? null : json["path"],
-        likesCount: json["likes_count"] == null ? null : json["likes_count"],
-        favoritesCount: json["favorites_count"] == null ? null : json["favorites_count"],
-        userLikesCount: json["user_likes_count"] == null ? null : json["user_likes_count"],
-        userFavoritesCount: json["user_favorites_count"] == null ? null : json["user_favorites_count"],
+        likesCount: json["likes_count"] == null ? 0 : json["likes_count"],
+        favoritesCount: json["favorites_count"] == null ? 0 : json["favorites_count"],
+        sharesCount: json["shares_count"] == null ? 0 : json["shares_count"],
+        userLikesCount: json["user_likes_count"] == null ? 0 : json["user_likes_count"],
+        userFavoritesCount: json["user_favorites_count"] == null ? 0 : json["user_favorites_count"],
+        userSharesCount: json["user_shares_count"] == null ? 0 : json["user_shares_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,14 +51,18 @@ class Picture implements ViewAbstract {
         "path": path == null ? null : path,
         "likes_count": likesCount == null ? null : likesCount,
         "favorites_count": favoritesCount == null ? null : favoritesCount,
+        "shares_count": sharesCount == null ? null : sharesCount,
         "user_likes_count": userLikesCount == null ? null : userLikesCount,
         "user_favorites_count": userFavoritesCount == null ? null : userFavoritesCount,
+        "user_shares_count": userSharesCount == null ? null : userSharesCount,
       };
 
   @override
   String toString() {
-    return 'Picture{id: $id, categoryId: $categoryId, path: $path, likesCount: $likesCount, favoritesCount: $favoritesCount, userLikesCount: $userLikesCount, userFavoritesCount: $userFavoritesCount}';
+    return 'Picture{id: $id, categoryId: $categoryId, path: $path, likesCount: $likesCount, favoritesCount: $favoritesCount, sharesCount: $sharesCount, userLikesCount: $userLikesCount, userFavoritesCount: $userFavoritesCount, userSharesCount: $userSharesCount}';
   }
+
+  //-----------------------------------------------------------------------------------------------------//
 
   @override
   String getPath() {

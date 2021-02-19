@@ -11,7 +11,6 @@ class CustomTheme {
         bottomAppBarColor: CustomColors.grey,
         fontFamily: 'VarelaRound', //3
         buttonTheme: ButtonThemeData(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           buttonColor: CustomColors.purple,
         ));
   }
