@@ -83,7 +83,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
               ? CenterMolecule(TextAtom(text: "Herhangi bir içerik bulunamadı."))
               : Column(
                   children: [
-                    ViewsSliderOrganism(views: views, onPageChange: onPageChange),
+                    ViewsSliderOrganism(views: views, activeView: activeView, onPageChange: onPageChange),
                     (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))
                         ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom())
                         : Text(""),

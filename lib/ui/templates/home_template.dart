@@ -4,7 +4,6 @@ import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/atoms/circular_progress_indicator_atom.dart';
-import 'package:komik_seyler/ui/atoms/container_atom.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/sections_list_organism.dart';
 
@@ -21,7 +20,7 @@ class HomeTemplate extends StatelessWidget {
       appBar: AppBarOrganism(
         title: title ?? Text("{title}"),
       ),
-      body: ContainerAtom(
+      body: Container(
         margin: EdgeInsets.all(10),
         child: (sections != null && sections.length == 0)
             ? CenterAtom(child: CircularProgressIndicatorAtom())

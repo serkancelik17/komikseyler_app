@@ -114,25 +114,24 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
 
   bool toggleAction({@required Local.Action action}) {
     bool willAdd;
-    print(widget.activeView.toString());
-    setState(() {
-      if (action.name == 'like') {
-        willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
-        widget.activeView.likesCount += (willAdd) ? 1 : -1;
-      } else if (action.name == 'favorite') {
-        willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
-        widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
-      } else if (action.name == 'share') {
-        Settings.share(picture: widget.activeView);
-        willAdd = true; //eklenecek - silinecek
-        widget.activeView.userSharesCount = 1;
-        widget.activeView.sharesCount += 1;
-      }
-      _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
-        print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
-      });
+    if (action.name == 'like') {
+      willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+      widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
+      widget.activeView.likesCount += (willAdd) ? 1 : -1;
+    } else if (action.name == 'favorite') {
+      willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+      widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
+      widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
+    } else if (action.name == 'share') {
+      Settings.share(picture: widget.activeView);
+      willAdd = true; //eklenecek - silinecek
+      widget.activeView.userSharesCount = 1;
+      widget.activeView.sharesCount += 1;
+    }
+    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
+      print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
+
+      setState(() {});
     });
     return true;
   }
