@@ -11,7 +11,7 @@ class AdManager {
     if (Platform.isAndroid) {
       return "ca-app-pub-2571341208688709~9554327716";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-2571341208688709~9554327716";
+      return "ca-app-pub-2571341208688709~4101532938";
     } else {
       //throw new UnsupportedError("Unsupported platform");
       return "Unsupported Platform";
@@ -23,7 +23,7 @@ class AdManager {
       return "ca-app-pub-3940256099942544/8865242552"; //test banner unit
       //return "ca-app-pub-2571341208688709/3531844841";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-2571341208688709/3531844841";
+      return "ca-app-pub-2571341208688709/1475369593";
     } else {
       return "Unsupported Platform";
     }
@@ -38,16 +38,17 @@ class AdManager {
       return "Unsupported Platform";
     }
   }
-
+*/
   static String get rewardedAdUnitId {
     if (Platform.isAndroid) {
-      return "ca-app-pub-2571341208688709/3303852395";
+      return "ca-app-pub-3940256099942544/8673189370";
+      //return "ca-app-pub-2571341208688709/8998636399";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/7552160883";
+      return "ca-app-pub-2571341208688709/3718389557";
     } else {
       return "Unsupported platform";
     }
-  }*/
+  }
 
   static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
     if (kIsWeb == false) {

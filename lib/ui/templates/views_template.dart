@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
@@ -11,10 +13,12 @@ import 'package:komik_seyler/business/models/category.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
+import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
+import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
 import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
@@ -38,7 +42,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   List<ViewAbstract> views;
   int page = 1;
   ViewAbstract activeView;
-  Device _device;
+  AdmobReward rewardAd;
 
   final _productIds = {'subscription_yearly'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
@@ -52,6 +56,15 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       getMore();
     });
+
+    rewardAd = AdmobReward(
+      adUnitId: AdManager.rewardedAdUnitId,
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+        if (event == AdmobAdEvent.closed) rewardAd.load();
+/*          handleEvent(event, args, 'Reward');*/
+      },
+    );
+    rewardAd.load();
 
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
@@ -84,9 +97,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
               : Column(
                   children: [
                     ViewsSliderOrganism(views: views, activeView: activeView, onPageChange: onPageChange),
-                    (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))
-                        ? ((activeView is Ad) ? ButtonAtom(onPressed: _buyProduct, child: TextAtom(text: 'Reklamları Kaldır')) : BannerAtom())
-                        : Text(""),
+                    (DateTime.now().isAfter(widget.device.option.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))) ? ((activeView is Ad) ? getAdButtons() : BannerAtom()) : Text(""),
                   ],
                 ),
       bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
@@ -104,7 +115,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         views.addAll(_views);
       }
 
-      if (!kIsWeb && views.length > 0 && (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))) views.add(Ad());
+      if (!kIsWeb && views.length > 0 && (DateTime.now().isAfter(widget.device.option.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))) views.add(Ad());
     });
 /*    } catch (error) {
       Navigator.pushReplacementNamed(context, '/error', arguments: error);
@@ -135,7 +146,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   removeAds() async {
     try {
       //@TODO device.option icine aktarilacak.
-      await _deviceRepository.update(device: _device, patch: {'show_ad': 0});
+      await _deviceRepository.update(device: widget.device, patch: {'show_ad': 0});
     } catch (e) {
       print(e.toString());
     }
@@ -220,5 +231,35 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         return alert;
       },
     );
+  }
+
+  Column getAdButtons() {
+    List<ButtonAtom> buttons = [];
+
+    buttons.add(ButtonWithIconMolecule(
+      onTap: () {
+        this._buyProduct();
+      },
+      child: Text('Reklamları Kaldır'),
+      icon: FaIcon(FontAwesomeIcons.ad),
+    ));
+
+    buttons.add(ButtonWithIconMolecule(
+      onTap: () async {
+        if (await rewardAd.isLoaded) {
+          rewardAd.show();
+        }
+      },
+      child: Text('1 reklam izle 1 saat reklam görme.'),
+      icon: FaIcon(FontAwesomeIcons.ad),
+    ));
+
+    return Column(children: buttons);
+  }
+
+  @override
+  void dispose() {
+    rewardAd.dispose();
+    super.dispose();
   }
 }

@@ -71,7 +71,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
             RoundedButtonMolecule(
               badgeCount: widget.activeView.sharesCount,
               active: (widget.activeView.userSharesCount != 0),
-              iconData: FontAwesomeIcons.shareAlt,
+              iconData: FontAwesomeIcons.share,
               onTap: () {
                 toggleAction(action: Local.Action(id: 5, name: 'share'));
               },
