@@ -25,8 +25,8 @@ class TextOneWordTwoColorMolecule extends StatelessWidget {
     } else {
       int length = text.length;
       int centerLength = (text.length / 2).ceil();
-      texts.add(text.substring(0, centerLength - 1));
-      texts.add(text.substring(centerLength - 1, length));
+      texts.add(text.substring(0, centerLength));
+      texts.add(text.substring(centerLength, length));
     }
     return texts;
   }

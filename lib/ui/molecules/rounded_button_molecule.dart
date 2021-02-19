@@ -8,6 +8,7 @@ import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class RoundedButtonMolecule extends StatelessWidget {
   final IconData iconData;
+  final IconData activeIconData;
   final VoidCallback onTap;
   final String text;
   final Color color;
@@ -15,7 +16,7 @@ class RoundedButtonMolecule extends StatelessWidget {
   final Color activeColor;
   final EdgeInsetsGeometry margin;
 
-  RoundedButtonMolecule({this.iconData, this.onTap, this.text, this.color, activeColor, this.active = false, this.margin}) : activeColor = activeColor ?? CustomColors.purple;
+  RoundedButtonMolecule({this.iconData = FontAwesomeIcons.image, this.onTap, this.text, this.color, activeColor, this.active = false, this.margin, this.activeIconData}) : activeColor = activeColor ?? CustomColors.purple;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class RoundedButtonMolecule extends StatelessWidget {
             ColumnAtom(
               children: [
                 FaIconAtom(
-                  icon: iconData ?? FontAwesomeIcons.image,
+                  icon: this.active ? activeIconData ?? iconData : iconData,
                   size: 30,
                   color: this.active ? activeColor : this.color ?? CustomColors.boldGrey,
                 ),

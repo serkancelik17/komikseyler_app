@@ -68,6 +68,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarOrganism(
+        leading: IconButton(icon: Icon(Icons.west), onPressed: () => Navigator.of(context).pop()),
         title: CenterMolecule(TextOneWordTwoColorMolecule(
           text: widget.section.getTitle(),
           colors: [

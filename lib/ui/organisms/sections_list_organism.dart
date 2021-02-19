@@ -51,7 +51,7 @@ class SectionListOrganism extends StatelessWidget {
       children: [
         buildIcon(index),
         SizedBoxAtom(
-          height: 20,
+          height: 10,
         ),
         TextAtom(
           text: sections[index].getTitle(),

@@ -43,22 +43,24 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
               RoundedButtonMolecule(
                 iconData: FontAwesomeIcons.exchangeAlt,
                 onTap: () {
-                  addAction(action: Local.Action(id: 4, name: 'move'), picture: widget.activeView);
+                  toggleAction(Local.Action(id: 4, name: 'move'));
                 },
                 text: "Taşı",
               ),
             RoundedButtonMolecule(
               iconData: FontAwesomeIcons.heart,
+              activeIconData: FontAwesomeIcons.solidHeart,
               onTap: () {
-                addAction(action: Local.Action(id: 1, name: 'like'), picture: widget.activeView);
+                toggleAction(Local.Action(id: 1, name: 'like'));
               },
               active: (widget.activeView.userLikesCount > 0),
               text: "Beğen",
             ),
             RoundedButtonMolecule(
               iconData: FontAwesomeIcons.star,
+              activeIconData: FontAwesomeIcons.solidStar,
               onTap: () {
-                addAction(action: Local.Action(id: 2, name: 'favorite'), picture: widget.activeView);
+                toggleAction(Local.Action(id: 2, name: 'favorite'));
               },
               text: "Favori",
               active: (widget.activeView.userFavoritesCount > 0),
@@ -119,6 +121,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
         });*/
       });
     } catch (e) {
+      toggleAction(action);
       throw e;
     }
   }
@@ -139,20 +142,19 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
 
   bool toggleAction(Local.Action action) {
     bool willAdd;
-/*    setState(() {
-      if (action.name == 'like') {
-        willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
-        widget.activeView.likesCount += (willAdd) ? 1 : -1;
-      } else if (action.name == 'favorite') {
-        willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
-        widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
-      }
-    });
+    if (action.name == 'like') {
+      willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
+      widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
+      widget.activeView.likesCount += (willAdd) ? 1 : -1;
+    } else if (action.name == 'favorite') {
+      willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
+      widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
+      widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
+    }
     _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
-    });*/
+    });
+    setState(() {});
     return true;
   }
 }
