@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:path/path.dart';
@@ -78,8 +79,8 @@ class Settings {
     );
   }
 
-  static Future<bool> share(String imageUrl) async {
-    String imageFullUrl = Settings.imageAssetsUrl + "/" + imageUrl;
+  static Future<bool> share({@required Picture picture}) async {
+    String imageFullUrl = Settings.imageAssetsUrl + "/" + picture.getPath();
     try {
       var response = await http.get(imageFullUrl);
       Directory tempDir = await getTemporaryDirectory();
@@ -91,7 +92,7 @@ class Settings {
 
       Share.shareFiles([file.path]);
     } catch (e) {
-      rethrow;
+      return false;
     }
     return true;
   }

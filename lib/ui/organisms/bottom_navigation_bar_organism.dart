@@ -6,6 +6,7 @@ import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/repositories/picture_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
 
 class BottomNavigationBarOrganism extends StatefulWidget {
@@ -124,9 +125,10 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
         widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
         widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
       } else if (action.name == 'share') {
-        willAdd = (widget.activeView.userSharesCount == 0) ? true : false; //eklenecek - silinecek
-        widget.activeView.userSharesCount = (willAdd) ? 1 : 0;
-        widget.activeView.sharesCount += (willAdd) ? 1 : -1;
+        Settings.share(picture: widget.activeView);
+        willAdd = true; //eklenecek - silinecek
+        widget.activeView.userSharesCount = 1;
+        widget.activeView.sharesCount += 1;
       }
       _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
         print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
