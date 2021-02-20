@@ -1,22 +1,31 @@
-import 'package:komik_seyler/business/providers/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesProvider implements Provider {
+class SharedPreferencesProvider {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  @override
-  Future<String> get(String key) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<String> getString(String key) async {
+    SharedPreferences prefs = await _prefs;
     String response = prefs.getString(key);
 
     return response;
   }
 
-  @override
-  Future<String> post(String endpoint, String body) {
-    // TODO: implement postResponse
-    throw UnimplementedError();
+  Future<bool> setString(String key, String value) async {
+    SharedPreferences prefs = await _prefs;
+    prefs.setString(key, value);
+    return true;
   }
-  //SharedPreferences prefs = await _prefs;
 
+  Future<String> getInt(String key) async {
+    SharedPreferences prefs = await _prefs;
+    String response = prefs.getString(key);
+
+    return response;
+  }
+
+  Future<bool> setInt(String key, int value) async {
+    SharedPreferences prefs = await _prefs;
+    prefs.setInt(key, value);
+    return true;
+  }
 }
