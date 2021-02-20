@@ -4,17 +4,16 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/business/repositories/device_repository.dart';
+
 Device deviceFromJson(String str) => Device.fromJson(json.decode(str));
 
 String deviceToJson(Device data) => json.encode(data.toJson());
 
 class Device {
-  Device({
-    this.id,
-    this.uuid,
-    this.note,
-    this.option,
-  });
+  final DeviceRepository deviceRepository;
+
+  Device({this.id, this.uuid, this.note, this.option, deviceRepository}) : deviceRepository = deviceRepository ?? DeviceRepository();
 
   int id;
   String uuid;
@@ -40,9 +39,9 @@ class Option {
   Option({
     this.id,
     this.deviceUuid,
-    this.isAdmin,
-    this.adsShowAfter,
-  });
+    this.isAdmin = 0,
+    adsShowAfter,
+  }) : adsShowAfter = adsShowAfter ? adsShowAfter : DateTime.now().subtract(Duration(days: 365));
 
   int id;
   String deviceUuid;
@@ -62,4 +61,6 @@ class Option {
         "is_admin": isAdmin == null ? null : isAdmin,
         "ads_show_after": adsShowAfter == null ? null : adsShowAfter.toIso8601String(),
       };
+  //---//
+  update(Map<String, dynamic> patches) {}
 }

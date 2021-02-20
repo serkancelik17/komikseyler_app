@@ -33,7 +33,13 @@ class DeviceRepository {
   }
 
   Future<Device> update({@required Device device, @required Map<String, dynamic> patch}) async {
-    String endpoint = '/devices/' + device.uuid.toString();
+    String endpoint = '/devices/' + device.uuid;
+    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
+    return deviceFromJson(apiResponse);
+  }
+
+  Future<Device> updateOption({@required Option option, @required Map<String, dynamic> patch}) async {
+    String endpoint = '/devices/' + option.deviceUuid + '/options/' + option.id.toString();
     String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
     return deviceFromJson(apiResponse);
   }

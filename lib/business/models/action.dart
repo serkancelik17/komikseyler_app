@@ -59,4 +59,14 @@ class Action extends SectionAbstract {
   double getPercent() {
     return 0;
   }
+
+  @override
+  bool calculatePercent() {
+    return false;
+  }
+
+  @override
+  SectionAbstract setViewCount(int viewCount) {
+    return this;
+  }
 }

@@ -16,9 +16,9 @@ class AppRouter {
 
     print(settings.name);
     switch (settings.name) {
-      case '/categories':
+      case '/sections':
         return MaterialPageRoute(
-          builder: (_) => ViewsPage(section: arguments[0], device: arguments[1]),
+          builder: (_) => ViewsPage(section: arguments[0]),
         );
         break;
 /*      case '/error':
@@ -27,7 +27,7 @@ class AppRouter {
         );
         break;*/
     }
-    //return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "Film Replikleri")));
+    //return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "{category_title}")));
     return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

@@ -1,36 +1,22 @@
-import 'dart:async';
-
 import 'package:admob_flutter/admob_flutter.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
-import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/category.dart' as Local;
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/config/env.dart';
-import 'package:komik_seyler/ui/atoms/banner_atom.dart';
-import 'package:komik_seyler/ui/atoms/button_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
-import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
 import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/bottom_navigation_bar_organism.dart';
-import 'package:komik_seyler/ui/organisms/views_slider_organism.dart';
+import 'package:komik_seyler/ui/organisms/custom_slider_organism.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionAbstract section;
-  final Device device;
 
-  ViewsTemplate({@required SectionAbstract section, @required this.device}) : section = section ?? Local.Category(id: 1, name: '{title}');
+  ViewsTemplate({@required SectionAbstract section}) : section = section ?? Local.Category(id: 1, name: '{title}');
 
   @override
   _ViewsTemplateState createState() => _ViewsTemplateState();
@@ -44,24 +30,23 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   ViewAbstract activeView;
   AdmobReward rewardAd;
 
-  final _productIds = {'subscription_yearly'};
+/*  final _productIds = {'subscription_yearly'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   StreamSubscription<List<PurchaseDetails>> _subscription;
-  List<ProductDetails> _products = [];
+  List<ProductDetails> _products = [];*/
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      getMore();
-    });
+    //super.initState();
+  }
+  //WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {});
 
-    rewardAd = AdmobReward(
+  /* rewardAd = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
       listener: (AdmobAdEvent event, Map<String, dynamic> args) {
         if (event == AdmobAdEvent.closed) rewardAd.load();
-/*          handleEvent(event, args, 'Reward');*/
+*/ /*          handleEvent(event, args, 'Reward');*/ /*
       },
     );
     rewardAd.load();
@@ -75,7 +60,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       // handle error here.
     });
     initStoreInfo();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -90,60 +75,24 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
           ],
         )),
       ),
-      body: (views == null)
-          ? Center(child: CircularProgressIndicator())
-          : (views.length == 0)
-              ? CenterMolecule(TextAtom(text: "Herhangi bir içerik bulunamadı."))
-              : Column(
-                  children: [
-                    ViewsSliderOrganism(views: views, activeView: activeView, onPageChange: onPageChange),
-                    (DateTime.now().isAfter(widget.device.option.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))) ? ((activeView is Ad) ? getAdButtons() : BannerAtom()) : Text(""),
-                  ],
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomSliderOrganism(
+              section: widget.section,
+              viewChanged: (activeView) {
+                setState(() {
+                  this.activeView = activeView;
+                });
+              }),
+          //(DateTime.now().isAfter(widget.device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))) ? ((activeView is Ad) ? getAdButtons() : BannerAtom()) : Text(""),
+        ],
+      ),
       bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
     );
   }
 
-  Future<void> getMore() async {
-    // try {
-    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Env.pagePictureLimit);
-    setState(() {
-      views ??= [];
-      if (_views.length > 0) {
-        //İlk resmi varsayılan vap
-        if (views.length == 0) activeView = _views[0];
-        views.addAll(_views);
-      }
-
-      if (!kIsWeb && views.length > 0 && (DateTime.now().isAfter(widget.device.option.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))) views.add(Ad());
-    });
-/*    } catch (error) {
-      Navigator.pushReplacementNamed(context, '/error', arguments: error);
-    }*/
-  }
-
-  onPageChange(int index, CarouselPageChangedReason reason) {
-    pictureChangeCount++;
-
-    setState(() {
-      activeView = views[index];
-    });
-    //Update lastView
-    if (activeView is Picture) _deviceRepository.logUpdateViewCount(picture: activeView);
-
-    if (index == views.length - 2) getMore();
-  }
-
-  initStoreInfo() async {
-    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_productIds);
-    if (productDetailResponse.error == null) {
-      setState(() {
-        _products = productDetailResponse.productDetails;
-      });
-    }
-  }
-
-  removeAds() async {
+  /* removeAds() async {
     try {
       //@TODO device.option icine aktarilacak.
       await _deviceRepository.update(device: widget.device, patch: {'show_ad': 0});
@@ -262,4 +211,13 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     rewardAd.dispose();
     super.dispose();
   }
+
+  initStoreInfo() async {
+    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_productIds);
+    if (productDetailResponse.error == null) {
+      //setState(() {
+      _products = productDetailResponse.productDetails;
+      // });
+    }
+  }*/
 }

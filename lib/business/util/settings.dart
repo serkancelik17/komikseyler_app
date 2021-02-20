@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
@@ -52,14 +53,9 @@ class Settings {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     SharedPreferences prefs = await _prefs;
 
-    // try {
-    String uuid = prefs.getString('uuid') ?? await Settings.getUuid();
+    device = prefs.getString('device').length > 0 ? deviceFromJson(prefs.getString('device')) : _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
 
-    device = await _deviceRepository.get(uuid: uuid);
-    prefs.setString("uuid", device.uuid);
-    /*   } catch (e) {
-      throw e;
-    }*/
+    prefs.setString("device", jsonEncode(device));
 
     return device;
   }

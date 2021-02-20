@@ -7,6 +7,8 @@ abstract class SectionAbstract {
   String getTitle();
   String getUniqueName();
   double getPercent();
+  SectionAbstract setViewCount(int viewCount);
+  bool calculatePercent();
 
   IconData getIcon() {
     return _getFaIcon();
