@@ -3,15 +3,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
 
 abstract class SectionAbstract {
+  int viewCount;
+
   int getId();
   String getTitle();
   String getUniqueName();
   double getPercent();
+
   SectionAbstract setViewCount(int viewCount);
   bool calculatePercent();
 
   IconData getIcon() {
     return _getFaIcon();
+  }
+
+  bool increaseViewCount() {
+    this.viewCount++;
+    return true;
   }
 
   RepositoryAbstract getRepository();

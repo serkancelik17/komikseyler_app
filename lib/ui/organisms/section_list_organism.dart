@@ -43,9 +43,9 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
             itemBuilder: (context, index) {
               return RoundedContainerMolecule(
                 child: buildSection(index),
-                onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index], _device]).then((viewCount) {
+                onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index], _device]).then((section) {
                   setState(() {
-                    _sections[index].setViewCount(viewCount);
+                    _sections[index] = section;
                     // refresh state of Page1
                   });
                 }),

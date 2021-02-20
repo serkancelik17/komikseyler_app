@@ -5,8 +5,6 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
@@ -25,8 +23,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   int _page = 1;
   List<ViewAbstract> _views = [];
   ViewAbstract _activeView;
-  Device _device = new Device();
-  final _deviceRepository = DeviceRepository();
+  Device device;
 
   @override
   void initState() {
@@ -71,7 +68,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       });
     }
 
-    if (!kIsWeb && _views.length > 0 && (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1))))) _views.add(Ad());
+    //if (!kIsWeb && _views.length > 0 && (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))))
+    _views.add(Ad());
   }
 
   _onPageChange(int index, CarouselPageChangedReason reason) {
@@ -80,7 +78,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       widget.viewChanged(_activeView);
     });
     //Update lastView
-    if (_activeView is Picture) _deviceRepository.logUpdateViewCount(picture: _activeView);
+    widget.section.increaseViewCount(); // Sayısı bir arttır.
+    //widget.section.changeLastWiewPictureId(_activeView);
 
     if (index == _views.length - 2) getMore();
   }

@@ -1,11 +1,21 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:komik_seyler/business/repositories/device_repository.dart';
 
 class AdManager {
   Platform platform;
+  final DeviceRepository deviceRepository;
+  final _productIds = {'subscription_yearly'};
+  InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
+  StreamSubscription<List<PurchaseDetails>> subscription;
+  List<ProductDetails> _products = [];
+
+  AdManager({deviceRepository}) : deviceRepository = deviceRepository ?? DeviceRepository();
 
   static String get appId {
     if (Platform.isAndroid) {
@@ -69,6 +79,60 @@ class AdManager {
       );
     } else {
       return Text("");
+    }
+  }
+
+  removeAds(BuildContext ctx) async {
+    try {
+      //@TODO device.option icine aktarilacak.
+      await deviceRepository.updateOption(patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        // show progress bar or something
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          // show error message or failure icon
+          showPaymentErrorAlertDialog(ctx);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+          // show success message and deliver the product.
+          // showPaymentSuccessAlertDialog(context);
+          this.removeAds(ctx);
+        }
+      }
+    });
+  }
+
+  buyProduct() {
+    if (_products.length > 0) {
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: _products[0]);
+      _connection.buyConsumable(purchaseParam: purchaseParam);
+    } else {
+      print("HATA: Product bulunamadı");
+    }
+  }
+
+  showPaymentErrorAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  initStoreInfo() async {
+    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_productIds);
+    if (productDetailResponse.error == null) {
+      //setState(() {
+      _products = productDetailResponse.productDetails;
+      // });
     }
   }
 }
