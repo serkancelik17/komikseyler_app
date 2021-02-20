@@ -85,7 +85,7 @@ class AdManager {
   removeAds(BuildContext ctx) async {
     try {
       //@TODO device.option icine aktarilacak.
-      await deviceRepository.updateOption(patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
+      await deviceRepository.optionUpdate(patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))}, option: null);
     } catch (e) {
       print(e.toString());
     }

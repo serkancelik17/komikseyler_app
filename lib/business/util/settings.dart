@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/config/env.dart';
@@ -50,12 +51,11 @@ class Settings {
   static Future<Device> getDevice() async {
     Device device;
     DeviceRepository _deviceRepository = DeviceRepository();
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    SharedPreferences prefs = await _prefs;
+    SharedPreferencesProvider _spp = SharedPreferencesProvider();
 
-    device = prefs.getString('device').length > 0 ? deviceFromJson(prefs.getString('device')) : _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
+    device = await _deviceRepository.getFromLocal() ?? _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
 
-    prefs.setString("device", jsonEncode(device));
+    _spp.setString("device", jsonEncode(device));
 
     return device;
   }

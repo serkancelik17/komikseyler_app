@@ -5,6 +5,7 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
@@ -24,12 +25,16 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   List<ViewAbstract> _views = [];
   ViewAbstract _activeView;
   Device device;
+  int maxIndex = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getMore();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      device = await Settings.getDevice();
+    });
   }
 
   @override
@@ -41,8 +46,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
               CarouselSlider(
                 options: CarouselOptions(
                   height: MediaQuery.of(context).size.height * 0.65,
-                  onPageChanged: (i, r) {
-                    _onPageChange(i, r);
+                  onPageChanged: (index, reason) {
+                    _onPageChange(index, reason);
                   },
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
@@ -79,8 +84,11 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       widget.viewChanged(_activeView);
     });
     //Update lastView
-    widget.section.increaseViewCount(); // Sayısı bir arttır.
-    //widget.section.changeLastWiewPictureId(_activeView);
+    if (index > maxIndex) {
+      maxIndex = index;
+      widget.section.increaseViewCount(); // Sayısı bir arttır.
+      //device.changeLastWiewPictureId(_activeView);
+    }
 
     if (index == _views.length - 2) getMore();
   }
