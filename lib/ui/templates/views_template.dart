@@ -14,7 +14,7 @@ import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
@@ -106,7 +106,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
   Future<void> getMore() async {
     // try {
-    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Settings.pagePictureLimit);
+    List<ViewAbstract> _views = await widget.section.getRepository().views(section: widget.section, page: page++, limit: Env.pagePictureLimit);
     setState(() {
       views ??= [];
       if (_views.length > 0) {

@@ -9,6 +9,7 @@ import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
+import 'package:komik_seyler/config/env.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -16,13 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulid/ulid.dart';
 
 class Settings {
-/*  static String baseUrl = 'https://komikseyler.serkancelik.web.tr';*/
-  static String baseUrl = 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public';
-  /* static String baseUrl = 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public';*/
-
-  static String imageAssetsUrl = Settings.baseUrl + '/assets/images';
-  static int pagePictureLimit = 5;
-
   /// Support on iOS, Android and web project
   static Future<String> getUuid() async {
     String identifier;
@@ -80,7 +74,7 @@ class Settings {
   }
 
   static Future<bool> share({@required Picture picture}) async {
-    String imageFullUrl = Settings.imageAssetsUrl + "/" + picture.getPath();
+    String imageFullUrl = Env.imageAssetsUrl + "/" + picture.getPath();
     try {
       var response = await http.get(imageFullUrl);
       Directory tempDir = await getTemporaryDirectory();

@@ -6,6 +6,7 @@ abstract class SectionAbstract {
   int getId();
   String getTitle();
   String getUniqueName();
+  double getPercent();
 
   IconData getIcon() {
     return _getFaIcon();

@@ -16,19 +16,23 @@ class Category extends SectionAbstract {
   Category({
     this.id,
     this.name,
+    this.percent,
   });
 
   int id;
   String name;
+  double percent;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
+        percent: json["percent"] == null ? null : json["percent"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "name": name == null ? null : name,
+        "percent": percent == null ? null : percent,
       };
 
   @override
@@ -50,5 +54,10 @@ class Category extends SectionAbstract {
   String getUniqueName() {
     // TODO: implement getName
     return 'category' + this.getId().toString();
+  }
+
+  @override
+  double getPercent() {
+    return this.percent;
   }
 }

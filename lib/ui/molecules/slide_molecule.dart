@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
-import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/molecules/rounded_container_molecule.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
@@ -24,7 +24,7 @@ class SlideMolecule extends StatelessWidget {
                 child: PinchZoom(
                   image: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/loading.gif',
-                    image: Settings.imageAssetsUrl + "/" + view.getPath(),
+                    image: Env.imageAssetsUrl + "/" + view.getPath(),
                     fit: BoxFit.contain,
                   ),
                 ),

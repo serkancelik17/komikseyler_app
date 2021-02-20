@@ -54,4 +54,9 @@ class Action extends SectionAbstract {
   String getUniqueName() {
     return 'action' + this.getId().toString();
   }
+
+  @override
+  double getPercent() {
+    return 0;
+  }
 }

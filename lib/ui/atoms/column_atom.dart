@@ -11,7 +11,7 @@ class ColumnAtom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: mainAxisAlignment,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: children,
       key: key,
       mainAxisSize: mainAxisSize,

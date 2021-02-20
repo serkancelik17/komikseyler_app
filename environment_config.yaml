@@ -1,0 +1,22 @@
+
+environment_config:
+  path: config/env.dart
+  fields:
+    env:
+      default: 'dev'
+
+    baseUrl:
+      default: "${env =='dev'
+      ? 'http://10.0.2.2/komikseyler.serkancelik.web.tr/public'
+      : env == 'test' ? 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public'
+      : 'https://komikseyler.serkancelik.web.tr'}"
+
+    imageAssetsUrl:
+      default: "$baseUrl/assets/images"
+
+    pagePictureLimit:
+      default: "(env == 'dev') ? 5 :20"
+      type: int
+
+  imports:
+    - dart:io

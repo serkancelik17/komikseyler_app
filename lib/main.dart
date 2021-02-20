@@ -7,7 +7,6 @@ import 'package:komik_seyler/ui/themes/custom_theme.dart';
 void main() {
   ///Include this in main() so purchases are enabled
   InAppPurchaseConnection.enablePendingPurchases();
-
   runApp(MyApp());
 }
 
