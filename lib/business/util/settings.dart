@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/config/env.dart';
@@ -51,12 +49,7 @@ class Settings {
   static Future<Device> getDevice() async {
     Device device;
     DeviceRepository _deviceRepository = DeviceRepository();
-    SharedPreferencesProvider _spp = SharedPreferencesProvider();
-
-    device = await _deviceRepository.getFromLocal() ?? _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
-
-    _spp.setString("device", jsonEncode(device));
-
+    device = await _deviceRepository.getFromLocal() ?? await _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
     return device;
   }
 

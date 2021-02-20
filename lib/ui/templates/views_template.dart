@@ -5,12 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
-import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/category.dart' as Local;
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
@@ -33,17 +30,23 @@ class ViewsTemplate extends StatefulWidget {
 }
 
 class _ViewsTemplateState extends State<ViewsTemplate> {
-  DeviceRepository _deviceRepository = new DeviceRepository();
   int pictureChangeCount = 0;
   List<ViewAbstract> views;
   int page = 1;
   ViewAbstract activeView;
   AdmobReward rewardAd;
+  AdManager _adManager = AdManager();
+  bool _showAd = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _showAd = await _adManager.showAd();
+    });
+
     rewardAd = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
       listener: (AdmobAdEvent event, Map<String, dynamic> args) {
@@ -86,7 +89,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                   this.activeView = activeView;
                 });
               }),
-          ((activeView is Ad) ? getAdButtons() : BannerAtom())
           // //(DateTime.now().isAfter(widget.device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))) ?
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
@@ -26,6 +27,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   ViewAbstract _activeView;
   Device device;
   int maxIndex = 0;
+  AdManager _adManager = AdManager();
 
   @override
   void initState() {
@@ -51,7 +53,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
                   },
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
-                  viewportFraction: 1,
+                  viewportFraction: 0.9,
                 ),
                 items: _views.map((view) {
                   return SlideMolecule(view: view);
@@ -73,9 +75,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
         _views.addAll(_newViews);
       });
     }
-
-    //if (!kIsWeb && _views.length > 0 && (DateTime.now().isAfter(_device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))))
-    _views.add(Ad());
+    if (await _adManager.showAd()) _views.add(Ad());
   }
 
   _onPageChange(int index, CarouselPageChangedReason reason) {

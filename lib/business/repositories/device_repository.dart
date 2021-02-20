@@ -29,8 +29,10 @@ class DeviceRepository {
   }
 
   Future<Device> getFromLocal() async {
-    Device device = deviceFromJson(await spp.getString('device'));
-    return device ?? null;
+    Device _device;
+    String deviceString = await spp.getString('device');
+    if (deviceString != null && deviceString.length > 0) _device = deviceFromJson(deviceString);
+    return _device ?? null;
   }
 
   Future<Device> store({@required Device device}) async {

@@ -5,7 +5,9 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
@@ -58,6 +60,12 @@ class AdManager {
     } else {
       return "Unsupported platform";
     }
+  }
+
+  Future<bool> showAd() async {
+    final Device _device = await Settings.getDevice();
+    if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) return true;
+    return false;
   }
 
   static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
