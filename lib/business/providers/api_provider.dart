@@ -9,7 +9,7 @@ class ApiProvider implements Provider {
   ApiProvider();
 
   ///veriyi getir
-  Future<String> getResponse(String endpoint) async {
+  Future<String> get(String endpoint) async {
     final url = _apiUrl + endpoint;
     debugPrint("[GET] Request Url : " + url);
     // try {
@@ -26,7 +26,7 @@ class ApiProvider implements Provider {
     }*/
   }
 
-  Future<String> postResponse(String endpoint, String body) async {
+  Future<String> post(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);
@@ -44,7 +44,7 @@ class ApiProvider implements Provider {
     }
   }
 
-  Future<String> patchResponse(String endpoint, String body) async {
+  Future<String> patch(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);

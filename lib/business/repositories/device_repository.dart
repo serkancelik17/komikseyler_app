@@ -18,7 +18,7 @@ class DeviceRepository {
     String endPoint = "/devices/" + uuid;
     print("devices.get : " + endPoint);
     // try {
-    String response = await provider.getResponse(endPoint);
+    String response = await provider.get(endPoint);
     Device _device = deviceFromJson(response);
     return _device;
 /*    } catch (e) {
@@ -28,19 +28,19 @@ class DeviceRepository {
 
   Future<Device> store({@required Device device}) async {
     String endpoint = '/devices';
-    String apiResponse = await provider.postResponse(endpoint, jsonEncode(device));
+    String apiResponse = await provider.post(endpoint, jsonEncode(device));
     return deviceFromJson(apiResponse);
   }
 
   Future<Device> update({@required Device device, @required Map<String, dynamic> patch}) async {
     String endpoint = '/devices/' + device.uuid;
-    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
+    String apiResponse = await provider.patch(endpoint, jsonEncode(patch));
     return deviceFromJson(apiResponse);
   }
 
   Future<Device> updateOption({@required Option option, @required Map<String, dynamic> patch}) async {
     String endpoint = '/devices/' + option.deviceUuid + '/options/' + option.id.toString();
-    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
+    String apiResponse = await provider.patch(endpoint, jsonEncode(patch));
     return deviceFromJson(apiResponse);
   }
 
@@ -49,7 +49,7 @@ class DeviceRepository {
     print(_uuid.toString());
     Map<String, dynamic> patch = {'category_id': picture.categoryId, 'last_view_picture_id': picture.id, 'view_count': viewCount};
     String endpoint = '/devices/' + _uuid + '/logs';
-    String apiResponse = await provider.patchResponse(endpoint, jsonEncode(patch));
+    String apiResponse = await provider.patch(endpoint, jsonEncode(patch));
     return responseFromJson(apiResponse);
   }
 
@@ -57,7 +57,7 @@ class DeviceRepository {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = '/devices/' + _uuid + '/logs/pictures/' + picture.id.toString() + '/update_view_count';
-    String apiResponse = await provider.patchResponse(endpoint, '{}');
+    String apiResponse = await provider.patch(endpoint, '{}');
     return responseFromJson(apiResponse);
   }
 }

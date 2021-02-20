@@ -23,7 +23,7 @@ class CategoryRepository implements RepositoryAbstract {
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + '/categories';
 
-    String apiResponse = await provider.getResponse(endpoint);
+    String apiResponse = await provider.get(endpoint);
 
     return categoryFromJson(apiResponse);
   }
@@ -33,7 +33,7 @@ class CategoryRepository implements RepositoryAbstract {
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 
-    String apiResponse = await provider.getResponse(endpoint);
+    String apiResponse = await provider.get(endpoint);
     List<Picture> pictures = pictureFromJson(apiResponse);
 
     return pictures;
@@ -42,7 +42,7 @@ class CategoryRepository implements RepositoryAbstract {
   Future<Response> store({@required Device device}) async {
     String endpoint = '/devices';
     String body = jsonEncode(device);
-    Response response = responseFromJson(await provider.postResponse(endpoint, body));
+    Response response = responseFromJson(await provider.post(endpoint, body));
 
     return response;
   }

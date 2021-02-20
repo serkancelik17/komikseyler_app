@@ -1,4 +1,4 @@
 abstract class Provider {
-  Future<String> getResponse(String endpoint);
-  Future<String> postResponse(String endpoint, String body);
+  Future<String> get(String endpoint);
+  Future<String> post(String endpoint, String body);
 }

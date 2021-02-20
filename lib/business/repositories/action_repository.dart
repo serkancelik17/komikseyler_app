@@ -18,7 +18,7 @@ class ActionRepository implements RepositoryAbstract {
   Future<Local.Action> getAction({@required String actionName}) async {
     String endpoint = "/actions/" + actionName;
 
-    String apiResponse = await provider.getResponse(endpoint);
+    String apiResponse = await provider.get(endpoint);
     Response _response = responseFromJson(apiResponse);
 
     Local.Action action = Local.Action.fromJson(_response.data[0]);
@@ -30,7 +30,7 @@ class ActionRepository implements RepositoryAbstract {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
-    String apiResponse = await provider.getResponse(endpoint);
+    String apiResponse = await provider.get(endpoint);
     List<Picture> pictures = (responseFromJson(apiResponse)).data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;
   }
