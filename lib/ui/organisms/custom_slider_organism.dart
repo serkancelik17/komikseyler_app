@@ -64,6 +64,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       //İlk resmi varsayılan vap
       if (_views.length == 0) _activeView = _newViews[0];
       setState(() {
+        widget.viewChanged(_activeView);
         _views.addAll(_newViews);
       });
     }
