@@ -5,9 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:path/path.dart';
@@ -44,13 +42,6 @@ class Settings {
     /*   } catch (e) {
       rethrow;
     }*/
-  }
-
-  static Future<Device> getDevice() async {
-    Device device;
-    DeviceRepository _deviceRepository = DeviceRepository();
-    device = await _deviceRepository.getFromLocal() ?? await _deviceRepository.store(device: Device(uuid: await Settings.getUuid()));
-    return device;
   }
 
   static Widget buildAppBar({title}) {

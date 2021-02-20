@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
@@ -63,9 +62,11 @@ class AdManager {
   }
 
   Future<bool> showAd() async {
-    final Device _device = await Settings.getDevice();
-    if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) return true;
-    return false;
+    final Device _device = await deviceRepository.get();
+    if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
+      return false;
+    }
+    return true;
   }
 
   static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
@@ -91,12 +92,10 @@ class AdManager {
   }
 
   removeAds(BuildContext ctx) async {
-    try {
-      //@TODO device.option icine aktarilacak.
-      await deviceRepository.optionUpdate(patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))}, option: null);
-    } catch (e) {
-      print(e.toString());
-    }
+    final Device _device = await deviceRepository.get();
+
+    //@TODO device.option icine aktarilacak.
+    await deviceRepository.optionUpdate(option: _device.option, patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
   }
 
   listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
@@ -108,9 +107,9 @@ class AdManager {
           // show error message or failure icon
           showPaymentErrorAlertDialog(ctx);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          // show success message and deliver the product.
-          // showPaymentSuccessAlertDialog(context);
           this.removeAds(ctx);
+          // show success message and deliver the product.
+          showPaymentSuccessAlertDialog(ctx);
         }
       }
     });
@@ -142,5 +141,24 @@ class AdManager {
       _products = productDetailResponse.productDetails;
       // });
     }
+  }
+
+  showPaymentSuccessAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Ödeme Alındı."),
+      content: Text("Tüm reklamlar kaldırıldı. Ödeme için teşekkürler."),
+      actions: [
+        okButton,
+      ],
+    );
   }
 }

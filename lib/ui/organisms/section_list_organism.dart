@@ -3,7 +3,6 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/LinearIndicatorAtom.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/atoms/circular_progress_indicator_atom.dart';
@@ -105,11 +104,6 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
 
     setState(() {});
 
-    return true;
-  }
-
-  Future<bool> getDevice() async {
-    _device = await Settings.getDevice();
     return true;
   }
 }

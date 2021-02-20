@@ -5,17 +5,20 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
 class CustomSliderOrganism extends StatefulWidget {
+  final DeviceRepository deviceRepository;
   final SectionAbstract section;
   final ValueChanged<ViewAbstract> viewChanged;
 
-  CustomSliderOrganism({Key key, this.section, this.viewChanged}) : super(key: key);
+  CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository})
+      : deviceRepository = deviceRepository ?? DeviceRepository(),
+        super(key: key);
 
   @override
   _CustomSliderOrganismState createState() => _CustomSliderOrganismState();
@@ -35,7 +38,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     super.initState();
     getMore();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      device = await Settings.getDevice();
+      device = await widget.deviceRepository.get();
     });
   }
 
@@ -75,6 +78,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
         _views.addAll(_newViews);
       });
     }
+    //Reklamları satın almadıysa remlam ekle icerige
     if (await _adManager.showAd()) _views.add(Ad());
   }
 

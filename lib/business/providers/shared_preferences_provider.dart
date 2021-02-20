@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesProvider {
@@ -10,22 +12,9 @@ class SharedPreferencesProvider {
     return response;
   }
 
-  Future<bool> setString(String key, String value) async {
+  Future<bool> set(String key, dynamic value) async {
     SharedPreferences prefs = await _prefs;
-    prefs.setString(key, value);
-    return true;
-  }
-
-  Future<String> getInt(String key) async {
-    SharedPreferences prefs = await _prefs;
-    String response = prefs.getString(key);
-
-    return response;
-  }
-
-  Future<bool> setInt(String key, int value) async {
-    SharedPreferences prefs = await _prefs;
-    prefs.setInt(key, value);
+    prefs.setString(key, jsonEncode(value));
     return true;
   }
 }

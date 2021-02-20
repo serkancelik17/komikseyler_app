@@ -40,8 +40,8 @@ class Option {
     this.id,
     this.deviceUuid,
     this.isAdmin = 0,
-    adsShowAfter,
-  }) : adsShowAfter = adsShowAfter ? adsShowAfter : DateTime.now().subtract(Duration(days: 365));
+    this.adsShowAfter,
+  });
 
   int id;
   String deviceUuid;

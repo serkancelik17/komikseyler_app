@@ -5,9 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/category.dart' as Local;
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
+import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
@@ -89,7 +91,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                   this.activeView = activeView;
                 });
               }),
-          // //(DateTime.now().isAfter(widget.device?.option?.adsShowAfter ?? DateTime.now().add(Duration(days: 1)))) ?
+          (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerAtom()) : Text("")),
         ],
       ),
       bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
