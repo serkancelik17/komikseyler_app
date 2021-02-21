@@ -1,14 +1,14 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 
 class SlideMolecule extends StatelessWidget {
-  final ViewAbstract view;
+  final Viewable view;
 
   SlideMolecule({@required this.view});
 
@@ -21,7 +21,7 @@ class SlideMolecule extends StatelessWidget {
               image: Container(
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/images/loading.gif',
-                  image: Env.imageAssetsUrl + "/" + view.getPath(),
+                  image: Env.imageAssetsUrl + "/" + view.path,
                   fit: BoxFit.contain,
                 ),
               ),

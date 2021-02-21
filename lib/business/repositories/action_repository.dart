@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
-class ActionRepository implements RepositoryAbstract {
+class ActionRepository implements Repositoriable {
   ApiProvider provider;
 
   ActionRepository({this.provider}) {
@@ -26,7 +26,7 @@ class ActionRepository implements RepositoryAbstract {
     return action;
   }
 
-  Future<List<ViewAbstract>> views({@required SectionAbstract section, int page = 1, int limit = 20}) async {
+  Future<List<Viewable>> views({@required Sectionable section, int page = 1, int limit = 20}) async {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();

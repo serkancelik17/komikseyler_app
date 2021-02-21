@@ -4,18 +4,21 @@
 
 import 'dart:convert';
 
-Log logFromJson(String str) => Log.fromJson(json.decode(str));
+import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 
-String logToJson(Log data) => json.encode(data.toJson());
+List<Log> logFromJson(String str) => List<Log>.from(json.decode(str).map((x) => Log.fromJson(x)));
 
-class Log {
+String logToJson(List<Log> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Log extends Model {
   Log({
     this.id,
     this.deviceUuid,
     this.categoryId,
     this.lastViewPictureId,
     this.viewCount,
-  });
+  }) : super(tableName: 'logs', uniqueId: id, repository: LogRepository());
 
   int id;
   String deviceUuid;

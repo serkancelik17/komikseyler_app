@@ -13,7 +13,6 @@ class AdManager {
   final DeviceRepository deviceRepository;
   final _productIds = {'subscription_yearly'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
-  StreamSubscription<List<PurchaseDetails>> subscription;
   List<ProductDetails> _products = [];
 
   AdManager({deviceRepository}) : deviceRepository = deviceRepository ?? DeviceRepository();
@@ -95,7 +94,8 @@ class AdManager {
     final Device _device = await deviceRepository.get();
 
     //@TODO device.option icine aktarilacak.
-    await deviceRepository.optionUpdate(option: _device.option, patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
+    _device.option.update();
+    //await deviceRepository.optionUpdate(option:, patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
   }
 
   listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
@@ -132,6 +132,15 @@ class AdManager {
         Navigator.of(context).pop();
       },
     );
+
+    // set up the AlertDialog
+    AlertDialog(
+      title: Text("Ödeme Alınamadı. :("),
+      content: Text("Bir hatayla karşılaşıldı. Tekrar deneyiniz."),
+      actions: [
+        okButton,
+      ],
+    );
   }
 
   initStoreInfo() async {
@@ -153,7 +162,7 @@ class AdManager {
     );
 
     // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
+    AlertDialog(
       title: Text("Ödeme Alındı."),
       content: Text("Tüm reklamlar kaldırıldı. Ödeme için teşekkürler."),
       actions: [

@@ -54,7 +54,7 @@ class Settings {
   }
 
   static Future<bool> share({@required Picture picture}) async {
-    String imageFullUrl = Env.imageAssetsUrl + "/" + picture.getPath();
+    String imageFullUrl = Env.imageAssetsUrl + "/" + picture.path;
     try {
       var response = await http.get(imageFullUrl);
       Directory tempDir = await getTemporaryDirectory();

@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/category.dart' as Local;
 import 'package:komik_seyler/business/models/picture.dart';
@@ -20,10 +22,10 @@ import 'package:komik_seyler/ui/organisms/custom_slider_organism.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
-  final SectionAbstract section;
+  final Sectionable section;
   final AdManager adManager;
 
-  ViewsTemplate({@required SectionAbstract section, adManager})
+  ViewsTemplate({@required Sectionable section, adManager})
       : section = section ?? Local.Category(id: 1, name: '{title}'),
         adManager = adManager ?? AdManager();
 
@@ -33,12 +35,13 @@ class ViewsTemplate extends StatefulWidget {
 
 class _ViewsTemplateState extends State<ViewsTemplate> {
   int pictureChangeCount = 0;
-  List<ViewAbstract> views;
+  List<Viewable> views;
   int page = 1;
-  ViewAbstract activeView;
+  Viewable activeView;
   AdmobReward rewardAd;
   AdManager _adManager = AdManager();
   bool _showAd = false;
+  StreamSubscription<List<PurchaseDetails>> subscription;
 
   @override
   void initState() {
@@ -58,10 +61,10 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     rewardAd.load();
 
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    widget.adManager.subscription = purchaseUpdated.listen((purchaseDetailsList) {
+    subscription = purchaseUpdated.listen((purchaseDetailsList) {
       widget.adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
     }, onDone: () {
-      widget.adManager.subscription.cancel();
+      subscription.cancel();
     }, onError: (error) {
       // handle error here.
     });
@@ -120,5 +123,12 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     ));
 
     return Column(children: buttons);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
   }
 }

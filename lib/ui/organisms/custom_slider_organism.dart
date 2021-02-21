@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/ad.dart';
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/device/log.dart';
+import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
@@ -16,8 +16,8 @@ import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 class CustomSliderOrganism extends StatefulWidget {
   final DeviceRepository deviceRepository;
   final LogRepository logRepository;
-  final SectionAbstract section;
-  final ValueChanged<ViewAbstract> viewChanged;
+  final Sectionable section;
+  final ValueChanged<Viewable> viewChanged;
 
   CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository, logRepository})
       : deviceRepository = deviceRepository ?? DeviceRepository(),
@@ -30,9 +30,8 @@ class CustomSliderOrganism extends StatefulWidget {
 
 class _CustomSliderOrganismState extends State<CustomSliderOrganism> with WidgetsBindingObserver {
   int _page = 1;
-  List<ViewAbstract> _views = [];
-  ViewAbstract _activeView;
-  Device _device;
+  List<Viewable> _views = [];
+  Viewable _activeView;
   Log _log;
   int maxIndex = 0;
   AdManager _adManager = AdManager();
@@ -44,8 +43,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
     getMore();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _device = await widget.deviceRepository.get();
-      _log = await widget.logRepository.get(_device, widget.section);
+      _log = (await Log().where(filter: {'category_id': widget.section.getId()})).first ?? Log(categoryId: widget.section.getId());
     });
   }
 
@@ -75,7 +73,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   }
 
   Future<void> getMore() async {
-    List<ViewAbstract> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
+    List<Viewable> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
 
     if (_newViews.length > 0) {
       //İlk resmi varsayılan vap
@@ -95,17 +93,18 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
       widget.viewChanged(_activeView);
     });
     //Update lastView
-    if (index > maxIndex) {
+    if (index > maxIndex && _activeView is Picture) {
       maxIndex = index;
-      _log.viewCount = widget.section.increaseViewCount(); // Sayısı bir arttır.
-      _log.lastViewPictureId = _activeView.getId();
+      _log.viewCount = widget.section.viewCount++; // Sayısı bir arttır.
+      _log.lastViewPictureId = _activeView.id;
+      _log.update();
     }
 
     if (index == _views.length - 2) getMore();
   }
 
   _saveData() {
-    widget.logRepository.update(log: _log);
+    _log.update();
   }
 
   @override

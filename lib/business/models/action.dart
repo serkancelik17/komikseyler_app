@@ -4,15 +4,15 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/action_repository.dart';
 
 Action actionFromJson(String str) => Action.fromJson(json.decode(str));
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
-class Action extends SectionAbstract {
+class Action extends Sectionable {
   Action({
     this.id,
     this.name,
@@ -41,7 +41,7 @@ class Action extends SectionAbstract {
   }
 
   @override
-  RepositoryAbstract getRepository() {
+  Repositoriable getRepository() {
     return new ActionRepository();
   }
 
@@ -66,7 +66,7 @@ class Action extends SectionAbstract {
   }
 
   @override
-  SectionAbstract setViewCount(int viewCount) {
+  Sectionable setViewCount(int viewCount) {
     return this;
   }
 }

@@ -54,7 +54,24 @@ class ApiProvider {
         print("response" + response.toString());
         return response.body;
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Veri post edilemedi.");
+        throw Exception("Sunucuya bağlanılamadı. Veri patch edilemedi.");
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> delete(String endpoint) async {
+    final url = _apiUrl + endpoint;
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
+    debugPrint("[POST] Request Url : " + url);
+    try {
+      http.Response response = await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        print("response" + response.toString());
+        return response.body;
+      } else {
+        throw Exception("Sunucuya bağlanılamadı. Veri silinemedi.");
       }
     } catch (e) {
       throw e;

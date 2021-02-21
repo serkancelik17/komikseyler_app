@@ -1,14 +1,14 @@
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 
-class Ad implements ViewAbstract {
+class Ad implements Viewable {
   @override
-  String getPath() {
+  String get path {
     return '';
   }
 
   @override
-  int getId() {
+  int get id {
     // TODO: implement getId
-    throw UnimplementedError();
+    return 0;
   }
 }

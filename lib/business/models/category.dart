@@ -4,15 +4,15 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 
 List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category.fromJson(x)));
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Category extends SectionAbstract {
+class Category extends Sectionable {
   Category({
     this.id,
     this.name,
@@ -46,7 +46,7 @@ class Category extends SectionAbstract {
   }
 
   @override
-  RepositoryAbstract getRepository() {
+  Repositoriable getRepository() {
     return new CategoryRepository();
   }
 
@@ -73,7 +73,7 @@ class Category extends SectionAbstract {
   }
 
   @override
-  SectionAbstract setViewCount(int viewCount) {
+  Sectionable setViewCount(int viewCount) {
     this.viewCount = viewCount;
     return this;
   }

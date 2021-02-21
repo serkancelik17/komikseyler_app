@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 
-abstract class SectionAbstract {
+abstract class Sectionable {
   int viewCount;
 
   int getId();
@@ -10,18 +10,14 @@ abstract class SectionAbstract {
   String getUniqueName();
   double getPercent();
 
-  SectionAbstract setViewCount(int viewCount);
+  Sectionable setViewCount(int viewCount);
   bool calculatePercent();
 
   IconData getIcon() {
     return _getFaIcon();
   }
 
-  int increaseViewCount() {
-    return ++this.viewCount;
-  }
-
-  RepositoryAbstract getRepository();
+  Repositoriable getRepository();
 
   IconData _getFaIcon() {
     Map<String, dynamic> sectionImgMap = {

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
 import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_abstract.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
-class CategoryRepository implements RepositoryAbstract {
+class CategoryRepository implements Repositoriable {
   ApiProvider provider;
   DeviceRepository deviceRepository;
 
@@ -28,7 +28,7 @@ class CategoryRepository implements RepositoryAbstract {
     return categoryFromJson(apiResponse);
   }
 
-  Future<List<Picture>> views({@required SectionAbstract section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> views({@required Sectionable section, int page = 1, int limit = 20}) async {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();

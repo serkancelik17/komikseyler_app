@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/pages/home_page.dart';
+import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/ui/pages/views_page.dart';
 
 class AppRouter {
@@ -27,7 +27,7 @@ class AppRouter {
         );
         break;*/
     }
-    //return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "{category_title}")));
-    return MaterialPageRoute(builder: (_) => HomePage());
+    return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "{category_title}", picturesCount: 0, viewCount: 0)));
+    //return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

@@ -4,24 +4,25 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
+import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
 String pictureToJson(List<Picture> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Picture implements ViewAbstract {
+class Picture implements Viewable {
   Picture({
-    this.id,
+    id,
     this.categoryId,
-    this.path,
+    path,
     this.likesCount,
     this.favoritesCount,
     this.sharesCount,
     this.userLikesCount,
     this.userFavoritesCount,
     this.userSharesCount,
-  });
+  })  : id = id ?? 0,
+        path = path ?? '';
 
   int id;
   int categoryId;
@@ -63,14 +64,4 @@ class Picture implements ViewAbstract {
   }
 
   //-----------------------------------------------------------------------------------------------------//
-
-  @override
-  String getPath() {
-    return this.path;
-  }
-
-  @override
-  int getId() {
-    throw this.id;
-  }
 }
