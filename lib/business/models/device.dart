@@ -4,13 +4,14 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 
 Device deviceFromJson(String str) => Device.fromJson(json.decode(str));
 
 String deviceToJson(Device data) => json.encode(data.toJson());
 
-class Device {
+class Device with Model {
   final DeviceRepository deviceRepository;
 
   Device({this.id, this.uuid, this.note, this.option, deviceRepository}) : deviceRepository = deviceRepository ?? DeviceRepository();
@@ -61,6 +62,4 @@ class Option {
         "is_admin": isAdmin == null ? null : isAdmin,
         "ads_show_after": adsShowAfter == null ? null : adsShowAfter.toIso8601String(),
       };
-  //---//
-  update(Map<String, dynamic> patches) {}
 }
