@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/ui/templates/views_template.dart';
 
 class ViewsPage extends StatelessWidget {
-  final Sectionable section;
+  final SectionMixin section;
 
   ViewsPage({@required this.section});
 

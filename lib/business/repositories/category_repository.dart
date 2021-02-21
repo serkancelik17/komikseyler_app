@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
 import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
@@ -30,7 +30,7 @@ class CategoryRepository implements Repositoriable {
     return categoryFromJson(jsonEncode(_response.data['categories']));
   }
 
-  Future<List<Picture>> views({@required Sectionable section, int page = 1, int limit = 20}) async {
+  Future<List<Picture>> views({@required SectionMixin section, int page = 1, int limit = 20}) async {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();

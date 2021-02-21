@@ -4,13 +4,13 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/abstracts/viewable.dart';
+import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
 String pictureToJson(List<Picture> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Picture implements Viewable {
+class Picture implements ViewMixin {
   Picture({
     id,
     this.categoryId,

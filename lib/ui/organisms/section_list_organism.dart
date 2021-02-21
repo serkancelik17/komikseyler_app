@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 import 'package:komik_seyler/ui/atoms/LinearIndicatorAtom.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
@@ -19,7 +19,7 @@ class SectionListOrganism extends StatefulWidget {
 }
 
 class _SectionListOrganismState extends State<SectionListOrganism> {
-  List<Sectionable> _sections = [];
+  List<SectionMixin> _sections = [];
   Device _device = Device();
 
   @override
@@ -90,13 +90,13 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   Future<bool> get getSections async {
     CategoryRepository catRepo = CategoryRepository();
     //  try {
-    List<Sectionable> categories = await catRepo.getCategories();
+    List<SectionMixin> categories = await catRepo.getCategories();
     _sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);
     }*/
 
-    List<Sectionable> additionalSections = [
+    List<SectionMixin> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),
     ];

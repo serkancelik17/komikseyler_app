@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
@@ -13,7 +13,7 @@ List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(s
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Category extends Model with Sectionable {
+class Category extends Model with SectionMixin {
   Category({
     this.id,
     this.name,
@@ -74,7 +74,7 @@ class Category extends Model with Sectionable {
   }
 
   @override
-  Sectionable setViewCount(int viewCount) {
+  SectionMixin setViewCount(int viewCount) {
     this.viewCount = viewCount;
     return this;
   }

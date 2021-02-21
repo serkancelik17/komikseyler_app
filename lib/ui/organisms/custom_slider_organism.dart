@@ -1,10 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
-import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device/log.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
+import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
@@ -16,8 +16,8 @@ import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 class CustomSliderOrganism extends StatefulWidget {
   final DeviceRepository deviceRepository;
   final LogRepository logRepository;
-  final Sectionable section;
-  final ValueChanged<Viewable> viewChanged;
+  final SectionMixin section;
+  final ValueChanged<ViewMixin> viewChanged;
 
   CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository, logRepository})
       : deviceRepository = deviceRepository ?? DeviceRepository(),
@@ -30,8 +30,8 @@ class CustomSliderOrganism extends StatefulWidget {
 
 class _CustomSliderOrganismState extends State<CustomSliderOrganism> with WidgetsBindingObserver {
   int _page = 1;
-  List<Viewable> _views = [];
-  Viewable _activeView;
+  List<ViewMixin> _views = [];
+  ViewMixin _activeView;
   Log _log;
   int maxIndex = 0;
   AdManager _adManager = AdManager();
@@ -73,7 +73,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   }
 
   Future<void> getMore() async {
-    List<Viewable> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
+    List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
 
     if (_newViews.length > 0) {
       //İlk resmi varsayılan vap

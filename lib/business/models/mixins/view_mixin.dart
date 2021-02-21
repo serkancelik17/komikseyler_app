@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-abstract class Viewable {
+mixin ViewMixin {
   @required
   String get path;
   @required

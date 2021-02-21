@@ -1,6 +1,6 @@
-import 'package:komik_seyler/business/models/abstracts/viewable.dart';
+import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 
-class Ad implements Viewable {
+class Ad implements ViewMixin {
   @override
   String get path {
     return '';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 
-mixin Sectionable {
+mixin SectionMixin {
   int viewCount;
 
   int getId();
@@ -10,7 +10,7 @@ mixin Sectionable {
   String getUniqueName();
   double getPercent();
 
-  Sectionable setViewCount(int viewCount);
+  SectionMixin setViewCount(int viewCount);
   bool calculatePercent();
 
   IconData getIcon() {

@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
-import 'package:komik_seyler/business/models/abstracts/viewable.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/category.dart' as Local;
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
+import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/ui/atoms/banner_atom.dart';
@@ -22,10 +22,10 @@ import 'package:komik_seyler/ui/organisms/custom_slider_organism.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
-  final Sectionable section;
+  final SectionMixin section;
   final AdManager adManager;
 
-  ViewsTemplate({@required Sectionable section, adManager})
+  ViewsTemplate({@required SectionMixin section, adManager})
       : section = section ?? Local.Category(id: 1, name: '{title}'),
         adManager = adManager ?? AdManager();
 
@@ -35,9 +35,9 @@ class ViewsTemplate extends StatefulWidget {
 
 class _ViewsTemplateState extends State<ViewsTemplate> {
   int pictureChangeCount = 0;
-  List<Viewable> views;
+  List<ViewMixin> views;
   int page = 1;
-  Viewable activeView;
+  ViewMixin activeView;
   AdmobReward rewardAd;
   AdManager _adManager = AdManager();
   bool _showAd = false;

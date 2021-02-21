@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
-import 'package:komik_seyler/business/models/abstracts/viewable.dart';
+import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
+import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 
 abstract class Repositoriable {
-  Future<List<Viewable>> views({@required Sectionable section, int page = 1, int limit = 20});
+  Future<List<ViewMixin>> views({@required SectionMixin section, int page = 1, int limit = 20});
 }
