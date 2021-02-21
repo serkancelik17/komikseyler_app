@@ -5,12 +5,14 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
+import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/repositories/picture_repository.dart';
 
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
 
 String pictureToJson(List<Picture> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Picture implements ViewMixin {
+class Picture extends Model with ViewMixin {
   Picture({
     id,
     this.categoryId,
@@ -22,7 +24,8 @@ class Picture implements ViewMixin {
     this.userFavoritesCount,
     this.userSharesCount,
   })  : id = id ?? 0,
-        path = path ?? '';
+        path = path ?? '',
+        super(endPoint: '/devices/{{device_uuid}}/pictures', repository: PictureRepository(), uniqueId: id);
 
   int id;
   int categoryId;

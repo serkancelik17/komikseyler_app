@@ -62,7 +62,7 @@ class ApiProvider {
   Future<Response> delete(String endpoint) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
-    debugPrint("[POST] Request Url : " + url);
+    debugPrint("[DELETE] Request Url : " + url);
     try {
       http.Response responseRaw = await http.delete(url, headers: headers);
       if (responseRaw.statusCode == 200) {

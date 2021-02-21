@@ -10,9 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DeviceRepository extends ModelRepository {
   final SharedPreferencesProvider spp;
 
-  DeviceRepository({spp, apiProvider})
-      : spp = spp ?? SharedPreferencesProvider(),
-        super(endPointPattern: '/devices');
+  DeviceRepository({spp, apiProvider}) : spp = spp ?? SharedPreferencesProvider();
 
   Future<Device> get({bool viaLocal = true}) async {
     Device _device;
@@ -25,7 +23,7 @@ class DeviceRepository extends ModelRepository {
     if (_device == null) {
       // Local yoksa karsidan iste
       Response response = await apiProvider.get(endPoint);
-      _device = Device.fromJson(response.data['device']);
+      _device = Device.fromJson(response.data[0]);
       spp.set('device', _device);
     }
     return _device;

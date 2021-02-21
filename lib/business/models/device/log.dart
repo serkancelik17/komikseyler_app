@@ -12,13 +12,12 @@ List<Log> logFromJson(String str) => List<Log>.from(json.decode(str).map((x) => 
 String logToJson(List<Log> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Log extends Model {
-  Log({
-    this.id,
-    this.deviceUuid,
-    this.categoryId,
-    this.lastViewPictureId,
-    this.viewCount,
-  }) : super(tableName: 'logs', uniqueId: id, repository: LogRepository());
+  Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount})
+      : super(
+          repository: LogRepository(),
+          endPoint: '/devices/{{device_uuid}}/logs',
+          uniqueId: id ?? 0,
+        );
 
   int id;
   String deviceUuid;

@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 
 List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category.fromJson(x)));
@@ -19,13 +19,14 @@ class Category extends Model with SectionMixin {
     this.name,
     this.picturesCount,
     this.viewCount,
-  });
+  }) : super(repository: CategoryRepository(), endPoint: "/devices/{{device_uuid}}/categories", uniqueId: id);
 
   int id;
   String name;
   int picturesCount;
   int viewCount;
 
+  @override
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
@@ -47,7 +48,7 @@ class Category extends Model with SectionMixin {
   }
 
   @override
-  Repositoriable getRepository() {
+  RepositoryMixin getRepository() {
     return new CategoryRepository();
   }
 

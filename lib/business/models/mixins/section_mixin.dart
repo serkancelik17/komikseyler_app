@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 
 mixin SectionMixin {
   int viewCount;
@@ -17,7 +17,7 @@ mixin SectionMixin {
     return _getFaIcon();
   }
 
-  Repositoriable getRepository();
+  RepositoryMixin getRepository();
 
   IconData _getFaIcon() {
     Map<String, dynamic> sectionImgMap = {

@@ -1,26 +1,31 @@
 import 'package:flutter/cupertino.dart';
-import 'package:komik_seyler/business/models/device/log.dart';
+import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/device/option.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
+import 'package:komik_seyler/business/repositories/device_repository.dart';
 
 abstract class Model {
   dynamic uniqueId;
   ModelRepository repository;
-  String tableName;
-  List<Model> models;
+  String endPoint;
+  Device device;
 
-  Model({@required this.repository, @required this.uniqueId, @required this.tableName});
+  Model({@required this.repository, @required this.endPoint, @required dynamic uniqueId})
+      : uniqueId = uniqueId ?? 0,
+        assert(repository != null),
+        assert(endPoint != null);
 
-  Model find(dynamic id) => this;
+  //Model find(dynamic id) => this;
 
   Future<bool> store() async {
     Response response = await this.repository.store(model: this);
     return response.success;
   }
 
-  Future<Response> update(Map<String, dynamic> patch) async {
-    Response response = await this.repository.update(model: this, patch: patch);
-    return response.data['option'];
+  Future<Model> update() async {
+    Response response = await this.repository.update(model: this);
+    return Option.fromJson(response.data[0]);
   }
 
   Future<bool> destroy() async {
@@ -28,9 +33,17 @@ abstract class Model {
     return response.success;
   }
 
-  Future<List<Model>> where({Map<String, dynamic> filter, bool addDeviceId = false}) async {
+  Future<Map<String, dynamic>> where({Map<String, dynamic> filter}) async {
     Response response = await this.repository.where(model: this, filter: filter);
-    models = List<Model>.from(response.data[this.tableName].map((x) => Log.fromJson(x)));
-    return models;
+    return response.data[0];
   }
+
+  Future<String> getEndPoint() async {
+    if (device == null) device = await DeviceRepository().get();
+
+    endPoint = endPoint.replaceAll("{{device_uuid}}", device.uuid);
+    return this.endPoint;
+  }
+
+  Map<String, dynamic> toJson();
 }

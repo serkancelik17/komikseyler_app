@@ -16,18 +16,18 @@ class Response {
   });
 
   bool success;
-  Map<String, dynamic> data;
-  dynamic message;
+  List<dynamic> data;
+  String message;
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
         success: json["success"] == null ? null : json["success"],
-        data: json["data"] == null ? null : json["data"],
-        message: json["message"],
+        data: json["data"] == null ? null : List<dynamic>.from(json["data"]),
+        message: json["message"] == null ? null : json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "success": success == null ? null : success,
-        "data": data == null ? null : jsonEncode(data), //@todo bakılacak
-        "message": message,
+        "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message == null ? null : message,
       };
 }

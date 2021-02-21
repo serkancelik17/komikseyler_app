@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/models/response.dart';
-import 'package:komik_seyler/business/repositories/picture_repository.dart';
+import 'package:komik_seyler/business/models/picture_action.dart';
+import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
 
@@ -20,10 +20,17 @@ class BottomNavigationBarOrganism extends StatefulWidget {
 }
 
 class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganism> {
-  PictureRepository _pictureRepository = PictureRepository();
   Device _device;
   Color destroyBoxColor = Colors.white;
   Color moveBoxColor = Colors.white;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _device = await DeviceRepository().get();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
             if (_device?.option?.isAdmin == 1)
               RoundedButtonMolecule(
                 iconData: FontAwesomeIcons.trashAlt,
-                onTap: destroy(widget.activeView),
+                onTap: () => destroy(widget.activeView),
                 text: "Sil",
               ),
             if (_device?.option?.isAdmin == 1)
@@ -85,13 +92,14 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
 
   addAction({Picture picture, Local.Action action}) {
     try {
-      _pictureRepository.addAction(action: action, value: true, picture: picture).then((Response response) {
-        print(action.name + ";" + response.success.toString());
-        /*      setState(() {
+      action.store();
+      // _pictureRepository.addAction(action: action, value: true, picture: picture).then((Response response) {
+      //       print(action.name + ";" + response.success.toString());
+      /*      setState(() {
           //@todo
           //moveBoxColor = (moveBoxColor == Colors.white) ? Colors.blue : Colors.white;
         });*/
-      });
+      /*    });*/
     } catch (e) {
       toggleAction(action: action);
       throw e;
@@ -100,13 +108,14 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
 
   destroy(Picture picture) {
     try {
-      _pictureRepository.destroy(pictureId: picture.id).then((Response response) {
-        print("destroy;" + response.success.toString());
-        /*   setState(() {
+      picture.destroy();
+      //_pictureRepository.destroy(pictureId: picture.id).then((Response response) {
+      // print("destroy;" + response.success.toString());
+      /*   setState(() {
           //@todo
           //destroyBoxColor = (destroyBoxColor == Colors.white) ? Colors.red : Colors.white;
         });*/
-      });
+      /*});*/
     } catch (e) {
       throw e;
     }
@@ -128,11 +137,13 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       widget.activeView.userSharesCount = 1;
       widget.activeView.sharesCount += 1;
     }
-    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
+    PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id);
+
+/*    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
 
       setState(() {});
-    });
+    });*/
     return true;
   }
 }

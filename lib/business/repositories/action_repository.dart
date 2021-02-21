@@ -5,10 +5,10 @@ import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
+import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
-class ActionRepository implements Repositoriable {
+class ActionRepository implements RepositoryMixin {
   ApiProvider provider;
 
   ActionRepository({this.provider}) {
@@ -20,7 +20,7 @@ class ActionRepository implements Repositoriable {
 
     Response _response = await provider.get(endpoint);
 
-    Local.Action action = Local.Action.fromJson(_response.data['action']);
+    Local.Action action = Local.Action.fromJson(_response.data[0]);
 
     return action;
   }
@@ -30,7 +30,7 @@ class ActionRepository implements Repositoriable {
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
     Response _response = await provider.get(endpoint);
-    List<Picture> pictures = _response.data['pictures'].map((pictureJson) => Picture.fromJson(pictureJson)).toList();
+    List<Picture> pictures = _response.data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;
   }
 }

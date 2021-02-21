@@ -40,11 +40,12 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMore();
-    WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _log = (await Log().where(filter: {'category_id': widget.section.getId()})).first ?? Log(categoryId: widget.section.getId());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getMore();
+      getLog();
     });
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -95,16 +96,15 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
     //Update lastView
     if (index > maxIndex && _activeView is Picture) {
       maxIndex = index;
-      _log.viewCount = widget.section.viewCount++; // Sayısı bir arttır.
+      _log.viewCount = widget.section.viewCount++; // Sayıyı bir arttır.
       _log.lastViewPictureId = _activeView.id;
-      _saveData();
     }
 
     if (index == _views.length - 2) getMore();
   }
 
-  _saveData() {
-    _log.update({'view_count': _log.viewCount, 'last_view_picture_id': _log.lastViewPictureId});
+  _saveData() async {
+    _log.update(); // Logu güncelle
   }
 
   @override
@@ -116,5 +116,9 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _saveData();
+  }
+
+  Future<void> getLog() async {
+    _log = Log.fromJson(await Log().where(filter: {'category_id': widget.section.getId()})) ?? Log(categoryId: widget.section.getId());
   }
 }

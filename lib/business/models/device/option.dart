@@ -7,7 +7,7 @@ class Option extends Model {
     this.deviceUuid,
     this.isAdmin = 0,
     this.adsShowAfter,
-  }) : super(repository: OptionRepository(), tableName: 'device_logs', uniqueId: id);
+  }) : super(endPoint: '/devices/{{device_uuid}}/options', repository: OptionRepository(), uniqueId: id);
 
   int id;
   String deviceUuid;
@@ -27,8 +27,4 @@ class Option extends Model {
         "is_admin": isAdmin == null ? null : isAdmin,
         "ads_show_after": adsShowAfter == null ? null : adsShowAfter.toIso8601String(),
       };
-
-  @override
-  // TODO: implement tableName
-  String get tableName => 'device_options';
 }
