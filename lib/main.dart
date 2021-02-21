@@ -25,7 +25,7 @@ class _HomeState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       //showPerformanceOverlay: false,
-      debugShowMaterialGrid: true,
+      //debugShowMaterialGrid: true,
       title: 'Komik Şeyler',
       theme: CustomTheme.lightTheme,
       onGenerateRoute: _appRouter.onGenerateRoute,

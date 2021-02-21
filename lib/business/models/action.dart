@@ -18,7 +18,7 @@ class Action extends Model with SectionMixin {
     this.id,
     this.name,
     this.title,
-  });
+  }) : super(uniqueId: id, repository: ActionRepository(), endPoint: '/pictures/{{picture_id}}/actions');
 
   int id;
   String name;

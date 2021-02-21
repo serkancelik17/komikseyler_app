@@ -15,8 +15,5 @@ environment_config:
       default: "$baseUrl/assets/images"
 
     pagePictureLimit:
-      default: "(env == 'dev') ? 5 :20"
+      default: "(env == 'prod') ? 20 :5"
       type: int
-
-  imports:
-    - dart:io

@@ -138,6 +138,8 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       widget.activeView.sharesCount += 1;
     }
     PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id);
+    _pa.store();
+    toggleAction(action: action);
 
 /*    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());

@@ -5,10 +5,11 @@ import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
+import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
-class ActionRepository implements RepositoryMixin {
+class ActionRepository extends ModelRepository with RepositoryMixin {
   ApiProvider provider;
 
   ActionRepository({this.provider}) {

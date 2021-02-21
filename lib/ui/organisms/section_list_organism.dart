@@ -20,7 +20,7 @@ class SectionListOrganism extends StatefulWidget {
 
 class _SectionListOrganismState extends State<SectionListOrganism> {
   List<SectionMixin> _sections = [];
-  Device _device = Device();
+  Device _device;
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
       children: [
         buildIcon(index),
         SizedBoxAtom(
-          height: 10,
+          height: 5,
         ),
         TextAtom(
           text: _sections[index].getTitle(),
@@ -80,7 +80,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
           color: CustomColors.lightPurple,
         ),
         SizedBoxAtom(
-          height: 10,
+          height: 5,
         ),
         LinearIndicatorAtom(percent: _sections[index].getPercent()),
       ],
