@@ -68,4 +68,9 @@ class Picture implements ViewAbstract {
   String getPath() {
     return this.path;
   }
+
+  @override
+  int getId() {
+    throw this.id;
+  }
 }

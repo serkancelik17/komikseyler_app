@@ -5,6 +5,8 @@ import 'package:komik_seyler/business/models/abstracts/section_abstract.dart';
 import 'package:komik_seyler/business/models/abstracts/view_abstract.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/device/log.dart';
+import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/config/env.dart';
@@ -13,22 +15,25 @@ import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
 class CustomSliderOrganism extends StatefulWidget {
   final DeviceRepository deviceRepository;
+  final LogRepository logRepository;
   final SectionAbstract section;
   final ValueChanged<ViewAbstract> viewChanged;
 
-  CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository})
+  CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository, logRepository})
       : deviceRepository = deviceRepository ?? DeviceRepository(),
+        logRepository = logRepository ?? LogRepository(),
         super(key: key);
 
   @override
   _CustomSliderOrganismState createState() => _CustomSliderOrganismState();
 }
 
-class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
+class _CustomSliderOrganismState extends State<CustomSliderOrganism> with WidgetsBindingObserver {
   int _page = 1;
   List<ViewAbstract> _views = [];
   ViewAbstract _activeView;
-  Device device;
+  Device _device;
+  Log _log;
   int maxIndex = 0;
   AdManager _adManager = AdManager();
 
@@ -37,8 +42,10 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     // TODO: implement initState
     super.initState();
     getMore();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      device = await widget.deviceRepository.get();
+      _device = await widget.deviceRepository.get();
+      _log = await widget.logRepository.get(_device, widget.section);
     });
   }
 
@@ -90,10 +97,25 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     //Update lastView
     if (index > maxIndex) {
       maxIndex = index;
-      widget.section.increaseViewCount(); // Sayısı bir arttır.
-      //device.changeLastWiewPictureId(_activeView);
+      _log.viewCount = widget.section.increaseViewCount(); // Sayısı bir arttır.
+      _log.lastViewPictureId = _activeView.getId();
     }
 
     if (index == _views.length - 2) getMore();
+  }
+
+  _saveData() {
+    widget.logRepository.update(log: _log);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _saveData();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/ui/molecules/text_two_word_color_molecule.dart';
 import 'package:komik_seyler/ui/templates/home_template.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
@@ -10,7 +9,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Device device;
   @override
   initState() {
     // TODO: implement initState
@@ -21,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: HomeTemplate(
-        device: device,
         title: TextTwoWordColorMolecule(texts: ["Komik", "Şeyler"], colors: [Colors.black, CustomColors.purple], mainAxisAlignment: MainAxisAlignment.center),
       ),
     );

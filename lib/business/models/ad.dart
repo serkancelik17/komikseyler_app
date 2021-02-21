@@ -5,4 +5,10 @@ class Ad implements ViewAbstract {
   String getPath() {
     return '';
   }
+
+  @override
+  int getId() {
+    // TODO: implement getId
+    throw UnimplementedError();
+  }
 }

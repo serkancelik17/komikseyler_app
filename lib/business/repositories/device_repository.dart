@@ -1,9 +1,9 @@
+library repositories;
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
 import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/util/settings.dart';
@@ -59,22 +59,5 @@ class DeviceRepository {
     String endpoint = '/devices/' + option.deviceUuid + '/options/' + option.id.toString();
     String apiResponse = await apiProvider.patch(endpoint, jsonEncode(patch));
     return deviceFromJson(apiResponse);
-  }
-
-  Future<Response> logUpdate({@required Picture picture, int viewCount}) async {
-    String _uuid = await Settings.getUuid();
-    print(_uuid.toString());
-    Map<String, dynamic> patch = {'category_id': picture.categoryId, 'last_view_picture_id': picture.id, 'view_count': viewCount};
-    String endpoint = '/devices/' + _uuid + '/logs';
-    String apiResponse = await apiProvider.patch(endpoint, jsonEncode(patch));
-    return responseFromJson(apiResponse);
-  }
-
-  Future<Response> logUpdateViewCount({@required Picture picture}) async {
-    String _uuid = await Settings.getUuid();
-    print(_uuid.toString());
-    String endpoint = '/devices/' + _uuid + '/logs/pictures/' + picture.id.toString() + '/update_view_count';
-    String apiResponse = await apiProvider.patch(endpoint, '{}');
-    return responseFromJson(apiResponse);
   }
 }

@@ -17,9 +17,8 @@ abstract class SectionAbstract {
     return _getFaIcon();
   }
 
-  bool increaseViewCount() {
-    this.viewCount++;
-    return true;
+  int increaseViewCount() {
+    return ++this.viewCount;
   }
 
   RepositoryAbstract getRepository();

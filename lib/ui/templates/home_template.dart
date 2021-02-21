@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/section_list_organism.dart';
 
 class HomeTemplate extends StatelessWidget {
-  final Device device;
   final Widget title;
 
-  HomeTemplate({@required this.title, @required this.device});
+  HomeTemplate({@required this.title});
 
   @override
   Widget build(BuildContext context) {

@@ -30,8 +30,8 @@ class ActionRepository implements RepositoryAbstract {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
-    String apiResponse = await provider.get(endpoint);
-    List<Picture> pictures = (responseFromJson(apiResponse)).data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
+    Response response = responseFromJson(await provider.get(endpoint));
+    List<Picture> pictures = response.data['pictures'].map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;
   }
 }
