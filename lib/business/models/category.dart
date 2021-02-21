@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 
@@ -12,7 +13,7 @@ List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(s
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Category extends Sectionable {
+class Category extends Model with Sectionable {
   Category({
     this.id,
     this.name,

@@ -61,7 +61,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
                   },
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
-                  viewportFraction: 0.9,
+                  viewportFraction: 0.8,
                 ),
                 items: _views.map((view) {
                   return SlideMolecule(view: view);

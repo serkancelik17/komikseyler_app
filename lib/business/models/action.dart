@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
+import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/action_repository.dart';
 
@@ -12,7 +13,7 @@ Action actionFromJson(String str) => Action.fromJson(json.decode(str));
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
-class Action extends Sectionable {
+class Action extends Model with Sectionable {
   Action({
     this.id,
     this.name,

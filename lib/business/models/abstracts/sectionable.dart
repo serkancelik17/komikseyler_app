@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 
-abstract class Sectionable {
+mixin Sectionable {
   int viewCount;
 
   int getId();
