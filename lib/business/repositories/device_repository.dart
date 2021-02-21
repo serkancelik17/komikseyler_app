@@ -1,6 +1,7 @@
 library repositories;
 
 import 'package:komik_seyler/business/models/device.dart';
+import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
@@ -13,18 +14,18 @@ class DeviceRepository extends ModelRepository {
       : spp = spp ?? SharedPreferencesProvider(),
         super(endPointPattern: '/devices');
 
-  Future<Device> get() async {
+  Future<Device> get({bool viaLocal = true}) async {
     Device _device;
     String _uuid = await Settings.getUuid();
     String endPoint = "/devices/" + _uuid;
 
     print("devices.get : " + endPoint);
+    if (viaLocal) _device = await _getFromLocal(); //Localden al.
 
-    _device = await _getFromLocal(); //Localden al.
     if (_device == null) {
       // Local yoksa karsidan iste
-      String response = await apiProvider.get(endPoint);
-      _device = deviceFromJson(response);
+      Response response = await apiProvider.get(endPoint);
+      _device = Device.fromJson(response.data['device']);
       spp.set('device', _device);
     }
     return _device;

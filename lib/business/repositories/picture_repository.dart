@@ -14,8 +14,8 @@ class PictureRepository {
 
   Future<Response> destroy({@required pictureId}) async {
     String endpoint = '/pictures/' + pictureId.toString() + '/destroy';
-    Response response = responseFromJson(await _apiProvider.get(endpoint));
-    return response;
+    Response _response = await _apiProvider.get(endpoint);
+    return _response;
   }
 
   Future<Response> addAction({@required Local.Action action, @required Picture picture, bool value = true}) async {
@@ -23,9 +23,8 @@ class PictureRepository {
     print(_uuid.toString());
     String endpoint = '/devices/' + _uuid + '/pictures/' + picture.id.toString() + '/actions/' + action.id.toString() + '/' + (value ? 'store' : 'destroy');
     try {
-      Response response = responseFromJson(await _apiProvider.get(endpoint));
-
-      return response;
+      Response _response = await _apiProvider.get(endpoint);
+      return _response;
     } catch (e) {
       throw e;
     }

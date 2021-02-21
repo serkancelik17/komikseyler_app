@@ -18,9 +18,9 @@ abstract class Model {
     return response.success;
   }
 
-  Future<bool> update() async {
-    Response response = await this.repository.update(model: this);
-    return response.success;
+  Future<Response> update(Map<String, dynamic> patch) async {
+    Response response = await this.repository.update(model: this, patch: patch);
+    return response.data['option'];
   }
 
   Future<bool> destroy() async {

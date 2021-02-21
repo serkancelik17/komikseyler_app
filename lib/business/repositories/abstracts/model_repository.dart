@@ -19,19 +19,19 @@ abstract class ModelRepository {
   Future<Model> find() => Future.value(Device());
 
   Future<Response> store({@required Model model}) async {
-    Response response = responseFromJson(await apiProvider.post(await endPoint, jsonEncode(model)));
+    Response response = await apiProvider.post(await endPoint, jsonEncode(model));
     return response;
   }
 
-  Future<Response> update({@required Model model}) async {
+  Future<Response> update({@required Model model, @required Map<String, dynamic> patch}) async {
     String _endPoint = await endPoint + '/' + model.uniqueId.toString();
-    Response response = responseFromJson(await apiProvider.patch(_endPoint, jsonEncode(model)));
+    Response response = await apiProvider.patch(_endPoint, jsonEncode(patch));
     return response;
   }
 
   Future<Response> destroy({@required Model model}) async {
     String _endPoint = await endPoint + '/' + model.uniqueId.toString();
-    Response response = responseFromJson(await apiProvider.delete(_endPoint));
+    Response response = await apiProvider.delete(_endPoint);
     return response;
   }
 
@@ -43,7 +43,7 @@ abstract class ModelRepository {
 
     String _endPoint = await endPoint + "?" + filterList.join("&");
 
-    Response _response = responseFromJson(await apiProvider.get(_endPoint));
+    Response _response = await apiProvider.get(_endPoint);
 
     print("Response:" + _response.toString());
 

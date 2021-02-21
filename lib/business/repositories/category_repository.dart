@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/abstracts/sectionable.dart';
 import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repositoriable.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
@@ -18,14 +21,13 @@ class CategoryRepository implements Repositoriable {
   }
 
   Future<List<Category>> getCategories() async {
-    print("getDevice oncesi");
-    Device _device = await deviceRepository.get();
+    Device _device = await deviceRepository.get(viaLocal: false);
     print(_device.toString());
     String endpoint = "/devices/" + _device.uuid + '/categories';
 
-    String apiResponse = await provider.get(endpoint);
+    Response _response = await provider.get(endpoint);
 
-    return categoryFromJson(apiResponse);
+    return categoryFromJson(jsonEncode(_response.data['categories']));
   }
 
   Future<List<Picture>> views({@required Sectionable section, int page = 1, int limit = 20}) async {
@@ -33,8 +35,8 @@ class CategoryRepository implements Repositoriable {
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/categories/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
 
-    String apiResponse = await provider.get(endpoint);
-    List<Picture> pictures = pictureFromJson(apiResponse);
+    Response _response = await provider.get(endpoint);
+    List<Picture> pictures = pictureFromJson(jsonEncode(_response.data['pictures']));
 
     return pictures;
   }

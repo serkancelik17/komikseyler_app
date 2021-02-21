@@ -1,4 +1,5 @@
 import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/repositories/device/option_repository.dart';
 
 class Option extends Model {
   Option({
@@ -6,7 +7,7 @@ class Option extends Model {
     this.deviceUuid,
     this.isAdmin = 0,
     this.adsShowAfter,
-  });
+  }) : super(repository: OptionRepository(), tableName: 'device_logs', uniqueId: id);
 
   int id;
   String deviceUuid;

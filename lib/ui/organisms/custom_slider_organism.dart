@@ -97,14 +97,14 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
       maxIndex = index;
       _log.viewCount = widget.section.viewCount++; // Sayısı bir arttır.
       _log.lastViewPictureId = _activeView.id;
-      _log.update();
+      _saveData();
     }
 
     if (index == _views.length - 2) getMore();
   }
 
   _saveData() {
-    _log.update();
+    _log.update({'view_count': _log.viewCount, 'last_view_picture_id': _log.lastViewPictureId});
   }
 
   @override

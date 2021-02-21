@@ -18,10 +18,9 @@ class ActionRepository implements Repositoriable {
   Future<Local.Action> getAction({@required String actionName}) async {
     String endpoint = "/actions/" + actionName;
 
-    String apiResponse = await provider.get(endpoint);
-    Response _response = responseFromJson(apiResponse);
+    Response _response = await provider.get(endpoint);
 
-    Local.Action action = Local.Action.fromJson(_response.data[0]);
+    Local.Action action = Local.Action.fromJson(_response.data['action']);
 
     return action;
   }
@@ -30,8 +29,8 @@ class ActionRepository implements Repositoriable {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
-    Response response = responseFromJson(await provider.get(endpoint));
-    List<Picture> pictures = response.data['pictures'].map((pictureJson) => Picture.fromJson(pictureJson)).toList();
+    Response _response = await provider.get(endpoint);
+    List<Picture> pictures = _response.data['pictures'].map((pictureJson) => Picture.fromJson(pictureJson)).toList();
     return pictures;
   }
 }

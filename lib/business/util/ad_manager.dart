@@ -5,6 +5,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:intl/intl.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 
@@ -93,8 +94,8 @@ class AdManager {
   removeAds(BuildContext ctx) async {
     final Device _device = await deviceRepository.get();
 
-    //@TODO device.option icine aktarilacak.
-    _device.option.update();
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    _device.option = (await _device.option.update({'ads_show_after': dateFormat.format(DateTime.now().add(Duration(days: 365 * 100)))})).data['option'];
     //await deviceRepository.optionUpdate(option:, patch: {'ads_show_after': DateTime.now().add(Duration(days: 365 * 100))});
   }
 

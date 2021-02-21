@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:komik_seyler/business/models/response.dart';
 import 'package:komik_seyler/config/env.dart';
 
 class ApiProvider {
@@ -8,73 +9,69 @@ class ApiProvider {
   ApiProvider();
 
   ///veriyi getir
-  Future<String> get(String endpoint) async {
+  Future<Response> get(String endpoint) async {
     final url = _apiUrl + endpoint;
     debugPrint("[GET] Request Url : " + url);
-    // try {
-    http.Response response = await http.get(url);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception("Hatalı durum kodu.(" + response.statusCode.toString() + ")");
+    try {
+      http.Response responseRaw = await http.get(url);
+
+      if (responseRaw.statusCode == 200) {
+        return responseFromJson(responseRaw.body);
+      } else {
+        throw Exception("GET Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
+      }
+    } catch (e) {
+      rethrow;
     }
-/*    } on HttpException {
-      throw new Exception('Servis hatası!');
-    } on SocketException {
-      throw Exception('İnternet bağlantısı bulunamadı!');
-    }*/
   }
 
-  Future<String> post(String endpoint, String body) async {
+  Future<Response> post(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);
     debugPrint("[POST] Request Url Body : " + body);
     try {
-      http.Response response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        print("response" + response.toString());
-        return response.body;
+      http.Response responseRaw = await http.post(url, headers: headers, body: body);
+      if (responseRaw.statusCode == 200) {
+        return responseFromJson(responseRaw.body);
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Veri post edilemedi.");
+        throw Exception("POST Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
-  Future<String> patch(String endpoint, String body) async {
+  Future<Response> patch(String endpoint, String body) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
-    debugPrint("[POST] Request Url : " + url);
-    debugPrint("[POST] Request Url Body : " + body);
+    debugPrint("[PATCH] Request Url : " + url);
+    debugPrint("[PATCH] Request Url Body : " + body);
     try {
-      http.Response response = await http.patch(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        print("response" + response.toString());
-        return response.body;
+      http.Response responseRaw = await http.patch(url, headers: headers, body: body);
+      if (responseRaw.statusCode == 200) {
+        return responseFromJson(responseRaw.body);
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Veri patch edilemedi.");
+        throw Exception("PATCH Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
-  Future<String> delete(String endpoint) async {
+  Future<Response> delete(String endpoint) async {
     final url = _apiUrl + endpoint;
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[POST] Request Url : " + url);
     try {
-      http.Response response = await http.delete(url, headers: headers);
-      if (response.statusCode == 200) {
-        print("response" + response.toString());
-        return response.body;
+      http.Response responseRaw = await http.delete(url, headers: headers);
+      if (responseRaw.statusCode == 200) {
+        return responseFromJson(responseRaw.body);
       } else {
-        throw Exception("Sunucuya bağlanılamadı. Veri silinemedi.");
+        throw Exception("DELETE Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
