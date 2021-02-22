@@ -34,7 +34,7 @@ class DeviceRepository extends ModelRepository {
     final SharedPreferences spp = await SharedPreferences.getInstance();
 
     String deviceString = spp.getString('device');
-    if (deviceString != null && deviceString.length > 0) _device = deviceFromJson(deviceString);
+    if (deviceString != null && deviceString.length > 0) _device = Device.fromRawJson(deviceString);
     return _device ?? null;
   }
 }

@@ -1,0 +1,3 @@
+class JsonAbleMixin {
+  toJson() {}
+}

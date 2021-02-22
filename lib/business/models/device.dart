@@ -4,14 +4,10 @@
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:komik_seyler/business/models/device/option.dart';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 
-Device deviceFromJson(String str) => Device.fromJson(json.decode(str));
-
-String deviceToJson(Device data) => json.encode(data.toJson());
+import 'device/option.dart';
 
 class Device extends Model {
   int id;
@@ -19,7 +15,17 @@ class Device extends Model {
   dynamic note;
   Option option;
 
-  Device({this.id, @required this.uuid, this.note, this.option}) : super(repository: DeviceRepository(), endPoint: '/devices', uniqueId: uuid);
+  Device({
+    this.id,
+    this.uuid,
+    this.note,
+    this.option,
+  }) : super(repository: DeviceRepository(), uniqueId: uuid, endPoint: '/devices');
+
+  //---
+  factory Device.fromRawJson(String str) => Device.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Device.fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],
@@ -34,4 +40,5 @@ class Device extends Model {
         "note": note,
         "option": option == null ? null : option.toJson(),
       };
+  //---
 }
