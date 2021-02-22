@@ -7,25 +7,20 @@ import 'dart:convert';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 
-List<Log> logFromJson(String str) => List<Log>.from(json.decode(str).map((x) => Log.fromJson(x)));
-
-String logToJson(List<Log> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class Log extends Model {
-  Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount})
-      : super(
-          repository: LogRepository(),
-          endPoint: '/devices/{{device_uuid}}/logs',
-          uniqueId: id ?? 0,
-        );
-
   int id;
   String deviceUuid;
   int categoryId;
   int lastViewPictureId;
   int viewCount;
 
-  factory Log.fromJson(Map<String, dynamic> json) => Log(
+  Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount}) : super(repository: LogRepository(), uniqueId: id, endPoint: '/device_logs');
+
+  fromRawJson(String str) => fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  fromJson(Map<String, dynamic> json) => Log(
         id: json["id"] == null ? null : json["id"],
         deviceUuid: json["device_uuid"] == null ? null : json["device_uuid"],
         categoryId: json["category_id"] == null ? null : json["category_id"],
@@ -40,4 +35,9 @@ class Log extends Model {
         "last_view_picture_id": lastViewPictureId == null ? null : lastViewPictureId,
         "view_count": viewCount == null ? null : viewCount,
       };
+
+  @override
+  String toString() {
+    return 'Log{id: $id, deviceUuid: $deviceUuid, categoryId: $categoryId, lastViewPictureId: $lastViewPictureId, viewCount: $viewCount}';
+  }
 }

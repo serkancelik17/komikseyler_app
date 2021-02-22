@@ -4,9 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/models/picture_action.dart';
+import 'package:komik_seyler/business/models/picture/action.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
 
 class BottomNavigationBarOrganism extends StatefulWidget {
@@ -132,19 +131,21 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
       widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
     } else if (action.name == 'share') {
-      Settings.share(picture: widget.activeView);
+      // Settings.share(picture: widget.activeView);
       willAdd = true; //eklenecek - silinecek
       widget.activeView.userSharesCount = 1;
       widget.activeView.sharesCount += 1;
     }
-    PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id);
-    _pa.store();
-    toggleAction(action: action);
+    PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id, deviceUuid: _device.uuid);
+    if (willAdd)
+      _pa.store();
+    else
+      _pa.destroy();
+
+    setState(() {});
 
 /*    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
       print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
-
-      setState(() {});
     });*/
     return true;
   }

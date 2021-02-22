@@ -7,10 +7,4 @@ class PictureRepository extends ModelRepository {
   PictureRepository([this._apiProvider]) {
     this._apiProvider ??= ApiProvider();
   }
-
-/*  Future<Response> destroy({@required pictureId}) async {
-    String endpoint = '/pictures/' + pictureId.toString() + '/destroy';
-    Response _response = await _apiProvider.get(endpoint);
-    return _response;
-  }*/
 }

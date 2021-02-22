@@ -9,7 +9,7 @@ import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/repositories/action_repository.dart';
 
-Action actionFromJson(String str) => Action.fromJson(json.decode(str));
+Action actionFromJson(String str) => Action().fromJson(json.decode(str));
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
@@ -18,13 +18,13 @@ class Action extends Model with SectionMixin {
     this.id,
     this.name,
     this.title,
-  }) : super(uniqueId: id, repository: ActionRepository(), endPoint: '/pictures/{{picture_id}}/actions');
+  }) : super(uniqueId: id, repository: ActionRepository(), endPoint: '/actions');
 
   int id;
   String name;
   String title;
 
-  factory Action.fromJson(Map<String, dynamic> json) => Action(
+  Action fromJson(Map<String, dynamic> json) => Action(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         title: json["title"] == null ? null : json["title"],

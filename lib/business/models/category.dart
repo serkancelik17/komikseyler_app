@@ -9,7 +9,7 @@ import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 
-List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category.fromJson(x)));
+List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category().fromJson(x)));
 
 String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -19,7 +19,7 @@ class Category extends Model with SectionMixin {
     this.name,
     this.picturesCount,
     this.viewCount,
-  }) : super(repository: CategoryRepository(), endPoint: "/devices/{{device_uuid}}/categories", uniqueId: id);
+  }) : super(repository: CategoryRepository(), endPoint: "/categories", uniqueId: id);
 
   int id;
   String name;
@@ -27,7 +27,7 @@ class Category extends Model with SectionMixin {
   int viewCount;
 
   @override
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
+  fromJson(Map<String, dynamic> json) => Category(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         picturesCount: json["pictures_count"] == null ? null : json["pictures_count"],
@@ -78,5 +78,11 @@ class Category extends Model with SectionMixin {
   SectionMixin setViewCount(int viewCount) {
     this.viewCount = viewCount;
     return this;
+  }
+
+  @override
+  String toRawJson() {
+    // TODO: implement toRawJson
+    throw UnimplementedError();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/device/option_repository.dart';
 
@@ -5,16 +7,20 @@ class Option extends Model {
   Option({
     this.id,
     this.deviceUuid,
-    this.isAdmin = 0,
+    this.isAdmin,
     this.adsShowAfter,
-  }) : super(endPoint: '/devices/{{device_uuid}}/options', repository: OptionRepository(), uniqueId: id);
+  }) : super(endPoint: '/device_options', repository: OptionRepository(), uniqueId: id);
 
   int id;
   String deviceUuid;
   int isAdmin;
   DateTime adsShowAfter;
 
-  factory Option.fromJson(Map<String, dynamic> json) => Option(
+  factory Option.fromRawJson(String str) => Option().fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  Option fromJson(Map<String, dynamic> json) => Option(
         id: json["id"] == null ? null : json["id"],
         deviceUuid: json["device_uuid"] == null ? null : json["device_uuid"],
         isAdmin: json["is_admin"] == null ? null : json["is_admin"],

@@ -23,15 +23,15 @@ class Device extends Model {
   }) : super(repository: DeviceRepository(), uniqueId: uuid, endPoint: '/devices');
 
   //---
-  factory Device.fromRawJson(String str) => Device.fromJson(json.decode(str));
+  factory Device.fromRawJson(String str) => Device().fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Device.fromJson(Map<String, dynamic> json) => Device(
+  fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],
         uuid: json["uuid"] == null ? null : json["uuid"],
         note: json["note"],
-        option: json["option"] == null ? null : Option.fromJson(json["option"]),
+        option: json["option"] == null ? null : Option().fromJson(json["option"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,5 +40,4 @@ class Device extends Model {
         "note": note,
         "option": option == null ? null : option.toJson(),
       };
-  //---
 }

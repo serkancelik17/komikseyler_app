@@ -8,7 +8,7 @@ import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/picture_repository.dart';
 
-List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture.fromJson(x)));
+List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture().fromJson(x)));
 
 String pictureToJson(List<Picture> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -25,7 +25,7 @@ class Picture extends Model with ViewMixin {
     this.userSharesCount,
   })  : id = id ?? 0,
         path = path ?? '',
-        super(endPoint: '/devices/{{device_uuid}}/pictures', repository: PictureRepository(), uniqueId: id);
+        super(endPoint: '/pictures', repository: PictureRepository(), uniqueId: id);
 
   int id;
   int categoryId;
@@ -37,7 +37,7 @@ class Picture extends Model with ViewMixin {
   int userFavoritesCount;
   int userSharesCount;
 
-  factory Picture.fromJson(Map<String, dynamic> json) => Picture(
+  Picture fromJson(Map<String, dynamic> json) => Picture(
         id: json["id"] == null ? null : json["id"],
         categoryId: json["category_id"] == null ? null : json["category_id"],
         path: json["path"] == null ? null : json["path"],

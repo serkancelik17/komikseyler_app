@@ -1,7 +1,5 @@
-library repositories;
-
 import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/response.dart';
+import 'package:komik_seyler/business/models/response/pageless_response.dart';
 import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
@@ -22,8 +20,8 @@ class DeviceRepository extends ModelRepository {
 
     if (_device == null) {
       // Local yoksa karsidan iste
-      Response response = await apiProvider.get(endPoint);
-      _device = Device.fromJson(response.data[0]);
+      PagelessResponse response = PagelessResponse.fromRawJson(await apiProvider.get(endPoint));
+      _device = Device().fromJson(response.data[0]);
       spp.set('device', _device);
     }
     return _device;

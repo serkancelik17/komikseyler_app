@@ -3,7 +3,7 @@ import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/models/response.dart';
+import 'package:komik_seyler/business/models/response/pageless_response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
 import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
@@ -19,9 +19,9 @@ class ActionRepository extends ModelRepository with RepositoryMixin {
   Future<Local.Action> getAction({@required String actionName}) async {
     String endpoint = "/actions/" + actionName;
 
-    Response _response = await provider.get(endpoint);
+    PagelessResponse _response = PagelessResponse.fromRawJson(await provider.get(endpoint));
 
-    Local.Action action = Local.Action.fromJson(_response.data[0]);
+    Local.Action action = Local.Action().fromJson(_response.data[0]);
 
     return action;
   }
@@ -30,8 +30,8 @@ class ActionRepository extends ModelRepository with RepositoryMixin {
     String _uuid = await Settings.getUuid();
     print(_uuid.toString());
     String endpoint = "/devices/" + _uuid + "/actions/" + section.getId().toString() + "/pictures?page=" + page.toString() + "&limit=" + limit.toString();
-    Response _response = await provider.get(endpoint);
-    List<Picture> pictures = _response.data.map((pictureJson) => Picture.fromJson(pictureJson)).toList();
+    PagelessResponse _response = PagelessResponse.fromRawJson(await provider.get(endpoint));
+    List<Picture> pictures = _response.data.map((pictureJson) => Picture().fromJson(pictureJson)).toList();
     return pictures;
   }
 }
