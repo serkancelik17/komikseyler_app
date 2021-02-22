@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/action.dart' as Local;
+import 'package:komik_seyler/business/models/category.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/repositories/category_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/atoms/LinearIndicatorAtom.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/atoms/circular_progress_indicator_atom.dart';
@@ -88,9 +89,8 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   }
 
   Future<bool> get getSections async {
-    CategoryRepository catRepo = CategoryRepository();
     //  try {
-    List<SectionMixin> categories = await catRepo.getCategories();
+    List<SectionMixin> categories = (await Category().where(parameters: {'device_uuid': (await Settings.getUuid())})).get().cast<SectionMixin>();
     _sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);
