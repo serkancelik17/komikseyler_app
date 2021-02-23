@@ -53,24 +53,19 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   Widget build(BuildContext context) {
     return (_views == null || _views.length == 0)
         ? CenterAtom(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  onPageChanged: (index, reason) {
-                    _onPageChange(index, reason);
-                  },
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1,
-                ),
-                items: _views.map((view) {
-                  return SlideMolecule(view: view);
-                }).toList(),
-              ),
-              //IndicatorsRowMolecule(views: widget.views, activeView: widget.activeView),
-            ],
+        : CarouselSlider(
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.6,
+              onPageChanged: (index, reason) {
+                _onPageChange(index, reason);
+              },
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+              viewportFraction: 1,
+            ),
+            items: _views.map((view) {
+              return SlideMolecule(view: view);
+            }).toList(),
           );
   }
 

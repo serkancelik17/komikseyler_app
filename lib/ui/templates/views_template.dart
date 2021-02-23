@@ -88,15 +88,17 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomSliderOrganism(
-                section: widget.section,
-                viewChanged: (activeView) {
-                  setState(() {
-                    this.activeView = activeView;
-                  });
-                }),
+            Container(
+              child: CustomSliderOrganism(
+                  section: widget.section,
+                  viewChanged: (activeView) {
+                    setState(() {
+                      this.activeView = activeView;
+                    });
+                  }),
+            ),
             (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
           ],
         ),
