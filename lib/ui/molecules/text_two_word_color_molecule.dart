@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/ui/atoms/row_atom.dart';
 import 'package:komik_seyler/ui/atoms/text_atom.dart';
 
 class TextTwoWordColorMolecule extends StatelessWidget {
@@ -11,7 +12,7 @@ class TextTwoWordColorMolecule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //@todo atom yapılacak
-    return Row(
+    return RowAtom(
       mainAxisAlignment: mainAxisAlignment,
       children: [
         TextAtom(
