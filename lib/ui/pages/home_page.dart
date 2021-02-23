@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/molecules/text_two_word_color_molecule.dart';
+import 'package:komik_seyler/ui/molecules/title_color_molecule.dart';
 import 'package:komik_seyler/ui/templates/home_template.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: HomeTemplate(
-        title: TextTwoWordColorMolecule(texts: ["Komik", "Şeyler"], colors: [Colors.black, CustomColors.purple], mainAxisAlignment: MainAxisAlignment.center),
+        title: TitleColorMolecule(text: "Komik Şeyler", colors: [Colors.black, CustomColors.purple]),
       ),
     );
   }

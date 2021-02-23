@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RowAtom extends StatelessWidget {
@@ -6,7 +7,7 @@ class RowAtom extends StatelessWidget {
   final Key key;
 
   final List<Widget> children;
-  RowAtom({this.mainAxisAlignment, this.children, this.crossAxisAlignment, this.key});
+  RowAtom({this.mainAxisAlignment = MainAxisAlignment.start, this.children, this.crossAxisAlignment = CrossAxisAlignment.start, this.key});
 
   @override
   Widget build(BuildContext context) {

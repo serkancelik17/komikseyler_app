@@ -16,7 +16,7 @@ import 'package:komik_seyler/ui/atoms/button_atom.dart';
 import 'package:komik_seyler/ui/molecules/banner_molecule.dart';
 import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
-import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
+import 'package:komik_seyler/ui/molecules/title_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/bottom_navigation_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/custom_slider_organism.dart';
@@ -77,7 +77,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     return Scaffold(
       appBar: AppBarOrganism(
         leading: IconButton(icon: Icon(Icons.west), onPressed: () => Navigator.of(context).pop(widget.section)),
-        title: CenterMolecule(TextOneWordTwoColorMolecule(
+        title: CenterMolecule(TitleColorMolecule(
           text: widget.section.getTitle(),
           colors: [
             Colors.black,
@@ -85,18 +85,21 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
           ],
         )),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomSliderOrganism(
-              section: widget.section,
-              viewChanged: (activeView) {
-                setState(() {
-                  this.activeView = activeView;
-                });
-              }),
-          (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
-        ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomSliderOrganism(
+                section: widget.section,
+                viewChanged: (activeView) {
+                  setState(() {
+                    this.activeView = activeView;
+                  });
+                }),
+            (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
+          ],
+        ),
       ),
       bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
     );

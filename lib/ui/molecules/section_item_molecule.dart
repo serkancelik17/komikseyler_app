@@ -30,10 +30,10 @@ class SectionItemMolecule extends StatelessWidget {
     );
   }
 
-  GradientIconMolecule buildIcon() {
+  Widget buildIcon() {
     return GradientIconMolecule(
       icon: section.getIcon(),
-      size: 60,
+      size: 45,
       gradient: LinearGradient(
         colors: [
           CustomColors.purple,

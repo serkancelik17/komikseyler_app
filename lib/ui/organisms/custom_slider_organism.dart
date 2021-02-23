@@ -57,7 +57,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
             children: [
               CarouselSlider(
                 options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.6,
                   onPageChanged: (index, reason) {
                     _onPageChange(index, reason);
                   },
