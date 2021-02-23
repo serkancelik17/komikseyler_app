@@ -64,11 +64,11 @@ class Settings {
 
       file.writeAsBytesSync(response.bodyBytes);
 
-      Share.shareFiles([file.path]);
+      await Share.shareFiles([file.path]);
+      return true;
     } catch (e) {
       return false;
     }
-    return true;
   }
 
   static getInitialAd(context) {

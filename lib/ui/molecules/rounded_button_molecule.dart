@@ -37,7 +37,7 @@ class RoundedButtonMolecule extends StatelessWidget {
                   showBadge: badgeCount > 0,
                   toAnimate: true,
                   position: BadgePosition.topEnd(end: -35, top: -10),
-                  badgeColor: CustomColors.purple,
+                  badgeColor: activeColor,
                   badgeContent: Text(
                     badgeCount.toString(),
                     style: TextStyle(fontSize: 10, color: CustomColors.darkGrey),

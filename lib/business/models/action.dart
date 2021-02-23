@@ -5,11 +5,10 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/repositories/action_repository.dart';
+import 'package:komik_seyler/business/repositories/repository.dart';
 
-Action actionFromJson(String str) => Action().fromJson(json.decode(str));
+import 'model.dart';
 
 String actionToJson(Action data) => json.encode(data.toJson());
 
@@ -42,7 +41,7 @@ class Action extends Model with SectionMixin {
   }
 
   @override
-  RepositoryMixin getRepository() {
+  Repository getRepository() {
     return new ActionRepository();
   }
 

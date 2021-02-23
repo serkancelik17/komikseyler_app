@@ -36,6 +36,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   ViewMixin _activeView;
   Log _log;
   int maxIndex = 0;
+  int _page = 1;
   AdManager _adManager = AdManager();
 
   @override
@@ -75,7 +76,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getMore() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit}, isPaginate: true)).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++}, isPaginate: true)).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
       //İlk resmi varsayılan vap
@@ -99,6 +100,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
       maxIndex = index;
       _log.viewCount = widget.section.viewCount++; // Sayıyı bir arttır.
       _log.lastViewPictureId = _activeView.id;
+      _saveData(); //@todo kaldırılacak.
     }
 
     if (index == _views.length - 2) getMore();
@@ -114,10 +116,10 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
     super.dispose();
   }
 
-  @override
+  /* @override @TODO sayfa cıkışlarında ve back button da calıstırılacak.
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _saveData();
-  }
+  }*/
 
   Future<void> getLog() async {
     Log log = (await Log().where(parameters: {

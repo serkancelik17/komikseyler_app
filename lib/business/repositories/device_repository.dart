@@ -2,10 +2,11 @@ import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/response/pageless_response.dart';
 import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
+import 'package:komik_seyler/business/repositories/repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DeviceRepository extends ModelRepository {
+class DeviceRepository extends ModelRepository implements Repository {
   final SharedPreferencesProvider spp;
 
   DeviceRepository({spp, apiProvider}) : spp = spp ?? SharedPreferencesProvider();

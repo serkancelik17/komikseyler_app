@@ -6,8 +6,8 @@ import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/repositories/abstracts/repository_mixin.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
+import 'package:komik_seyler/business/repositories/repository.dart';
 
 List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category().fromJson(x)));
 
@@ -48,7 +48,7 @@ class Category extends Model with SectionMixin {
   }
 
   @override
-  RepositoryMixin getRepository() {
+  Repository getRepository() {
     return new CategoryRepository();
   }
 
@@ -59,7 +59,6 @@ class Category extends Model with SectionMixin {
 
   @override
   String getUniqueName() {
-    // TODO: implement getName
     return 'category' + this.getId().toString();
   }
 
@@ -70,8 +69,7 @@ class Category extends Model with SectionMixin {
 
   @override
   bool calculatePercent() {
-    // TODO: implement calculatePercent
-    throw UnimplementedError();
+    return false;
   }
 
   @override
@@ -80,9 +78,7 @@ class Category extends Model with SectionMixin {
     return this;
   }
 
-  @override
   String toRawJson() {
-    // TODO: implement toRawJson
-    throw UnimplementedError();
+    return null;
   }
 }

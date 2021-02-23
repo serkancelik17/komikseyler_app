@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
@@ -13,11 +12,8 @@ abstract class Model with JsonAble {
   Device device;
   List _response;
 
-  Model({@required repository, @required this.endPoint, @required dynamic uniqueId})
-      : uniqueId = uniqueId ?? 0,
-        assert(repository != null),
-        assert(endPoint != null) {
-    Model.repository = repository;
+  Model({repository, this.endPoint, dynamic uniqueId}) : uniqueId = uniqueId ?? 0 {
+    Model.repository = repository ?? null;
   }
 
   Model fromRawJson(String str) {
