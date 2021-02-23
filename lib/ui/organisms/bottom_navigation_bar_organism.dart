@@ -40,7 +40,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       child: BottomAppBar(
         elevation: 0,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             if (_device?.option?.isAdmin == 1)
               RoundedButtonMolecule(
