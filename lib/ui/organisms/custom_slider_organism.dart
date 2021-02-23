@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:komik_seyler/business/config/env.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device/log.dart';
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
@@ -12,7 +13,6 @@ import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 

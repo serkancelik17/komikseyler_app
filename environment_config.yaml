@@ -1,6 +1,6 @@
 
 environment_config:
-  path: config/env.dart
+  path: business.config/env.dart
   fields:
     env:
       default: 'dev'
