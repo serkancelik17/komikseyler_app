@@ -41,10 +41,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getMore();
-      getLog();
-    });
+    getMore();
+    getLog();
 
     WidgetsBinding.instance.addObserver(this);
   }
@@ -78,9 +76,6 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
     List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid()}, isPaginate: true)).get().cast<ViewMixin>();
 
-    setState(() {});
-    _views.addAll(_newViews);
-
     if (_newViews.length > 0) {
       //İlk resmi varsayılan vap
       if (_views.length == 0) _activeView = _newViews[0];
@@ -88,7 +83,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
         widget.viewChanged(_activeView);
         _views.addAll(_newViews);
       });
-    }
+    } else {}
     //Reklamları satın almadıysa remlam ekle icerige
     if (await _adManager.showAd()) _views.add(Ad());
   }
