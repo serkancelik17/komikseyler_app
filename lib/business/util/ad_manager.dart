@@ -62,9 +62,10 @@ class AdManager {
   }
 
   Future<bool> showAd() async {
-    /* if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
+    Device _device = await DeviceRepository().get(viaLocal: false);
+    if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
-    }*/
+    }
     return true;
   }
 

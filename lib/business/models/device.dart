@@ -14,13 +14,16 @@ class Device extends Model {
   String uuid;
   dynamic note;
   Option option;
+  DeviceRepository repository;
 
   Device({
     this.id,
     this.uuid,
     this.note,
     this.option,
-  }) : super(repository: DeviceRepository(), uniqueId: uuid, endPoint: '/devices');
+    repository,
+  })  : repository = repository ?? DeviceRepository(),
+        super(repository: DeviceRepository(), uniqueId: uuid, endPoint: '/devices');
 
   //---
   factory Device.fromRawJson(String str) => Device().fromJson(json.decode(str));

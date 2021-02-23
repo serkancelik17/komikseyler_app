@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +12,8 @@ import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/ui/atoms/banner_atom.dart';
 import 'package:komik_seyler/ui/atoms/button_atom.dart';
+import 'package:komik_seyler/ui/molecules/banner_molecule.dart';
 import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
 import 'package:komik_seyler/ui/molecules/text_one_word_two_color_molecule.dart';
@@ -94,7 +95,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                   this.activeView = activeView;
                 });
               }),
-          (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerAtom()) : Text("")),
+          (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
         ],
       ),
       bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
@@ -109,7 +110,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         widget.adManager.buyProduct();
       },
       child: Text('Reklamları Kaldır'),
-      icon: FaIcon(FontAwesomeIcons.ad),
+      icon: FaIcon((Platform.isAndroid) ? FontAwesomeIcons.googlePay : FontAwesomeIcons.applePay),
     ));
 
     buttons.add(ButtonWithIconMolecule(
@@ -118,7 +119,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
           rewardAd.show();
         }
       },
-      child: Text('1 reklam izle 1 saat reklam görme.'),
+      child: Text('30 Dakika Reklam Gösterme'),
       icon: FaIcon(FontAwesomeIcons.ad),
     ));
 

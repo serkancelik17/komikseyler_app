@@ -12,6 +12,7 @@ import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komik_seyler/config/env.dart';
 import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
@@ -74,7 +75,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getMore() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid()}, isPaginate: true)).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit}, isPaginate: true)).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
       //İlk resmi varsayılan vap
