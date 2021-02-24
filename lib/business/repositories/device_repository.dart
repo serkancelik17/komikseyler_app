@@ -1,14 +1,9 @@
-import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/response/pageless_response.dart';
-import 'package:komik_seyler/business/providers/shared_preferences_provider.dart';
-import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 
-class DeviceRepository extends ModelRepository implements Repository {
+class DeviceRepository extends Repository {
   DeviceRepository({apiProvider});
 
-  Future<Device> get({bool viaLocal = true}) async {
+/*  Future<Device> get({bool viaLocal = true}) async {
     Device _device;
     String _uuid = await Settings.getUuid();
     String endPoint = "/devices/" + _uuid;
@@ -31,5 +26,5 @@ class DeviceRepository extends ModelRepository implements Repository {
     String deviceString = await SharedPreferencesProvider.getString('device');
     if (deviceString != null && deviceString.length > 0) _device = Device.fromRawJson(deviceString);
     return _device ?? null;
-  }
+  }*/
 }

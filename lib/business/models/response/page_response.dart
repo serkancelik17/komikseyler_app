@@ -1,35 +1,28 @@
 // To parse this JSON data, do
 //
 //     final paginateResponse = paginateResponseFromJson(jsonString);
-
 import 'dart:convert';
 
-class PageResponse {
+import 'package:komik_seyler/business/models/response/response.dart';
+
+class PageResponse extends Response {
   bool success;
-  Data data;
+  dynamic data;
   String message;
 
   PageResponse({
     this.success,
     this.data,
     this.message,
-  });
+  }) : super(message: message, success: success, data: data);
 
-  factory PageResponse.fromRawJson(String str) => PageResponse.fromJson(json.decode(str));
+  PageResponse fromRawJson(String str) => fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
-
-  factory PageResponse.fromJson(Map<String, dynamic> json) => PageResponse(
+  fromJson(Map<String, dynamic> json) => PageResponse(
         success: json["success"] == null ? null : json["success"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data().fromJson(json["data"]),
         message: json["message"] == null ? null : json["message"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "success": success == null ? null : success,
-        "data": data == null ? null : data.toJson(),
-        "message": message == null ? null : message,
-      };
 }
 
 class Data {
@@ -63,11 +56,11 @@ class Data {
   int to;
   int total;
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+  PageResponse fromRawJson(String str) => fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  fromJson(Map<String, dynamic> json) => Data(
         currentPage: json["current_page"] == null ? null : json["current_page"],
         data: json["data"] == null ? null : json["data"],
         firstPageUrl: json["first_page_url"] == null ? null : json["first_page_url"],

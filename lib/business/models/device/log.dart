@@ -16,8 +16,6 @@ class Log extends Model {
 
   Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount}) : super(repository: LogRepository(), uniqueId: id, endPoint: '/device_logs');
 
-  fromRawJson(String str) => fromJson(json.decode(str));
-
   String toRawJson() => json.encode(toJson());
 
   fromJson(Map<String, dynamic> json) => Log(

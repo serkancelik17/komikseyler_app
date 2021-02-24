@@ -4,17 +4,17 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/business/models/device/option.dart';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
-
-import 'device/option.dart';
+import 'package:komik_seyler/business/repositories/repository.dart';
 
 class Device extends Model {
   int id;
   String uuid;
   dynamic note;
   Option option;
-  DeviceRepository repository;
+  Repository repository;
 
   Device({
     this.id,

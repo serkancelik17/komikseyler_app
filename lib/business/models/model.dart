@@ -1,20 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
-import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
+import 'package:komik_seyler/business/repositories/repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
 abstract class Model with JsonAble {
   dynamic uniqueId;
-  static ModelRepository repository;
+  Repository repository;
   String endPoint;
   Device device;
-  List _response;
+  List<Model> _response;
 
-  Model({repository, this.endPoint, dynamic uniqueId}) : uniqueId = uniqueId ?? 0 {
-    Model.repository = repository ?? null;
-  }
+  Model({repository, this.endPoint, dynamic uniqueId})
+      : uniqueId = uniqueId ?? 0,
+        repository = repository ?? null;
 
   Model fromRawJson(String str) {
     return this.fromJson(json.decode(str));
@@ -22,7 +23,7 @@ abstract class Model with JsonAble {
 
   Future<Model> find({dynamic id}) async {
     id ??= this.uniqueId;
-    Model _model = (await Model.repository.where(model: this, parameters: {'filter[' + (runtimeType == Device ? 'uuid' : 'id') + ']'.toString(): id})).first();
+    Model _model = (await this.where(parameters: {'filter[' + ((this is Device) ? 'uuid' : 'id') + ']': id}, isPaginate: false)).first();
     return _model;
   }
 
@@ -34,33 +35,68 @@ abstract class Model with JsonAble {
   }
 
   Future<Model> where({Map<String, dynamic> parameters, bool isPaginate = false}) async {
-    List response = await Model.repository.where(model: this, parameters: parameters, isPaginate: isPaginate);
-    response = response.map((e) => this.fromJson(e)).toList();
-    _response = response;
+    _response = (await repository.where(model: this, parameters: parameters, isPaginate: isPaginate));
     return this;
   }
 
   Model first() {
-    return this._response[0];
+    return _response[0];
   }
 
   List<Model> get() {
-    return this._response;
+    return _response;
   }
 
   Future<bool> store() async {
-    bool response = await Model.repository.store(model: this);
+    bool response = await this.repository.store(model: this);
     return response;
   }
 
   Future<bool> update() async {
-    bool response = await Model.repository.update(model: this);
+    bool response = await this.repository.update(model: this);
     return response;
     //return Option.fromJson(response.data[0]);
   }
 
+  Future<Model> firstOrNew(Map<String, dynamic> parameters) async {
+    Model _model;
+    _model = (await this.where(parameters: parameters, isPaginate: false)).first();
+    if (_model == null) {
+      _model = this.fromJson(parameters);
+    }
+
+    return _model;
+  }
+
+  Future<Model> firstOrCreate(Map<String, dynamic> parameters) async {
+    Model _model;
+    _model = (await this.where(parameters: parameters, isPaginate: false)).first();
+    if (_model == null) {
+      _model = this.fromJson(parameters);
+      bool response = await _model.store();
+
+      if (response == false) throw HttpException('Model store edilemedi.' + _model.toString());
+    }
+    return _model;
+  }
+
+  /// Veriyi gunceller veya kaydeder
+  Future<Model> updateOrCreate(Map<String, dynamic> matches, Map<String, dynamic> changes) async {
+    Model _model;
+
+    _model = (await this.where(parameters: matches, isPaginate: false)).first();
+
+    if (_model == null) {
+      matches.addAll(changes);
+      bool response = await this.fromJson(matches).store();
+
+      if (response == false) throw HttpException('Model kayıt edilemedi.' + _model.toString());
+    }
+    return _model;
+  }
+
   Future<bool> destroy() async {
-    bool response = await Model.repository.destroy(model: this);
+    bool response = await this.repository.destroy(model: this);
     return response;
   }
 }
