@@ -15,7 +15,7 @@ class HomeTemplate extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.all(10),
-        child: SectionListOrganism(/*device: device*/ /*[Category(id: 1, name: 'ListView 1 Title')]*/),
+        child: SectionListOrganism(),
       ),
     );
   }

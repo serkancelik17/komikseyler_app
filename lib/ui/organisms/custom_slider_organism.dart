@@ -13,7 +13,6 @@ import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/ui/atoms/center_atom.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
 class CustomSliderOrganism extends StatefulWidget {
@@ -43,6 +42,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   void initState() {
     // TODO: implement initState
     super.initState();
+
     getMore();
     getLog();
 
@@ -52,7 +52,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   @override
   Widget build(BuildContext context) {
     return (_views == null || _views.length == 0)
-        ? CenterAtom(child: CircularProgressIndicator())
+        ? Center(child: CircularProgressIndicator())
         : CarouselSlider(
             options: CarouselOptions(
               height: MediaQuery.of(context).size.height * 0.6,
@@ -71,18 +71,19 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getMore() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews = (await Picture().where(parameters: {'filter[category_id]': 1, 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++}, isPaginate: true)).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews =
+        (await Picture().where(parameters: {'filter[category_id]': widget.section.getId(), 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++}, isPaginate: true)).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
+      //Reklamları satın almadıysa remlam ekle icerige
       //İlk resmi varsayılan vap
       if (_views.length == 0) _activeView = _newViews[0];
       setState(() {
         widget.viewChanged(_activeView);
         _views.addAll(_newViews);
       });
-    } else {}
-    //Reklamları satın almadıysa remlam ekle icerige
-    if (await _adManager.showAd()) _views.add(Ad());
+      if (await _adManager.showAd()) _views.add(Ad());
+    }
   }
 
   _onPageChange(int index, CarouselPageChangedReason reason) {

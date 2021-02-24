@@ -43,10 +43,10 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   AdManager _adManager = AdManager();
   bool _showAd = false;
   StreamSubscription<List<PurchaseDetails>> subscription;
+  GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -55,12 +55,14 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
     rewardAd = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+      listener: (AdmobAdEvent event, Map<String, dynamic> args) async {
         if (event == AdmobAdEvent.closed) rewardAd.load();
+        handleRewardAdEvent(context, event, args);
       },
     );
     rewardAd.load();
 
+    //In APP Purchase
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
     subscription = purchaseUpdated.listen((purchaseDetailsList) {
       widget.adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
@@ -72,9 +74,51 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     widget.adManager.initStoreInfo();
   }
 
+  void handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) {
+    switch (event) {
+      /* case AdmobAdEvent.loaded:
+        showSnackBar('New Admob $adType Ad loaded!');
+        break;*/
+      /*case AdmobAdEvent.opened:
+        showSnackBar('Admob $adType Ad opened!');
+        break;
+      case AdmobAdEvent.closed:
+        showSnackBar('Admob $adType Ad closed!');
+        break;
+      case AdmobAdEvent.failedToLoad:
+        showSnackBar('Admob $adType failed to load. :(');
+        break;*/
+      case AdmobAdEvent.rewarded:
+        AdManager().removeAds(ctx, Duration(minutes: 30)).then((value) {
+          showDialog(
+            context: ctx,
+            builder: (BuildContext context) {
+              return WillPopScope(
+                child: AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('Tebrikler. 30 dakika reklem görmeyeceksiniz.'),
+                    ],
+                  ),
+                ),
+                onWillPop: () async {
+                  Scaffold.of(ctx).hideCurrentSnackBar();
+                  return true;
+                },
+              );
+            },
+          );
+        });
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldState,
       appBar: AppBarOrganism(
         leading: IconButton(icon: Icon(Icons.west), onPressed: () => Navigator.of(context).pop(widget.section)),
         title: CenterMolecule(TitleColorMolecule(
@@ -88,7 +132,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               child: CustomSliderOrganism(
@@ -135,6 +179,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   void dispose() {
     // TODO: implement dispose
     subscription.cancel();
+    rewardAd.dispose();
     super.dispose();
   }
 }

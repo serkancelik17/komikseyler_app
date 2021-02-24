@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
 import 'package:komik_seyler/business/repositories/abstracts/model_repository.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 abstract class Model with JsonAble {
   dynamic uniqueId;
@@ -20,10 +20,16 @@ abstract class Model with JsonAble {
     return this.fromJson(json.decode(str));
   }
 
-  Future<String> getEndPoint() async {
-    if (device == null) device = await DeviceRepository().get();
+  Future<Model> find({dynamic id}) async {
+    id ??= this.uniqueId;
+    Model _model = (await Model.repository.where(model: this, parameters: {'filter[' + (runtimeType == Device ? 'uuid' : 'id') + ']'.toString(): id})).first();
+    return _model;
+  }
 
-    endPoint = endPoint.replaceAll("{{device_uuid}}", device.uuid);
+  Future<String> getEndPoint() async {
+    //if (device == null) device = await this.find(uniqueId: await Settings.getUuid());
+
+    endPoint = endPoint.replaceAll("{{device_uuid}}", await Settings.getUuid());
     return this.endPoint;
   }
 

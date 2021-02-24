@@ -7,16 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/device/option.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
+import 'package:komik_seyler/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
-  final DeviceRepository deviceRepository;
-  final _productIds = {'subscription_yearly'};
+  static final _productIds = {'subscription_yearly'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
-
-  AdManager({deviceRepository}) : deviceRepository = deviceRepository ?? DeviceRepository();
 
   static String get appId {
     if (Platform.isAndroid) {
@@ -62,7 +59,7 @@ class AdManager {
   }
 
   Future<bool> showAd() async {
-    Device _device = await DeviceRepository().get(viaLocal: false);
+    Device _device = await Device().find(id: await Settings.getUuid());
     if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     }
@@ -91,12 +88,13 @@ class AdManager {
     }
   }
 
-  removeAds(BuildContext ctx) async {
-    Device _device = await deviceRepository.get();
+  Future<AdManager> removeAds(BuildContext ctx, Duration duration) async {
+    Device _device = await Device().find(id: Settings.getUuid());
 
     Option newOption = _device.option;
-    newOption.adsShowAfter = DateTime.now().add(Duration(days: 365 * 100));
+    newOption.adsShowAfter = DateTime.now().add(duration);
     await _device.option.update();
+    return this;
   }
 
   listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
@@ -108,9 +106,9 @@ class AdManager {
           // show error message or failure icon
           showPaymentErrorAlertDialog(ctx);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          this.removeAds(ctx);
-          // show success message and deliver the product.
+          this.removeAds(ctx, Duration(days: 365 * 100));
           showPaymentSuccessAlertDialog(ctx);
+          // show success message and deliver the product.
         }
       }
     });
@@ -145,7 +143,7 @@ class AdManager {
   }
 
   initStoreInfo() async {
-    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_productIds);
+    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(AdManager._productIds);
     if (productDetailResponse.error == null) {
       //setState(() {
       _products = productDetailResponse.productDetails;

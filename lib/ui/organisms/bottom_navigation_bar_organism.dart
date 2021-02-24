@@ -5,10 +5,8 @@ import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/picture/action.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class BottomNavigationBarOrganism extends StatefulWidget {
   final Picture activeView;
@@ -29,7 +27,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _device = await DeviceRepository().get();
+      _device = await Device().find(id: await Settings.getUuid());
     });
   }
 
@@ -60,7 +58,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
               badgeCount: widget.activeView.likesCount,
               iconData: FontAwesomeIcons.heart,
               activeIconData: FontAwesomeIcons.solidHeart,
-              activeColor: CustomColors.lightRed,
+/*              activeColor: CustomColors.lightRed,*/
               onTap: () {
                 toggleAction(action: Local.Action(id: 1, name: 'like'));
               },
@@ -71,7 +69,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
               badgeCount: widget.activeView.favoritesCount,
               iconData: FontAwesomeIcons.star,
               activeIconData: FontAwesomeIcons.solidStar,
-              activeColor: CustomColors.lightYellow,
+/*              activeColor: CustomColors.lightYellow,*/
               onTap: () {
                 toggleAction(action: Local.Action(id: 2, name: 'favorite'));
               },
@@ -82,7 +80,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
               badgeCount: widget.activeView.sharesCount,
               active: (widget.activeView.userSharesCount != 0),
               iconData: FontAwesomeIcons.share,
-              activeColor: CustomColors.lightBlue,
+/*              activeColor: CustomColors.lightBlue,*/
               onTap: () {
                 toggleAction(action: Local.Action(id: 5, name: 'share'));
               },

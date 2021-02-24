@@ -16,10 +16,10 @@ class SlideMolecule extends StatelessWidget {
   Widget build(BuildContext context) {
     return (view is Ad)
         ? BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
-        : PinchZoom(
-            image: Container(
-              child: FullScreenWidget(
-                child: FadeInImage.assetNetwork(
+        : Container(
+            child: FullScreenWidget(
+              child: PinchZoom(
+                image: FadeInImage.assetNetwork(
                   placeholder: 'assets/images/loading.gif',
                   image: Env.imageAssetsUrl + "/" + view.path,
                 ),
