@@ -40,7 +40,6 @@ class Action extends Model with SectionMixin {
     return this.title;
   }
 
-  @override
   Repository getRepository() {
     return new ActionRepository();
   }

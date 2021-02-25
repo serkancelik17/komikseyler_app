@@ -2,12 +2,8 @@
 //
 //     final pictureAction = pictureActionFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/picture_actions_repository.dart';
-
-String pictureActionToJson(List<PictureAction> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class PictureAction extends Model {
   PictureAction({

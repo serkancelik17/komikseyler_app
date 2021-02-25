@@ -47,7 +47,6 @@ class Category extends Model with SectionMixin {
     return this.name;
   }
 
-  @override
   Repository getRepository() {
     return new CategoryRepository();
   }

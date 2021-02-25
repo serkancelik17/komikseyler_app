@@ -71,8 +71,15 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getMore() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews =
-        (await Picture().where(parameters: {'filter[category_id]': widget.section.getId(), 'filter[device_uuid]': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++}, isPaginate: true)).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews = (await Picture().where(parameters: {
+      'filters[category_id]': widget.section.getId(),
+      'filt'
+          'ers[device_uuid]': await Settings.getUuid(),
+      'limit': Env.pagePictureLimit,
+      'page': _page++
+    }, isPaginate: true))
+        .get()
+        .cast<ViewMixin>();
 
     if (_newViews.length > 0) {
       //Reklamları satın almadıysa remlam ekle icerige
@@ -119,7 +126,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getLog() async {
     Log log = (await Log().where(parameters: {
-      'filter': {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}
+      'filters': {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}
     }))
         .first();
 

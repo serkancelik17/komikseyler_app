@@ -4,40 +4,33 @@
 
 import 'dart:convert';
 
+import 'package:komik_seyler/business/models/response/absctracts/response_meta_data_abstract.dart';
 import 'package:komik_seyler/business/models/response/response.dart';
 
 class SimplePaginateResponse extends Response {
   SimplePaginateResponse({
-    this.success,
-    this.data,
-    this.message,
-  });
-
-  bool success;
-  Data data;
-  String message;
-
-  SimplePaginateResponse fromRawJson(String str) => fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
+    success,
+    metaData,
+    message,
+  }) : super(success: success, metaData: metaData, message: message);
 
   SimplePaginateResponse fromJson(Map<String, dynamic> json) => SimplePaginateResponse(
         success: json["success"] == null ? null : json["success"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        metaData: json["data"] == null ? null : SimplePaginateMetaData().fromJson(json['data']),
         message: json["message"] == null ? null : json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "success": success == null ? null : success,
-        //"data": data == null ? null : List<dynamic>.from(data.map((x) => x.toString())),
+        //"data": data == null ? null : Data.map((x) => x.toString())),
         "message": message == null ? null : message,
       };
 }
 
-class Data {
-  Data({
+class SimplePaginateMetaData extends ResponseMetaDataAbstract {
+  SimplePaginateMetaData({
     this.currentPage,
-    this.data,
+    data,
     this.firstPageUrl,
     this.from,
     this.nextPageUrl,
@@ -45,23 +38,20 @@ class Data {
     this.perPage,
     this.prevPageUrl,
     this.to,
-  });
+  }) : super(data: data);
 
   int currentPage;
-  List<dynamic> data;
   String firstPageUrl;
   int from;
   String nextPageUrl;
   String path;
-  String perPage;
+  dynamic perPage;
   dynamic prevPageUrl;
   int to;
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+  SimplePaginateMetaData fromRawJson(String str) => SimplePaginateMetaData().fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  SimplePaginateMetaData fromJson(Map<String, dynamic> json) => SimplePaginateMetaData(
         currentPage: json["current_page"] == null ? null : json["current_page"],
         data: json["data"] == null ? null : json['data'],
         firstPageUrl: json["first_page_url"] == null ? null : json["first_page_url"],
@@ -86,8 +76,8 @@ class Data {
       };
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
     this.id,
     this.categoryId,
     this.path,
@@ -109,11 +99,11 @@ class Datum {
   int userFavoritesCount;
   int userSharesCount;
 
-  factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
+  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"] == null ? null : json["id"],
         categoryId: json["category_id"] == null ? null : json["category_id"],
         path: json["path"] == null ? null : json["path"],

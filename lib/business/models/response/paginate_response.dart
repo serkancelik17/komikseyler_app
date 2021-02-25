@@ -3,32 +3,27 @@
 //     final paginateResponse = paginateResponseFromJson(jsonString);
 import 'dart:convert';
 
+import 'package:komik_seyler/business/models/response/absctracts/response_meta_data_abstract.dart';
 import 'package:komik_seyler/business/models/response/response.dart';
 
 class PaginateResponse extends Response {
-  bool success;
-  Data data;
-  String message;
-
   PaginateResponse({
-    this.success,
-    this.data,
-    this.message,
-  });
-
-  PaginateResponse fromRawJson(String str) => fromJson(json.decode(str));
+    success,
+    metaData,
+    message,
+  }) : super(success: success, metaData: metaData, message: message);
 
   fromJson(Map<String, dynamic> json) => PaginateResponse(
         success: json["success"] == null ? null : json["success"],
-        data: json["data"] == null ? null : Data().fromJson(json["data"]),
+        metaData: json["data"] == null ? null : PaginateData().fromJson(json["data"]),
         message: json["message"] == null ? null : json["message"],
       );
 }
 
-class Data {
-  Data({
+class PaginateData extends ResponseMetaDataAbstract {
+  PaginateData({
     this.currentPage,
-    this.data,
+    data,
     this.firstPageUrl,
     this.from,
     this.lastPage,
@@ -40,7 +35,7 @@ class Data {
     this.prevPageUrl,
     this.to,
     this.total,
-  });
+  }) : super(data: data);
 
   int currentPage;
   List<dynamic> data;
@@ -60,7 +55,7 @@ class Data {
 
   String toRawJson() => json.encode(toJson());
 
-  fromJson(Map<String, dynamic> json) => Data(
+  fromJson(Map<String, dynamic> json) => PaginateData(
         currentPage: json["current_page"] == null ? null : json["current_page"],
         data: json["data"] == null ? null : json["data"],
         firstPageUrl: json["first_page_url"] == null ? null : json["first_page_url"],
@@ -91,6 +86,12 @@ class Data {
         "to": to == null ? null : to,
         "total": total == null ? null : total,
       };
+
+  @override
+  Map<String, dynamic> getContent() {
+    // TODO: implement getContent
+    throw UnimplementedError();
+  }
 }
 
 class Link {

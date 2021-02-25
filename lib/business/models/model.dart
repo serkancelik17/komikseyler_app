@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
+import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
@@ -23,7 +24,7 @@ abstract class Model with JsonAble {
 
   Future<Model> find({dynamic id}) async {
     id ??= this.uniqueId;
-    Model _model = (await this.where(parameters: {'filter[' + ((this is Device) ? 'uuid' : 'id') + ']': id}, isPaginate: false)).first();
+    Model _model = (await this.where(parameters: {'filters[' + ((this is Device) ? 'uuid' : 'id') + ']': id}, isPaginate: false)).first();
     return _model;
   }
 
@@ -35,7 +36,7 @@ abstract class Model with JsonAble {
   }
 
   Future<Model> where({Map<String, dynamic> parameters, bool isPaginate = false}) async {
-    _response = (await repository.where(model: this, parameters: parameters, isPaginate: isPaginate));
+    _response = (await repository.where(model: this, parameters: parameters, paginateType: PaginateType.simplePaginate));
     return this;
   }
 
