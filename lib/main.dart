@@ -7,7 +7,7 @@ import 'package:komik_seyler/business/routers/app_router.dart';
 import 'package:komik_seyler/ui/themes/custom_theme.dart';
 
 void main() {
-  //
+  //Main
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize without device test ids
   Admob.initialize();
