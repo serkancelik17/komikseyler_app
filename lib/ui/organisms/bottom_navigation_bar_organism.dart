@@ -95,13 +95,6 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
   addAction({Picture picture, Local.Action action}) {
     try {
       action.store();
-      // _pictureRepository.addAction(action: action, value: true, picture: picture).then((Response response) {
-      //       print(action.name + ";" + response.success.toString());
-      /*      setState(() {
-          //@todo
-          //moveBoxColor = (moveBoxColor == Colors.white) ? Colors.blue : Colors.white;
-        });*/
-      /*    });*/
     } catch (e) {
       toggleAction(action: action);
       throw e;
@@ -123,7 +116,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     }
   }
 
-  bool toggleAction({@required Local.Action action}) {
+  Future<bool> toggleAction({@required Local.Action action}) async {
     bool willAdd;
     if (action.name == 'like') {
       willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
@@ -145,7 +138,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     }
     PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id, deviceUuid: _device.uuid);
     if (willAdd)
-      _pa.store();
+      _pa = await _pa.store();
     else
       _pa.destroy();
 

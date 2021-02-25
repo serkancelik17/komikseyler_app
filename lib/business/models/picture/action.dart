@@ -6,17 +6,17 @@ import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/repositories/picture_actions_repository.dart';
 
 class PictureAction extends Model {
+  int id;
+  String deviceUuid;
+  int pictureId;
+  int actionId;
+
   PictureAction({
     this.id,
     this.deviceUuid,
     this.pictureId,
     this.actionId,
   }) : super(repository: PictureActionsRepository(), endPoint: "/picture_actions", uniqueId: id);
-
-  int id;
-  String deviceUuid;
-  int pictureId;
-  int actionId;
 
   PictureAction fromJson(Map<String, dynamic> json) => PictureAction(
         id: json["id"] == null ? null : json["id"],

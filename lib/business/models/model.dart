@@ -5,7 +5,6 @@ import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
 import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
-import 'package:komik_seyler/business/util/settings.dart';
 
 abstract class Model with JsonAble {
   dynamic uniqueId;
@@ -29,9 +28,6 @@ abstract class Model with JsonAble {
   }
 
   Future<String> getEndPoint() async {
-    //if (device == null) device = await this.find(uniqueId: await Settings.getUuid());
-
-    endPoint = endPoint.replaceAll("{{device_uuid}}", await Settings.getUuid());
     return this.endPoint;
   }
 
@@ -48,9 +44,9 @@ abstract class Model with JsonAble {
     return _response;
   }
 
-  Future<bool> store() async {
-    bool response = await this.repository.store(model: this);
-    return response;
+  Future<Model> store() async {
+    Model model = await this.repository.store(model: this);
+    return model;
   }
 
   Future<bool> update() async {
@@ -74,9 +70,9 @@ abstract class Model with JsonAble {
     _model = (await this.where(parameters: parameters, isPaginate: false)).first();
     if (_model == null) {
       _model = this.fromJson(parameters);
-      bool response = await _model.store();
+      _model = await _model.store();
 
-      if (response == false) throw HttpException('Model store edilemedi.' + _model.toString());
+      if (!(_model is Model)) throw HttpException('Model store edilemedi.' + _model.toString());
     }
     return _model;
   }
@@ -89,9 +85,9 @@ abstract class Model with JsonAble {
 
     if (_model == null) {
       matches.addAll(changes);
-      bool response = await this.fromJson(matches).store();
+      _model = await this.fromJson(matches).store();
 
-      if (response == false) throw HttpException('Model kayıt edilemedi.' + _model.toString());
+      if (!(_model is Model)) throw HttpException('Model kayıt edilemedi.' + _model.toString());
     }
     return _model;
   }

@@ -17,9 +17,9 @@ abstract class Repository {
 
   //Future<Model> find() => Future.value(Device());
 
-  Future<bool> store({@required Model model}) async {
+  Future<Model> store({@required Model model}) async {
     Response response = Response().fromRawJson(await apiProvider.post(await model.getEndPoint(), jsonEncode(model)));
-    return response.success;
+    return model.fromJson(response.metaData.data[0]);
   }
 
   Future<bool> update({@required Model model}) async {
