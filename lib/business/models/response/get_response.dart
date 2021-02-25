@@ -3,19 +3,21 @@
 //     final response = responseFromJson(jsonString);
 import 'dart:convert';
 
-class PagelessResponse {
+import 'package:komik_seyler/business/models/response/response.dart';
+
+class GetResponse extends Response {
   bool success;
   List<dynamic> data;
   String message;
 
-  PagelessResponse({
+  GetResponse({
     this.success,
     this.data,
     this.message,
   });
 
-  PagelessResponse fromJson(Map<String, dynamic> json) {
-    PagelessResponse _pagelessResponse = PagelessResponse(
+  GetResponse fromJson(Map<String, dynamic> json) {
+    GetResponse _pagelessResponse = GetResponse(
       success: json["success"] == null ? null : json["success"],
       data: json["data"] == null ? null : json['data'],
       message: json["message"] == null ? null : json["message"],
@@ -23,7 +25,7 @@ class PagelessResponse {
     return _pagelessResponse;
   }
 
-  PagelessResponse fromRawJson(String str) {
+  GetResponse fromRawJson(String str) {
     Map jsonData = json.decode(str);
     return fromJson(jsonData);
   }

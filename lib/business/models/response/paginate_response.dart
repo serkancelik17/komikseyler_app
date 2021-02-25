@@ -5,20 +5,20 @@ import 'dart:convert';
 
 import 'package:komik_seyler/business/models/response/response.dart';
 
-class PageResponse extends Response {
+class PaginateResponse extends Response {
   bool success;
-  dynamic data;
+  Data data;
   String message;
 
-  PageResponse({
+  PaginateResponse({
     this.success,
     this.data,
     this.message,
-  }) : super(message: message, success: success, data: data);
+  });
 
-  PageResponse fromRawJson(String str) => fromJson(json.decode(str));
+  PaginateResponse fromRawJson(String str) => fromJson(json.decode(str));
 
-  fromJson(Map<String, dynamic> json) => PageResponse(
+  fromJson(Map<String, dynamic> json) => PaginateResponse(
         success: json["success"] == null ? null : json["success"],
         data: json["data"] == null ? null : Data().fromJson(json["data"]),
         message: json["message"] == null ? null : json["message"],
@@ -56,7 +56,7 @@ class Data {
   int to;
   int total;
 
-  PageResponse fromRawJson(String str) => fromJson(json.decode(str));
+  PaginateResponse fromRawJson(String str) => fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 

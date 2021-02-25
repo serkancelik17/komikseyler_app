@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/models/response/page_response.dart';
-import 'package:komik_seyler/business/models/response/pageless_response.dart';
+import 'package:komik_seyler/business/models/response/get_response.dart';
+import 'package:komik_seyler/business/models/response/simple_paginate_response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
 
 abstract class Repository {
@@ -16,19 +16,19 @@ abstract class Repository {
   //Future<Model> find() => Future.value(Device());
 
   Future<bool> store({@required Model model}) async {
-    PagelessResponse response = PagelessResponse().fromRawJson(await apiProvider.post(await model.getEndPoint(), jsonEncode(model)));
+    GetResponse response = GetResponse().fromRawJson(await apiProvider.post(await model.getEndPoint(), jsonEncode(model)));
     return response.success;
   }
 
   Future<bool> update({@required Model model}) async {
     String _endPoint = await model.getEndPoint() + '/' + model.uniqueId.toString();
-    PagelessResponse response = PagelessResponse().fromRawJson(await apiProvider.patch(_endPoint, jsonEncode(model)));
+    GetResponse response = GetResponse().fromRawJson(await apiProvider.patch(_endPoint, jsonEncode(model)));
     return response.success;
   }
 
   Future<bool> destroy({@required Model model}) async {
     String _endPoint = await model.getEndPoint() + '/' + model.uniqueId.toString();
-    PagelessResponse response = PagelessResponse().fromRawJson(await apiProvider.delete(_endPoint));
+    GetResponse response = GetResponse().fromRawJson(await apiProvider.delete(_endPoint));
     return response.success;
   }
 
@@ -50,10 +50,10 @@ abstract class Repository {
     List<dynamic> _data;
     String _apiResponse = await apiProvider.get(_endPoint);
     if (isPaginate) {
-      PageResponse _response = PageResponse().fromRawJson(_apiResponse);
+      SimplePaginateResponse _response = SimplePaginateResponse().fromRawJson(_apiResponse);
       _data = _response.data.data;
     } else {
-      PagelessResponse _response = PagelessResponse().fromRawJson(_apiResponse);
+      GetResponse _response = GetResponse().fromRawJson(_apiResponse);
       _data = _response.data;
     }
     //debugger(when: _data == null, message: 'data boş döndü');
