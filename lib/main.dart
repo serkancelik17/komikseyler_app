@@ -11,7 +11,7 @@ void main() {
   // Initialize without device test ids
   Admob.initialize();
   InAppPurchaseConnection.enablePendingPurchases();
-  //debugPaintSizeEnabled = true;
+  //debugPaintSizeEnabled = true; //ekranı boyar
   runApp(MyApp());
 }
 
