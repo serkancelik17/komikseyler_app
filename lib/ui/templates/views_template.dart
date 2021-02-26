@@ -47,7 +47,16 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
   @override
   void initState() {
-    super.initState();
+    //In APP Purchase
+    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
+    subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      widget.adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
+    }, onDone: () {
+      subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+    widget.adManager.initStoreInfo();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _showAd = await _adManager.showAd();
@@ -62,57 +71,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     );
     rewardAd.load();
 
-    //In APP Purchase
-    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      widget.adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
-    }, onDone: () {
-      subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
-    });
-    widget.adManager.initStoreInfo();
-  }
-
-  void handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) {
-    switch (event) {
-      /* case AdmobAdEvent.loaded:
-        showSnackBar('New Admob $adType Ad loaded!');
-        break;*/
-      /*case AdmobAdEvent.opened:
-        showSnackBar('Admob $adType Ad opened!');
-        break;
-      case AdmobAdEvent.closed:
-        showSnackBar('Admob $adType Ad closed!');
-        break;
-      case AdmobAdEvent.failedToLoad:
-        showSnackBar('Admob $adType failed to load. :(');
-        break;*/
-      case AdmobAdEvent.rewarded:
-        AdManager().removeAds(ctx, Duration(minutes: 30)).then((value) {
-          showDialog(
-            context: ctx,
-            builder: (BuildContext context) {
-              return WillPopScope(
-                child: AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text('Tebrikler. 30 dakika reklem görmeyeceksiniz.'),
-                    ],
-                  ),
-                ),
-                onWillPop: () async {
-                  Scaffold.of(ctx).hideCurrentSnackBar();
-                  return true;
-                },
-              );
-            },
-          );
-        });
-        break;
-      default:
-    }
+    super.initState();
   }
 
   @override
@@ -173,6 +132,47 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     ));
 
     return Column(children: buttons);
+  }
+
+  void handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) {
+    switch (event) {
+      /* case AdmobAdEvent.loaded:
+        showSnackBar('New Admob $adType Ad loaded!');
+        break;*/
+      /*case AdmobAdEvent.opened:
+        showSnackBar('Admob $adType Ad opened!');
+        break;
+      case AdmobAdEvent.closed:
+        showSnackBar('Admob $adType Ad closed!');
+        break;
+      case AdmobAdEvent.failedToLoad:
+        showSnackBar('Admob $adType failed to load. :(');
+        break;*/
+      case AdmobAdEvent.rewarded:
+        AdManager().removeAds(ctx, Duration(minutes: 30)).then((value) {
+          showDialog(
+            context: ctx,
+            builder: (BuildContext context) {
+              return WillPopScope(
+                child: AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('Tebrikler. 30 dakika reklem görmeyeceksiniz.'),
+                    ],
+                  ),
+                ),
+                onWillPop: () async {
+                  Scaffold.of(ctx).hideCurrentSnackBar();
+                  return true;
+                },
+              );
+            },
+          );
+        });
+        break;
+      default:
+    }
   }
 
   @override

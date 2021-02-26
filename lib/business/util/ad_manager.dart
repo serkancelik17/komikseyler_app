@@ -11,7 +11,7 @@ import 'package:komik_seyler/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
-  static final _productIds = {'subscription_yearly'};
+  static const Set<String> _productIds = {'subscription_yearly', 'subscription_three_month', 'subscription_six_month', 'subscription_one_month'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
 
@@ -144,11 +144,8 @@ class AdManager {
 
   initStoreInfo() async {
     ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(AdManager._productIds);
-    if (productDetailResponse.error == null) {
-      //setState(() {
-      _products = productDetailResponse.productDetails;
-      // });
-    }
+    if (productDetailResponse.error == null) {}
+    _products = productDetailResponse.productDetails;
   }
 
   showPaymentSuccessAlertDialog(BuildContext context) {

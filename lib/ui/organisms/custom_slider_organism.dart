@@ -101,8 +101,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
     //Update lastView
     if (index > maxIndex && _activeView is Picture) {
       maxIndex = index;
-      _log.viewCount = widget.section.viewCount++; // Sayıyı bir arttır.
-      _log.lastViewPictureId = _activeView.id;
+      //_log.viewCount = widget.section.viewCount++; // Sayıyı bir arttır.
+      //_log.lastViewPictureId = _activeView.id;
       _saveData(); //@todo kaldırılacak.
     }
 
