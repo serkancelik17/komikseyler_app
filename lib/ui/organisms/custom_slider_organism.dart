@@ -71,7 +71,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
 
   Future<void> getMore() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews = (await Picture().where(filters: {'category_id': widget.section.getId(), 'device_uuid': await Settings.getUuid()}, fields: {'limit': Env.pagePictureLimit, 'page': _page++})).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews = (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++})).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
       //Reklamları satın almadıysa remlam ekle icerige
