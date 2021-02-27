@@ -7,7 +7,6 @@ import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
 
 abstract class Model with JsonAble {
-
   dynamic uniqueId;
   Repository repository;
   String endPoint;
@@ -23,6 +22,7 @@ abstract class Model with JsonAble {
   Model fromRawJson(String str) {
     return this.fromJson(json.decode(str));
   }
+
 
   Future<Model> find({dynamic id}) async {
     id ??= this.uniqueId;
