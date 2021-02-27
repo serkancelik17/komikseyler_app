@@ -41,7 +41,7 @@ abstract class Model with JsonAble {
 
     //Eğer filtre varsa parametrelere ekle
     if (filters.length > 0) parameters.addAll(createFilters(filters));
-    //Eğer field istegi varsa parametrelere ekle
+    //Eğer field istegi varsa parametrelere ekle.
     if (fields.length > 0) parameters.addAll(fields);
 
     _response = (await repository.where(model: this, parameters: parameters, paginateType: this.paginateType));
