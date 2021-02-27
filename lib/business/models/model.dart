@@ -23,7 +23,6 @@ abstract class Model with JsonAble {
     return this.fromJson(json.decode(str));
   }
 
-
   Future<Model> find({dynamic id}) async {
     id ??= this.uniqueId;
     Model _model = (await this.where(filters: {((this is Device) ? 'uuid' : 'id'): id})).first();
@@ -42,7 +41,7 @@ abstract class Model with JsonAble {
 
     //Eğer filtre varsa parametrelere ekle
     if (filters.length > 0) parameters.addAll(createFilters(filters));
-    //Eğer field istegi varsa parametrelere ekele
+    //Eğer field istegi varsa parametrelere ekle
     if (fields.length > 0) parameters.addAll(fields);
 
     _response = (await repository.where(model: this, parameters: parameters, paginateType: this.paginateType));
