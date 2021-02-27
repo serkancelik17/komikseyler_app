@@ -4,15 +4,22 @@ environment_config:
   fields:
     env:
       default: 'dev'
+      type: String
 
     baseUrl:
       default: "${env =='dev'
       ? 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public'
       : 'https://komikseyler.serkancelik.web.tr'}"
+      type: String
 
     imageAssetsUrl:
       default: "$baseUrl/assets/images"
+      type: String
 
     pagePictureLimit:
       default: "(env == 'prod') ? 20 :5"
       type: int
+
+    isCached:
+       default: true
+       type: bool
