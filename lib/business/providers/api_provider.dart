@@ -1,23 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:komik_seyler/business/config/env.dart';
 
 class ApiProvider {
   String _apiUrl = Env.baseUrl + "/api/v1";
+  DefaultCacheManager defaultCacheManager;
 
-  ApiProvider();
+  ApiProvider({this.defaultCacheManager}) {
+    this.defaultCacheManager ??= DefaultCacheManager();
+  }
 
   ///veriyi getir
   Future<String> get(String endpoint) async {
     final url = _apiUrl + endpoint;
     debugPrint("[GET] Request Url : " + url);
     try {
-      http.Response responseRaw = await http.get(url);
-
-      if (responseRaw.statusCode == 200) {
-        return responseRaw.body;
+      // http.Response responseRaw = await http.get(url);
+      File response = await defaultCacheManager.getSingleFile(url);
+      print("[GET CACHED] : " + response.absolute.toString() + " lastModified: " + (await response.lastModified()).toString());
+      if (await response.exists()) {
+        return response.readAsString();
       } else {
-        throw Exception("GET Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
+        throw Exception("GET Problem!.");
       }
     } catch (e) {
       rethrow;
