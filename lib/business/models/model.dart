@@ -7,6 +7,7 @@ import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
 
 abstract class Model with JsonAble {
+
   dynamic uniqueId;
   Repository repository;
   String endPoint;
