@@ -51,7 +51,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   Future<bool> get getSections async {
     Device _device = await Device().find(id: await Settings.getUuid());
     //  try {
-    List<SectionMixin> categories = (await Category().where(parameters: {'filters[device_uuid]': _device.uuid})).get().cast<SectionMixin>();
+    List<SectionMixin> categories = (await Category().where(filters: {'device_uuid': _device.uuid})).get().cast<SectionMixin>();
     _sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);

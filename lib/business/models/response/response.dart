@@ -43,6 +43,6 @@ class GetMetaData extends ResponseMetaDataAbstract {
 
 enum PaginateType {
   none,
-  simplePaginate,
+  simple,
   paginate,
 }

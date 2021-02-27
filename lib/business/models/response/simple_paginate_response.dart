@@ -28,6 +28,15 @@ class SimplePaginateResponse extends Response {
 }
 
 class SimplePaginateMetaData extends ResponseMetaDataAbstract {
+  int currentPage;
+  String firstPageUrl;
+  int from;
+  String nextPageUrl;
+  String path;
+  dynamic perPage;
+  dynamic prevPageUrl;
+  int to;
+
   SimplePaginateMetaData({
     this.currentPage,
     data,
@@ -39,15 +48,6 @@ class SimplePaginateMetaData extends ResponseMetaDataAbstract {
     this.prevPageUrl,
     this.to,
   }) : super(data: data);
-
-  int currentPage;
-  String firstPageUrl;
-  int from;
-  String nextPageUrl;
-  String path;
-  dynamic perPage;
-  dynamic prevPageUrl;
-  int to;
 
   SimplePaginateMetaData fromRawJson(String str) => SimplePaginateMetaData().fromJson(json.decode(str));
 

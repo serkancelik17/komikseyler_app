@@ -5,6 +5,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:intl/intl.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/device/option.dart';
 import 'package:komik_seyler/business/util/settings.dart';
@@ -88,13 +89,10 @@ class AdManager {
     }
   }
 
-  Future<AdManager> removeAds(BuildContext ctx, Duration duration) async {
-    Device _device = await Device().find(id: Settings.getUuid());
-
-    Option newOption = _device.option;
-    newOption.adsShowAfter = DateTime.now().add(duration);
-    await _device.option.update();
-    return this;
+  Future<bool> removeAds({BuildContext ctx, Duration duration}) async {
+    String adsShowAfter = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now().add(duration));
+    Option _option = await Option().updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
+    return (_option.id) > 0 ? true : false;
   }
 
   listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
@@ -106,7 +104,7 @@ class AdManager {
           // show error message or failure icon
           showPaymentErrorAlertDialog(ctx);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          this.removeAds(ctx, Duration(days: 365 * 100));
+          this.removeAds(ctx: ctx, duration: Duration(days: 365 * 100));
           showPaymentSuccessAlertDialog(ctx);
           // show success message and deliver the product.
         }

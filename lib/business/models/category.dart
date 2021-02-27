@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/category_repository.dart';
 import 'package:komik_seyler/business/repositories/repository.dart';
 
@@ -19,7 +20,7 @@ class Category extends Model with SectionMixin {
     this.name,
     this.picturesCount,
     this.viewCount,
-  }) : super(repository: CategoryRepository(), endPoint: "/categories", uniqueId: id);
+  }) : super(repository: CategoryRepository(), endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple);
 
   int id;
   String name;

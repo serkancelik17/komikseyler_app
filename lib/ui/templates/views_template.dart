@@ -134,23 +134,25 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     return Column(children: buttons);
   }
 
-  void handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) {
+  Future<void> handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) async {
+    print("Admob event is " + event.toString());
     switch (event) {
       /* case AdmobAdEvent.loaded:
         showSnackBar('New Admob $adType Ad loaded!');
         break;*/
       /*case AdmobAdEvent.opened:
         showSnackBar('Admob $adType Ad opened!');
-        break;
+        break;*/
       case AdmobAdEvent.closed:
-        showSnackBar('Admob $adType Ad closed!');
+        print("reward kapatildi");
         break;
-      case AdmobAdEvent.failedToLoad:
+      /* case AdmobAdEvent.failedToLoad:
         showSnackBar('Admob $adType failed to load. :(');
         break;*/
       case AdmobAdEvent.rewarded:
-        AdManager().removeAds(ctx, Duration(minutes: 30)).then((value) {
-          showDialog(
+        bool response = await AdManager().removeAds(ctx: ctx, duration: Duration(minutes: 30));
+        print("removeAds response = " + response.toString());
+/*          showDialog(
             context: ctx,
             builder: (BuildContext context) {
               return WillPopScope(
@@ -168,8 +170,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
                 },
               );
             },
-          );
-        });
+          );*/
         break;
       default:
     }

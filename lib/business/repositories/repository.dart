@@ -34,7 +34,7 @@ abstract class Repository {
     return response.success;
   }
 
-  Future<List<Model>> where({@required Model model, @required Map<String, dynamic> parameters, paginateType = PaginateType.simplePaginate}) async {
+  Future<List<Model>> where({@required Model model, @required Map<String, dynamic> parameters, paginateType}) async {
     List _parameterList = [];
     parameters.forEach((key, value) {
       if (value is String || value is int) _parameterList.add('$key=$value');
@@ -50,14 +50,16 @@ abstract class Repository {
     List<Model> _models = [];
     String _apiResponse = await apiProvider.get(_endPoint);
     Response _response;
-    if (paginateType == PaginateType.simplePaginate) {
+    List<dynamic> _data;
+    if (paginateType == PaginateType.simple) {
       _response = SimplePaginateResponse().fromRawJson(_apiResponse);
     } else if (paginateType == PaginateType.paginate) {
       _response = PaginateResponse().fromRawJson(_apiResponse);
     } else if (paginateType == PaginateType.none) {
       _response = Response().fromRawJson(_apiResponse);
     }
-    List<dynamic> _data = _response.metaData.data;
+
+    _data = _response.metaData.data;
 
     debugger(when: _data == null, message: 'data boş döndü');
 

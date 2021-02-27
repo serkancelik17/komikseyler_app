@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/picture_repository.dart';
 
 List<Picture> pictureFromJson(String str) => List<Picture>.from(json.decode(str).map((x) => Picture().fromJson(x)));
@@ -25,7 +26,7 @@ class Picture extends Model with ViewMixin {
     this.userSharesCount,
   })  : id = id ?? 0,
         path = path ?? '',
-        super(endPoint: '/pictures', repository: PictureRepository(), uniqueId: id);
+        super(endPoint: '/pictures', repository: PictureRepository(), uniqueId: id, paginateType: PaginateType.simple);
 
   int id;
   int categoryId;

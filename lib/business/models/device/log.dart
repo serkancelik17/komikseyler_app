@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/model.dart';
+import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 
 class Log extends Model {
@@ -14,7 +15,7 @@ class Log extends Model {
   int lastViewPictureId;
   int viewCount;
 
-  Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount}) : super(repository: LogRepository(), uniqueId: id, endPoint: '/device_logs');
+  Log({this.id, this.deviceUuid, this.categoryId, this.lastViewPictureId, this.viewCount}) : super(repository: LogRepository(), uniqueId: id, endPoint: '/device_logs', paginateType: PaginateType.none);
 
   String toRawJson() => json.encode(toJson());
 

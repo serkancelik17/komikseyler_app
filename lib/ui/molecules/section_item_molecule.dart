@@ -25,7 +25,7 @@ class SectionItemMolecule extends StatelessWidget {
         SizedBoxAtom(
           height: 5,
         ),
-        LinearIndicatorAtom(percent: section.getPercent()),
+        LinearIndicatorAtom(percent: section.getPercent() ?? 0),
       ],
     );
   }

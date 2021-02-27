@@ -86,12 +86,6 @@ class PaginateData extends ResponseMetaDataAbstract {
         "to": to == null ? null : to,
         "total": total == null ? null : total,
       };
-
-  @override
-  Map<String, dynamic> getContent() {
-    // TODO: implement getContent
-    throw UnimplementedError();
-  }
 }
 
 class Link {
