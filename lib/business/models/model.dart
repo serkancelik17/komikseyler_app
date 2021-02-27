@@ -39,7 +39,7 @@ abstract class Model with JsonAble {
     filters ??= {};
     fields ??= {};
 
-    //Eğer filtre varsa parametrelere ekle
+    //Eğer filtre varsa parametrelere ekle.
     if (filters.length > 0) parameters.addAll(createFilters(filters));
     //Eğer field istegi varsa parametrelere ekle
     if (fields.length > 0) parameters.addAll(fields);
