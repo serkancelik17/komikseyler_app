@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/routers/app_router.dart';
+import 'package:komik_seyler/business/util/routers/app_router.dart';
 import 'package:komik_seyler/ui/themes/custom_theme.dart';
 
 void main() {

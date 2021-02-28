@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intl/intl.dart';
 import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/device/option.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
-  static const Set<String> _productIds = {'subscription_yearly', 'subscription_three_month', 'subscription_six_month', 'subscription_one_month'};
+  Set<String> _productIds = {'subscription_yearly', 'subscription_three_month', 'subscription_six_month', 'subscription_one_month'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
+  Device _device;
 
   static String get appId {
     if (Platform.isAndroid) {
@@ -59,12 +59,13 @@ class AdManager {
     }
   }
 
-  Future<bool> showAd() async {
-    Device _device = await Device().find(id: await Settings.getUuid());
+  Future<bool> checkShowingAd() async {
+    await _getDevice();
     if (!kIsWeb && (DateTime.now().isBefore(_device?.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
+    } else {
+      return true;
     }
-    return true;
   }
 
   static getBannerAd({String bannerAdUnitId, AdmobBannerSize bannerSize}) {
@@ -89,10 +90,11 @@ class AdManager {
     }
   }
 
-  Future<bool> removeAds({BuildContext ctx, Duration duration}) async {
+  Future<Device> removeAds({BuildContext ctx, Duration duration}) async {
     String adsShowAfter = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now().add(duration));
-    Option _option = await Option().updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
-    return (_option.id) > 0 ? true : false;
+    _device.option = await _device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
+    this.checkShowingAd();
+    return _device;
   }
 
   listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
@@ -141,7 +143,7 @@ class AdManager {
   }
 
   initStoreInfo() async {
-    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(AdManager._productIds);
+    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(this._productIds);
     if (productDetailResponse.error == null) {}
     _products = productDetailResponse.productDetails;
   }
@@ -163,5 +165,9 @@ class AdManager {
         okButton,
       ],
     );
+  }
+
+  Future<Device> _getDevice() async {
+    return _device ??= await Device().find(id: await Settings.getUuid());
   }
 }

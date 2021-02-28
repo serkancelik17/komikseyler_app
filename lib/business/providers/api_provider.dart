@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:komik_seyler/business/config/env.dart';
+import 'package:komik_seyler/business/util/config/env.dart';
 
 class ApiProvider {
   String _apiUrl = Env.baseUrl + "/api/v1";
@@ -23,8 +23,6 @@ class ApiProvider {
         http.Response response = await http.get(url);
         if (response.statusCode == 200) {
           return response.body;
-        } else {
-          throw Exception("Hatalı durum kodu.(" + response.statusCode.toString() + ")");
         }
       } else {
         // Varsa DCM yi kullan

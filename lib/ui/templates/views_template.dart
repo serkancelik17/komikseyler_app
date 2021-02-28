@@ -24,11 +24,8 @@ import 'package:komik_seyler/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionMixin section;
-  final AdManager adManager;
 
-  ViewsTemplate({@required SectionMixin section, adManager})
-      : section = section ?? Local.Category(id: 1, name: '{title}'),
-        adManager = adManager ?? AdManager();
+  ViewsTemplate({@required SectionMixin section, adManager}) : section = section ?? Local.Category(id: 1, name: '{title}');
 
   @override
   _ViewsTemplateState createState() => _ViewsTemplateState();
@@ -41,7 +38,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   ViewMixin activeView;
   AdmobReward rewardAd;
   AdManager _adManager = AdManager();
-  bool _showAd = false;
   StreamSubscription<List<PurchaseDetails>> subscription;
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
 
@@ -50,17 +46,13 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     //In APP Purchase
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
     subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      widget.adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
+      _adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
     }, onDone: () {
       subscription.cancel();
     }, onError: (error) {
       // handle error here.
     });
-    widget.adManager.initStoreInfo();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _showAd = await _adManager.showAd();
-    });
+    _adManager.initStoreInfo();
 
     rewardAd = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
@@ -70,7 +62,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       },
     );
     rewardAd.load();
-
     super.initState();
   }
 
@@ -94,15 +85,13 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              child: CustomSliderOrganism(
-                  section: widget.section,
-                  viewChanged: (activeView) {
-                    setState(() {
-                      this.activeView = activeView;
-                    });
-                  }),
+              child: CustomSliderOrganism(_adManager, section: widget.section, viewChanged: (activeView) {
+                setState(() {
+                  this.activeView = activeView;
+                });
+              }),
             ),
-            (_showAd ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
+            (/*_adManager.checkShowingAd()*/ true ? ((activeView is Ad) ? getAdButtons() : BannerMolecule()) : Text("")),
           ],
         ),
       ),
@@ -115,7 +104,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
     buttons.add(ButtonWithIconMolecule(
       onTap: () {
-        widget.adManager.buyProduct();
+        _adManager.buyProduct();
       },
       child: Text('Reklamları Kaldır'),
       icon: FaIcon((Platform.isAndroid) ? FontAwesomeIcons.googlePay : FontAwesomeIcons.applePay),
@@ -150,27 +139,9 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         showSnackBar('Admob $adType failed to load. :(');
         break;*/
       case AdmobAdEvent.rewarded:
-        bool response = await AdManager().removeAds(ctx: ctx, duration: Duration(minutes: 30));
-        print("removeAds response = " + response.toString());
-/*          showDialog(
-            context: ctx,
-            builder: (BuildContext context) {
-              return WillPopScope(
-                child: AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text('Tebrikler. 30 dakika reklem görmeyeceksiniz.'),
-                    ],
-                  ),
-                ),
-                onWillPop: () async {
-                  Scaffold.of(ctx).hideCurrentSnackBar();
-                  return true;
-                },
-              );
-            },
-          );*/
+        await _adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
+        print("removeAds reklamlar kaldirildi.");
+        showAlertDialog(ctx);
         break;
       default:
     }
@@ -183,4 +154,31 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     rewardAd.dispose();
     super.dispose();
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("Teşekkürler"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Tebrikler"),
+    content: Text("30 dakika reklam görmeyeceksiniz."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

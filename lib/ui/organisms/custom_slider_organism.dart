@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/config/env.dart';
 import 'package:komik_seyler/business/models/ad.dart';
 import 'package:komik_seyler/business/models/device/log.dart';
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
@@ -12,6 +11,7 @@ import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/repositories/device/log_repository.dart';
 import 'package:komik_seyler/business/repositories/device_repository.dart';
 import 'package:komik_seyler/business/util/ad_manager.dart';
+import 'package:komik_seyler/business/util/config/env.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
@@ -20,8 +20,9 @@ class CustomSliderOrganism extends StatefulWidget {
   final LogRepository logRepository;
   final SectionMixin section;
   final ValueChanged<ViewMixin> viewChanged;
+  final AdManager _adManager;
 
-  CustomSliderOrganism({Key key, this.section, this.viewChanged, deviceRepository, logRepository})
+  CustomSliderOrganism(this._adManager, {Key key, this.section, this.viewChanged, deviceRepository, logRepository})
       : deviceRepository = deviceRepository ?? DeviceRepository(),
         logRepository = logRepository ?? LogRepository(),
         super(key: key);
@@ -31,12 +32,13 @@ class CustomSliderOrganism extends StatefulWidget {
 }
 
 class _CustomSliderOrganismState extends State<CustomSliderOrganism> with WidgetsBindingObserver {
+  _CustomSliderOrganismState();
+
   List<ViewMixin> _views = [];
   ViewMixin _activeView;
   Log _log;
   int maxIndex = 0;
   int _page = 1;
-  AdManager _adManager = AdManager();
 
   @override
   void initState() {
@@ -81,7 +83,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
         widget.viewChanged(_activeView);
         _views.addAll(_newViews);
       });
-      if (await _adManager.showAd()) _views.add(Ad());
+      /*if (await widget._adManager.checkShowingAd())*/ _views.add(Ad());
     }
   }
 
