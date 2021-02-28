@@ -5,7 +5,6 @@ import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/picture/action.dart';
-import 'package:komik_seyler/business/util/config/env.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
@@ -86,7 +85,6 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
                 onTap: () => move(),
                 text: "Taşı",
               ),
-            Text((Env.env == 'dev') ? "Picture #" + widget.activeView.id.toString() : ""),
           ],
         ),
       ),

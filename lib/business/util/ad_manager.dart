@@ -91,8 +91,9 @@ class AdManager {
   }
 
   Future<Device> removeAds({BuildContext ctx, Duration duration}) async {
-    String adsShowAfter = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now().add(duration));
-    _device.option = await _device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
+    _device = await Device().find(id: await Settings.getUuid());
+    String adsShowAfter = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().add(duration));
+    await _device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
     this.checkShowingAd();
     return _device;
   }
