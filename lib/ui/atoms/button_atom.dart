@@ -8,6 +8,6 @@ class ButtonAtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(onPressed: onPressed, child: child);
+    return ElevatedButton(onPressed: onPressed, child: child);
   }
 }

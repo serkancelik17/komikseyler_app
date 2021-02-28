@@ -20,7 +20,7 @@ class ApiProvider {
     try {
       //Cache yoksa httpden indir
       if (!Env.isCached) {
-        http.Response response = await http.get(url);
+        http.Response response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
           return response.body;
         }
@@ -45,7 +45,7 @@ class ApiProvider {
     debugPrint("[POST] Request Url : " + url);
     debugPrint("[POST] Request Url Body : " + body);
     try {
-      http.Response responseRaw = await http.post(url, headers: headers, body: body);
+      http.Response responseRaw = await http.post(Uri.parse(url), headers: headers, body: body);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {
@@ -62,7 +62,7 @@ class ApiProvider {
     debugPrint("[PATCH] Request Url : " + url);
     debugPrint("[PATCH] Request Url Body : " + body);
     try {
-      http.Response responseRaw = await http.patch(url, headers: headers, body: body);
+      http.Response responseRaw = await http.patch(Uri.parse(url), headers: headers, body: body);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {
@@ -78,7 +78,7 @@ class ApiProvider {
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[DELETE] Request Url : " + url);
     try {
-      http.Response responseRaw = await http.delete(url, headers: headers);
+      http.Response responseRaw = await http.delete(Uri.parse(url), headers: headers);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {

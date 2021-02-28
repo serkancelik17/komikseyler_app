@@ -5,7 +5,7 @@ class Env {
 
   static const String imageAssetsUrl = '$baseUrl/assets/images';
 
-  static const int pagePictureLimit = (env == 'prod') ? 20 : 3;
+  static const int pagePictureLimit = (env == 'prod') ? 10 : 3;
 
   static const bool isCached = false;
 }

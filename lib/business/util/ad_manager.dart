@@ -125,7 +125,7 @@ class AdManager {
 
   showPaymentErrorAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text("Tamam"),
       onPressed: () {
         Navigator.of(context).pop();
@@ -150,7 +150,7 @@ class AdManager {
 
   showPaymentSuccessAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text("Tamam"),
       onPressed: () {
         Navigator.of(context).pop();

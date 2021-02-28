@@ -82,7 +82,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
               child: CustomSliderOrganism(_adManager, section: widget.section, viewChanged: (activeView) {
@@ -158,7 +158,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
 showAlertDialog(BuildContext context) {
   // set up the button
-  Widget okButton = FlatButton(
+  Widget okButton = ElevatedButton(
     child: Text("Teşekkürler"),
     onPressed: () {
       Navigator.pop(context);
