@@ -8,24 +8,15 @@ import 'package:komik_seyler/business/models/device/log.dart';
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/repositories/device/log_repository.dart';
-import 'package:komik_seyler/business/repositories/device_repository.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/config/env.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
 
 class CustomSliderOrganism extends StatefulWidget {
-  final DeviceRepository deviceRepository;
-  final LogRepository logRepository;
   final SectionMixin section;
   final ValueChanged<ViewMixin> viewChanged;
-  final AdManager _adManager;
 
-  CustomSliderOrganism(this._adManager, {Key key, this.section, this.viewChanged, deviceRepository, logRepository})
-      : deviceRepository = deviceRepository ?? DeviceRepository(),
-        logRepository = logRepository ?? LogRepository(),
-        super(key: key);
+  CustomSliderOrganism({Key key, this.section, this.viewChanged}) : super(key: key);
 
   @override
   _CustomSliderOrganismState createState() => _CustomSliderOrganismState();
@@ -55,19 +46,27 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   Widget build(BuildContext context) {
     return (_views == null || _views.length == 0)
         ? Center(child: CircularProgressIndicator())
-        : CarouselSlider(
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 0.6,
-              onPageChanged: (index, reason) {
-                _onPageChange(index, reason);
-              },
-              enlargeCenterPage: true,
-              enableInfiniteScroll: false,
-              viewportFraction: 1,
-            ),
-            items: _views.map((view) {
-              return SlideMolecule(view: view);
-            }).toList(),
+        : Column(
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  onPageChanged: (index, reason) {
+                    _onPageChange(index, reason);
+                  },
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1,
+                ),
+                items: _views.map((view) {
+                  return SlideMolecule(view: view);
+                }).toList(),
+              ),
+              Text(
+                (Env.env == 'dev') ? "Picture #" + _activeView.id.toString() : "",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
           );
   }
 

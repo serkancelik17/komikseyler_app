@@ -5,8 +5,6 @@
 import 'dart:convert';
 
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/repositories/action_repository.dart';
-import 'package:komik_seyler/business/repositories/repository.dart';
 
 import 'model.dart';
 
@@ -17,7 +15,7 @@ class Action extends Model with SectionMixin {
     this.id,
     this.name,
     this.title,
-  }) : super(uniqueId: id, repository: ActionRepository(), endPoint: '/actions');
+  }) : super(uniqueId: id, endPoint: '/actions');
 
   int id;
   String name;
@@ -38,10 +36,6 @@ class Action extends Model with SectionMixin {
   @override
   String getTitle() {
     return this.title;
-  }
-
-  Repository getRepository() {
-    return new ActionRepository();
   }
 
   @override

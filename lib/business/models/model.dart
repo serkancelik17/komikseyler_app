@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/interfaces/json_able.dart';
 import 'package:komik_seyler/business/models/response/response.dart';
@@ -14,9 +15,9 @@ abstract class Model with JsonAble {
   List<Model> _response;
   PaginateType paginateType;
 
-  Model({repository, this.endPoint, dynamic uniqueId, PaginateType paginateType})
+  Model({repository, @required this.endPoint, @required dynamic uniqueId, PaginateType paginateType})
       : uniqueId = uniqueId ?? 0,
-        repository = repository ?? null,
+        repository = repository ?? Repository(),
         paginateType = paginateType;
 
   Model fromRawJson(String str) {

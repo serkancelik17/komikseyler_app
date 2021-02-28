@@ -8,7 +8,7 @@ import 'package:komik_seyler/business/models/response/response.dart';
 import 'package:komik_seyler/business/models/response/simple_paginate_response.dart';
 import 'package:komik_seyler/business/providers/api_provider.dart';
 
-abstract class Repository {
+class Repository {
   ApiProvider apiProvider;
 
   Repository({apiProvider}) {
@@ -18,8 +18,14 @@ abstract class Repository {
   //Future<Model> find() => Future.value(Device());
 
   Future<Model> store({@required Model model}) async {
-    Response response = Response().fromRawJson(await apiProvider.post(await model.getEndPoint(), jsonEncode(model)));
-    return model.fromJson(response.metaData.data[0]);
+    Model _model;
+    Response response = Response().fromRawJson(await apiProvider.post(await model.getEndPoint(), json.encode(model.toJson())));
+    if (response.success)
+      _model = model.fromJson(response.metaData.data[0]);
+    else
+      log(response.message);
+
+    return _model;
   }
 
   Future<bool> update({@required Model model}) async {
@@ -58,8 +64,10 @@ abstract class Repository {
     } else if (paginateType == PaginateType.none) {
       _response = Response().fromRawJson(_apiResponse);
     }
-
-    _data = _response.metaData.data;
+    if (_response.success == true)
+      _data = _response.metaData.data;
+    else // Response sorunu var
+      log(_response.message, name: "response_error");
 
     debugger(when: _data == null, message: 'data boş döndü');
 

@@ -25,9 +25,9 @@ class SlideMolecule extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
                 /* imageUrl:
-                  placeholder: (context, url) => CenterAtom(child: CircularProgressIndicatorAtom()),
-                  errorWidget: (context, url, error) => IconAtom(icon: Icons.error),
-                ),*/
+                      placeholder: (context, url) => CenterAtom(child: CircularProgressIndicatorAtom()),
+                      errorWidget: (context, url, error) => IconAtom(icon: Icons.error),
+                    ),*/
               ),
             ),
           );

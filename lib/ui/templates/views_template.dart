@@ -51,13 +51,13 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              child: CustomSliderOrganism(widget.adManager, section: widget.section, viewChanged: (activeView) {
-                setState(() {
-                  this.activeView = activeView;
-                });
-              }),
-            ),
+            CustomSliderOrganism(
+                section: widget.section,
+                viewChanged: (activeView) {
+                  setState(() {
+                    this.activeView = activeView;
+                  });
+                }),
             (/*_adManager.checkShowingAd()*/ true ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, widget.reward) : BannerMolecule()) : Text("")),
           ],
         ),

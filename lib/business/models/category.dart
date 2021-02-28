@@ -2,17 +2,9 @@
 //
 //     final category = categoryFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/model.dart';
 import 'package:komik_seyler/business/models/response/response.dart';
-import 'package:komik_seyler/business/repositories/category_repository.dart';
-import 'package:komik_seyler/business/repositories/repository.dart';
-
-List<Category> categoryFromJson(String str) => List<Category>.from(json.decode(str).map((x) => Category().fromJson(x)));
-
-String categoryToJson(List<Category> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Category extends Model with SectionMixin {
   Category({
@@ -20,7 +12,7 @@ class Category extends Model with SectionMixin {
     this.name,
     this.picturesCount,
     this.viewCount,
-  }) : super(repository: CategoryRepository(), endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple);
+  }) : super(endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple);
 
   int id;
   String name;
@@ -46,10 +38,6 @@ class Category extends Model with SectionMixin {
   @override
   String getTitle() {
     return this.name;
-  }
-
-  Repository getRepository() {
-    return new CategoryRepository();
   }
 
   @override

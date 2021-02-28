@@ -5,6 +5,7 @@ import 'package:komik_seyler/business/models/action.dart' as Local;
 import 'package:komik_seyler/business/models/device.dart';
 import 'package:komik_seyler/business/models/picture.dart';
 import 'package:komik_seyler/business/models/picture/action.dart';
+import 'package:komik_seyler/business/util/config/env.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
 import 'package:komik_seyler/ui/themes/custom_colors.dart';
@@ -41,33 +42,19 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            if (_device?.option?.isAdmin == 1)
-              RoundedButtonMolecule(
-                iconData: FontAwesomeIcons.trashAlt,
-                onTap: () => destroy(widget.activeView),
-                text: "Sil",
-              ),
-            if (_device?.option?.isAdmin == 1)
-              RoundedButtonMolecule(
-                iconData: FontAwesomeIcons.exchangeAlt,
-                onTap: () {
-                  toggleAction(action: Local.Action(id: 4, name: 'move'));
-                },
-                text: "Taşı",
-              ),
             RoundedButtonMolecule(
-              badgeCount: widget.activeView.likesCount,
+              badgeCount: widget.activeView.likeCount,
               iconData: FontAwesomeIcons.heart,
               activeIconData: FontAwesomeIcons.solidHeart,
               activeColor: CustomColors.lightRed,
               onTap: () {
                 toggleAction(action: Local.Action(id: 1, name: 'like'));
               },
-              active: (widget.activeView.userLikesCount != 0),
+              active: (widget.activeView.findPictureAction(1) != null),
               text: "Beğen",
             ),
             RoundedButtonMolecule(
-              badgeCount: widget.activeView.favoritesCount,
+              badgeCount: widget.activeView.favoriteCount,
               iconData: FontAwesomeIcons.star,
               activeIconData: FontAwesomeIcons.solidStar,
               activeColor: CustomColors.lightYellow,
@@ -75,79 +62,104 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
                 toggleAction(action: Local.Action(id: 2, name: 'favorite'));
               },
               text: "Favori",
-              active: (widget.activeView.userFavoritesCount != 0),
+              active: (widget.activeView.findPictureAction(2) != null),
             ),
             RoundedButtonMolecule(
-              badgeCount: widget.activeView.sharesCount,
-              active: (widget.activeView.userSharesCount != 0),
+              badgeCount: widget.activeView.shareCount,
+              active: (widget.activeView.findPictureAction(5) != null),
               iconData: FontAwesomeIcons.share,
               activeColor: CustomColors.lightBlue,
               onTap: () {
-                toggleAction(action: Local.Action(id: 5, name: 'share'));
+                share();
               },
               text: "Paylaş",
             ),
+            if (_device?.option?.isAdmin == 1)
+              RoundedButtonMolecule(
+                iconData: FontAwesomeIcons.trashAlt,
+                onTap: () => destroy(),
+                text: "Sil",
+              ),
+            if (_device?.option?.isAdmin == 1)
+              RoundedButtonMolecule(
+                iconData: FontAwesomeIcons.exchangeAlt,
+                onTap: () => move(),
+                text: "Taşı",
+              ),
+            Text((Env.env == 'dev') ? "Picture #" + widget.activeView.id.toString() : ""),
           ],
         ),
       ),
     );
   }
 
-  addAction({Picture picture, Local.Action action}) {
+  destroy() {
     try {
-      action.store();
+      widget.activeView.destroy();
     } catch (e) {
-      toggleAction(action: action);
       throw e;
     }
   }
 
-  destroy(Picture picture) {
-    try {
-      picture.destroy();
-      //_pictureRepository.destroy(pictureId: picture.id).then((Response response) {
-      // print("destroy;" + response.success.toString());
-      /*   setState(() {
-          //@todo
-          //destroyBoxColor = (destroyBoxColor == Colors.white) ? Colors.red : Colors.white;
-        });*/
-      /*});*/
-    } catch (e) {
-      throw e;
-    }
+  move() {
+    PictureAction _pa = new PictureAction(deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 4);
+    storeAction(_pa);
+  }
+
+  Future<bool> share() async {
+    PictureAction _pa = new PictureAction(deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 5);
+    bool result = await Settings.share(picture: widget.activeView);
+    if (result) storeAction(_pa);
+    return result ? true : false;
   }
 
   Future<bool> toggleAction({@required Local.Action action}) async {
-    bool willAdd;
-    if (action.name == 'like') {
-      willAdd = (widget.activeView.userLikesCount == 0) ? true : false; //eklenecek - silinecek
-      widget.activeView.userLikesCount = (willAdd) ? 1 : 0;
-      widget.activeView.likesCount += (willAdd) ? 1 : -1;
-    } else if (action.name == 'favorite') {
-      willAdd = (widget.activeView.userFavoritesCount == 0) ? true : false; //eklenecek - silinecek
-      widget.activeView.userFavoritesCount = (willAdd) ? 1 : 0;
-      widget.activeView.favoritesCount += (willAdd) ? 1 : -1;
-    } else if (action.name == 'share') {
-      Settings.share(picture: widget.activeView).then((value) {
-        setState(() {
-          widget.activeView.userSharesCount = 1;
-          widget.activeView.sharesCount += 1;
-        });
-      });
-      willAdd = true; //eklenecek - silinecek
+    PictureAction _pa = widget.activeView.findPictureAction(action.id) ?? PictureAction(actionId: action.id, pictureId: widget.activeView.id, deviceUuid: _device.uuid);
 
-    }
-    PictureAction _pa = PictureAction(pictureId: widget.activeView.id, actionId: action.id, deviceUuid: _device.uuid);
-    if (willAdd)
-      _pa = await _pa.store();
+    if (_pa.id == null)
+      await storeAction(_pa);
     else
-      _pa.destroy();
-
-    setState(() {});
-
-/*    _pictureRepository.addAction(action: action, value: willAdd, picture: widget.activeView).then((Response response) {
-      print("response.success;" + response.success.toString() + ";value:" + willAdd.toString());
-    });*/
+      await destroyAction(_pa);
     return true;
+  }
+
+  Future destroyAction(PictureAction _pa) async {
+    try {
+      setState(() {
+        changeActionCount(_pa, -1);
+        widget.activeView.actions.removeWhere((pictureAction) => pictureAction.id == _pa.id);
+      });
+      await _pa.destroy();
+    } catch (e) {
+      setState(() {
+        changeActionCount(_pa, 1);
+        widget.activeView.actions.add(_pa);
+      });
+    }
+  }
+
+  Future storeAction(PictureAction _pa) async {
+    try {
+      changeActionCount(_pa, 1);
+      PictureAction newPA = await _pa.store();
+      setState(() {
+        widget.activeView.actions.add(newPA);
+      });
+    } catch (e) {
+      setState(() {
+        changeActionCount(_pa, -1);
+        widget.activeView.actions.remove(_pa);
+      });
+      rethrow;
+    }
+  }
+
+  void changeActionCount(PictureAction pa, int i) {
+    if (pa.actionId == 1) // like
+      widget.activeView.likeCount += i;
+    else if (pa.actionId == 2) //fav
+      widget.activeView.favoriteCount += i;
+    else if (pa.actionId == 5) //share
+      widget.activeView.shareCount += i;
   }
 }
