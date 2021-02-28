@@ -123,6 +123,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     return true;
   }
 
+  //Aksiyonu sil.
   Future destroyAction(PictureAction _pa) async {
     try {
       setState(() {
@@ -138,6 +139,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     }
   }
 
+  //Aksiyonu kaydet
   Future storeAction(PictureAction _pa) async {
     try {
       changeActionCount(_pa, 1);
@@ -153,7 +155,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       rethrow;
     }
   }
-
+// Aksiyon change gore.
   void changeActionCount(PictureAction pa, int i) {
     if (pa.actionId == 1) // like
       widget.activeView.likeCount += i;
