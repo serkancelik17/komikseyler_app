@@ -104,8 +104,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         await widget.adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         print("removeAds reklamlar kaldirildi.");
         DialogMolecule.showAlertDialog(ctx);
-        setState(() {});
-
+        return Navigator.of(context).pushReplacementNamed('/sections', arguments: [widget.section]);
         break;
       default:
     }
