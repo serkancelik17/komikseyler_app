@@ -16,24 +16,26 @@ class ApiProvider {
   ///veriyi getir
   Future<String> get(String endpoint) async {
     final url = _apiUrl + endpoint;
+    String _response;
     debugPrint("[GET] Request Url : " + url);
     try {
       //Cache yoksa httpden indir
       if (!Env.isCached) {
         http.Response response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
-          return response.body;
+          _response = response.body;
         }
       } else {
         // Varsa DCM yi kullan
         File response = await defaultCacheManager.getSingleFile(url);
         print("[GET CACHED] : " + response.absolute.toString());
         if (await response.exists()) {
-          return response.readAsString();
+          _response = await response.readAsString();
         } else {
           throw Exception("GET Problem!.");
         }
       }
+      return _response;
     } catch (e) {
       rethrow;
     }
