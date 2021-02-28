@@ -17,7 +17,7 @@ class SectionListOrganism extends StatefulWidget {
 
 class _SectionListOrganismState extends State<SectionListOrganism> {
   List<SectionMixin> _sections = [];
-  Device _device;
+  Device _device = Device();
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
                     itemBuilder: (context, index) {
                       return RoundedContainerMolecule(
                         child: SectionItemMolecule(section: _sections[index]),
-                        onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index], _device]).then((section) {
+                        onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]).then((section) {
                           setState(() {
                             _sections[index] = section;
                             // refresh state of Page1
@@ -56,7 +56,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
               ),
               (Env.env != 'prod')
                   ? Text(
-                      "Device# " + _device?.uuid,
+                      "Device# " + _device.uuid ?? '',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     )
                   : null,
@@ -66,7 +66,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
 
   Future<bool> get getSections async {
     //  try {
-    List<SectionMixin> categories = (await Category().where(filters: {'device_uuid': _device?.uuid})).get().cast<SectionMixin>();
+    List<SectionMixin> categories = (await Category().where(filters: {'device_uuid': await Settings.getUuid()})).get().cast<SectionMixin>();
     _sections.addAll(categories);
 /*    } catch (error) {
       Navigator.pushNamed(context, '/error', arguments: error);

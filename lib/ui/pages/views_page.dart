@@ -20,7 +20,7 @@ class _ViewsPageState extends State<ViewsPage> {
   List<ViewMixin> views;
   int page = 1;
   ViewMixin activeView;
-  AdManager _adManager = AdManager();
+  AdManager adManager = AdManager();
   StreamSubscription<List<PurchaseDetails>> subscription;
 
   @override
@@ -30,18 +30,18 @@ class _ViewsPageState extends State<ViewsPage> {
     //In APP Purchase
     Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
     subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
+      adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
     }, onDone: () {
       subscription.cancel();
     }, onError: (error) {
       // handle error here.
     });
-    _adManager.initStoreInfo();
+    adManager.initStoreInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ViewsTemplate(widget.section, _adManager, activeView);
+    return ViewsTemplate(widget.section, adManager, activeView);
   }
 
   @override

@@ -30,7 +30,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   ViewMixin activeView;
   AdmobReward reward;
-  AdManager _adManager = AdManager();
   Widget _smartBanner = Text("");
 
   _ViewsTemplateState(this.activeView);
@@ -47,8 +46,8 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         handleRewardAdEvent(context, event, args);
       },
     );
-    reward.load();
     buildSmallBanner();
+    reward.load();
   }
 
   @override
@@ -102,9 +101,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         showSnackBar('Admob $adType failed to load. :(');
         break;*/
       case AdmobAdEvent.rewarded:
-        await _adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
+        await widget.adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         print("removeAds reklamlar kaldirildi.");
         DialogMolecule.showAlertDialog(ctx);
+        setState(() {});
+
         break;
       default:
     }
@@ -118,9 +119,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   }
 
   Future<void> buildSmallBanner() async {
-    bool _checkShowingAd = await _adManager.checkShowingAd();
-
+    bool _checkShowingAd = await widget.adManager.checkShowingAd();
     _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, reward) : BannerMolecule()) : Text("");
-    setState(() {});
   }
 }

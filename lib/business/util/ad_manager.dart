@@ -60,7 +60,7 @@ class AdManager {
   }
 
   Future<bool> checkShowingAd() async {
-    _device ??= await _getDevice();
+    await _getDevice();
     if (!kIsWeb && (DateTime.now().isBefore(_device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     } else {
@@ -91,9 +91,9 @@ class AdManager {
   }
 
   Future<bool> removeAds({BuildContext ctx, Duration duration}) async {
-    _device = await Device().find(id: await Settings.getUuid());
+    await this._getDevice();
     String adsShowAfter = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().add(duration));
-    await _device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
+    await this._device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
     return true;
   }
 
@@ -167,7 +167,7 @@ class AdManager {
     );
   }
 
-  Future<Device> _getDevice() async {
-    return await Device().find(id: await Settings.getUuid());
+  Future<void> _getDevice() async {
+    this._device = this._device ?? await Device().find(id: await Settings.getUuid());
   }
 }
