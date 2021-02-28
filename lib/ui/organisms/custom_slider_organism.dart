@@ -8,6 +8,7 @@ import 'package:komik_seyler/business/models/device/log.dart';
 import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
 import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
 import 'package:komik_seyler/business/models/picture.dart';
+import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/business/util/config/env.dart';
 import 'package:komik_seyler/business/util/settings.dart';
 import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
@@ -30,6 +31,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   Log _log;
   int maxIndex = 0;
   int _page = 1;
+  AdManager _adManager = AdManager();
 
   @override
   void initState() {
@@ -46,27 +48,29 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
   Widget build(BuildContext context) {
     return (_views == null || _views.length == 0)
         ? Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  onPageChanged: (index, reason) {
-                    _onPageChange(index, reason);
-                  },
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1,
+        : Flexible(
+            child: Column(
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    onPageChanged: (index, reason) {
+                      _onPageChange(index, reason);
+                    },
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 1,
+                  ),
+                  items: _views.map((view) {
+                    return SlideMolecule(view: view);
+                  }).toList(),
                 ),
-                items: _views.map((view) {
-                  return SlideMolecule(view: view);
-                }).toList(),
-              ),
-              Text(
-                (Env.env == 'dev') ? "Picture #" + _activeView.id.toString() : "",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
+                Text(
+                  (Env.env == 'dev') ? "Picture #" + _activeView.id.toString() : "",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
           );
   }
 
@@ -78,11 +82,12 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> with Widget
       //Reklamları satın almadıysa remlam ekle icerige
       //İlk resmi varsayılan vap
       if (_views.length == 0) _activeView = _newViews[0];
+      bool _checkShowingAd = await _adManager.checkShowingAd();
       setState(() {
         widget.viewChanged(_activeView);
         _views.addAll(_newViews);
+        if (_checkShowingAd) _views.add(Ad());
       });
-      /*if (await widget._adManager.checkShowingAd())*/ _views.add(Ad());
     }
   }
 

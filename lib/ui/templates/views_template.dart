@@ -31,6 +31,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
   ViewMixin activeView;
   AdmobReward reward;
   AdManager _adManager = AdManager();
+  Widget _smartBanner = Text("");
 
   _ViewsTemplateState(this.activeView);
 
@@ -47,11 +48,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       },
     );
     reward.load();
+    buildSmallBanner();
   }
 
   @override
   Widget build(BuildContext context) {
-    _adManager.removeAds(ctx: context, duration: Duration(minutes: 30));
     return Scaffold(
       key: scaffoldState,
       appBar: AppBarOrganism(
@@ -72,11 +73,12 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
             CustomSliderOrganism(
                 section: widget.section,
                 viewChanged: (activeView) {
+                  buildSmallBanner();
                   setState(() {
                     this.activeView = activeView;
                   });
                 }),
-            (/*_adManager.checkShowingAd()*/ true ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, reward) : BannerMolecule()) : Text("")),
+            _smartBanner
           ],
         ),
       ),
@@ -113,5 +115,12 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
     // TODO: implement dispose
     reward.dispose();
     super.dispose();
+  }
+
+  Future<void> buildSmallBanner() async {
+    bool _checkShowingAd = await _adManager.checkShowingAd();
+
+    _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, reward) : BannerMolecule()) : Text("");
+    setState(() {});
   }
 }
