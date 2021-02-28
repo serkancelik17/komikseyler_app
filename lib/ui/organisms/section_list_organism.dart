@@ -60,6 +60,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
     List<SectionMixin> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),
+      Local.Action(name: "share", title: "Paylaşımlarım", id: 5),
     ];
     _sections.addAll(additionalSections);
 

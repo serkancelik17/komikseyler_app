@@ -36,7 +36,7 @@ class SectionItemMolecule extends StatelessWidget {
       size: 45,
       gradient: LinearGradient(
         colors: [
-          CustomColors.purple,
+          section.getColor(),
           CustomColors.lightPurple,
         ],
         begin: Alignment.topCenter,
