@@ -8,7 +8,6 @@ import 'package:komik_seyler/business/util/ad_manager.dart';
 import 'package:komik_seyler/ui/molecules/banner_buttons_molecule.dart';
 import 'package:komik_seyler/ui/molecules/banner_molecule.dart';
 import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
-import 'package:komik_seyler/ui/molecules/dialog_molecule.dart';
 import 'package:komik_seyler/ui/molecules/title_color_molecule.dart';
 import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
 import 'package:komik_seyler/ui/organisms/bottom_navigation_bar_organism.dart';
@@ -103,7 +102,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
       case AdmobAdEvent.rewarded:
         await widget.adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         print("removeAds reklamlar kaldirildi.");
-        DialogMolecule.showAlertDialog(ctx);
+        //DialogMolecule.showAlertDialog(ctx);
         return Navigator.of(context).pushReplacementNamed('/sections', arguments: [widget.section]);
         break;
       default:
