@@ -113,6 +113,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     return result ? true : false;
   }
 
+  //Aksiyonu toogle et
   Future<bool> toggleAction({@required Local.Action action}) async {
     PictureAction _pa = widget.activeView.findPictureAction(action.id) ?? PictureAction(actionId: action.id, pictureId: widget.activeView.id, deviceUuid: _device.uuid);
 
@@ -155,6 +156,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       rethrow;
     }
   }
+
 // Aksiyon change gore.
   void changeActionCount(PictureAction pa, int i) {
     if (pa.actionId == 1) // like
