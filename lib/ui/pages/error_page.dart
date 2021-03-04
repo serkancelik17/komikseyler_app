@@ -9,7 +9,7 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ErrorTemplate(title: Text("Hata"), exception: exception),
+      child: ErrorTemplate(title: Text("Komix"), exception: exception),
     );
   }
 }
