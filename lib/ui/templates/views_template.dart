@@ -12,6 +12,7 @@ import 'package:komix/business/util/ad_manager.dart';
 import 'package:komix/ui/molecules/banner_buttons_molecule.dart';
 import 'package:komix/ui/molecules/banner_molecule.dart';
 import 'package:komix/ui/molecules/center_text_molecule.dart';
+import 'package:komix/ui/molecules/dialog_molecule.dart';
 import 'package:komix/ui/molecules/title_color_molecule.dart';
 import 'package:komix/ui/organisms/app_bar_organism.dart';
 import 'package:komix/ui/organisms/bottom_navigation_bar_organism.dart';
@@ -129,9 +130,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
       case AdmobAdEvent.rewarded:
         await adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         print("removeAds reklamlar kaldirildi.");
-        //DialogMolecule.showAlertDialog(ctx);
-        return Navigator.of(context).pop(widget.section);
-        //return Navigator.of(context).pushReplacementNamed('/sections', arguments: [widget.section]);
+        DialogMolecule.showAlertDialog(ctx);
         break;
       default:
     }

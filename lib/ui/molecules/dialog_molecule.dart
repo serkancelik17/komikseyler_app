@@ -6,7 +6,7 @@ class DialogMolecule {
     Widget okButton = ElevatedButton(
       child: Text("Teşekkürler"),
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.of(context).pushReplacementNamed("/");
       },
     );
 
