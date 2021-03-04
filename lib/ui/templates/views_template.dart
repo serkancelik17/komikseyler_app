@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:komix/business/models/ad.dart';
 import 'package:komix/business/models/device/log.dart';
 import 'package:komix/business/models/mixins/section_mixin.dart';
@@ -17,27 +20,37 @@ import 'package:komix/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionMixin section;
-  final AdManager adManager;
-  final ViewMixin activeView;
 
-  ViewsTemplate(this.section, this.adManager, this.activeView);
+  ViewsTemplate(this.section);
 
   @override
-  _ViewsTemplateState createState() => _ViewsTemplateState(activeView);
+  _ViewsTemplateState createState() => _ViewsTemplateState();
 }
 
 class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserver {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
+  AdManager adManager = AdManager();
   ViewMixin activeView;
   AdmobReward reward;
+  StreamSubscription<List<PurchaseDetails>> subscription;
   Log _log;
   Widget _smartBanner = Text("");
-
-  _ViewsTemplateState(this.activeView);
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      //In APP Purchase
+      Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
+      subscription = purchaseUpdated.listen((purchaseDetailsList) {
+        adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
+      }, onDone: () {
+        subscription.cancel();
+      }, onError: (error) {
+        // handle error here.
+      });
+    });
 
     reward = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
@@ -86,7 +99,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
                 logChanged: (changedLog) {
                   _log = changedLog;
                 },
-                adManager: widget.adManager,
+                adManager: adManager,
               ),
               _smartBanner
             ],
@@ -113,7 +126,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
         showSnackBar('Admob $adType failed to load. :(');
         break;*/
       case AdmobAdEvent.rewarded:
-        await widget.adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
+        await adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         print("removeAds reklamlar kaldirildi.");
         //DialogMolecule.showAlertDialog(ctx);
         return Navigator.of(context).pop(widget.section);
@@ -126,6 +139,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    subscription.cancel();
     reward.dispose();
     super.dispose();
   }
@@ -135,8 +149,8 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   }
 
   Future<void> buildSmallBanner() async {
-    bool _checkShowingAd = await widget.adManager.checkShowingAd();
-    _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, reward) : BannerMolecule()) : Text("");
+    bool _checkShowingAd = await adManager.checkShowingAd();
+    _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(adManager, reward) : BannerMolecule()) : Text("");
   }
 
   void _logStore() {

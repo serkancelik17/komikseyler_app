@@ -16,7 +16,7 @@ class AdManager {
   List<ProductDetails> _products = [];
   Device device;
 
-  AdManager(this.device);
+  AdManager();
 
   static String get appId {
     if (Platform.isAndroid) {
@@ -62,7 +62,8 @@ class AdManager {
   }
 
   Future<bool> checkShowingAd() async {
-    if (!kIsWeb && (DateTime.now().isBefore(device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
+    device ??= await Device().find(id: await Settings.getUuid());
+    if (!kIsWeb && (DateTime.now().isBefore(device.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     } else {
       return true;
