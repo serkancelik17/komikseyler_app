@@ -107,8 +107,15 @@ class AdManager {
           // show error message or failure icon
           showPaymentErrorAlertDialog(ctx);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          this.removeAds(ctx: ctx, duration: Duration(days: 365 * 100));
-          showPaymentSuccessAlertDialog(ctx);
+          int _dayNumber = 0;
+          if (purchaseDetails.productID == "subscription_yearly")
+            _dayNumber = 365;
+          else if (purchaseDetails.productID == "subscription_three_month")
+            _dayNumber = 3 * 30;
+          else if (purchaseDetails.productID == "subscription_six_month")
+            _dayNumber = 6 * 30;
+          else if (purchaseDetails.productID == "subscription_one_month") _dayNumber = 30;
+          this.removeAds(ctx: ctx, duration: Duration(days: _dayNumber));
           // show success message and deliver the product.
         }
       }
@@ -147,24 +154,5 @@ class AdManager {
     ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(this._productIds);
     if (productDetailResponse.error == null) {}
     _products = productDetailResponse.productDetails;
-  }
-
-  showPaymentSuccessAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = ElevatedButton(
-      child: Text("Tamam"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog(
-      title: Text("Ödeme Alındı."),
-      content: Text("Tüm reklamlar kaldırıldı. Ödeme için teşekkürler."),
-      actions: [
-        okButton,
-      ],
-    );
   }
 }

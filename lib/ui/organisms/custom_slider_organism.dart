@@ -94,8 +94,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   Future<bool> _getMoreSlides() async {
     try {
       //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-      List<ViewMixin> _newViews =
-          (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'last_view_picture_id': _lastViewPictureId, 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
+      List<ViewMixin> _newViews = (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
       if (_newViews.length > 0) {
         // Imajları cache et.

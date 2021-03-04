@@ -47,11 +47,14 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
       subscription = purchaseUpdated.listen((purchaseDetailsList) {
         adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
       }, onDone: () {
+        showPaymentSuccessAlertDialog(context);
         subscription.cancel();
       }, onError: (error) {
         // handle error here.
       });
     });
+
+    adManager.initStoreInfo();
 
     reward = AdmobReward(
       adUnitId: AdManager.rewardedAdUnitId,
@@ -171,5 +174,24 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   void goToBack() {
     _logStore();
     Navigator.of(context).popAndPushNamed('/');
+  }
+
+  showPaymentSuccessAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = ElevatedButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    return AlertDialog(
+      title: Text("Ödeme Alındı."),
+      content: Text("Teşekkürler. Satın aldığınız süre kadar reklam göstermeyeceğiz."),
+      actions: [
+        okButton,
+      ],
+    );
   }
 }

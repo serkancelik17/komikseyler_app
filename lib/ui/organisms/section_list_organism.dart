@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komix/business/models/action.dart' as Local;
 import 'package:komix/business/models/category.dart';
 import 'package:komix/business/models/device.dart';
 import 'package:komix/business/models/mixins/section_mixin.dart';
@@ -49,10 +48,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
                     itemBuilder: (context, index) {
                       return RoundedContainerMolecule(
                         child: SectionItemMolecule(section: _sections[index]),
-                        onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]).then((section) {
-                          _sections[index] = section;
-                          setState(() {});
-                        }),
+                        onTap: () => Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]),
                       );
                     }),
               ),
@@ -67,12 +63,12 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   Future<bool> get getSections async {
     List<SectionMixin> categories = (await Category().where(filters: {'device_uuid': await Settings.getUuid()})).get().cast<SectionMixin>();
     _sections.addAll(categories);
-    List<SectionMixin> additionalSections = [
+/*    List<SectionMixin> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),
       Local.Action(name: "favorite", title: "Favorilerim", id: 2),
       Local.Action(name: "share", title: "Paylaşımlarım", id: 5),
     ];
-    _sections.addAll(additionalSections);
+    _sections.addAll(additionalSections);*/
 
     setState(() {});
 
