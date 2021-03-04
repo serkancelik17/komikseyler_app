@@ -86,7 +86,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomSliderOrganism(
                 section: widget.section,
