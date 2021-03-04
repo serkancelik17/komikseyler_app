@@ -75,7 +75,8 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
         key: scaffoldState,
         appBar: AppBarOrganism(
           leading: IconButton(icon: Icon(Icons.west), onPressed: () => goToBack()),
-          title: CenterMolecule(TitleColorMolecule(
+          title: CenterMolecule(
+              child: TitleColorMolecule(
             text: widget.section.getTitle() ?? '{{title}}',
             colors: [
               Colors.black,

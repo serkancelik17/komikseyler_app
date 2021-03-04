@@ -40,8 +40,12 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _log = await getLog();
-      await _getMoreSlides();
+      try {
+        _log = await getLog();
+        await _getMoreSlides();
+      } catch (e) {
+        Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
+      }
     });
   }
 
@@ -87,23 +91,27 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   }
 
   Future<bool> _getMoreSlides() async {
-    //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews =
-        (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'last_view_picture_id': _lastViewPictureId, 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
+    try {
+      //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
+      List<ViewMixin> _newViews =
+          (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'last_view_picture_id': _lastViewPictureId, 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
-    if (_newViews.length > 0) {
-      // Imajları cache et.
-      prefetchImages(_newViews);
-      //Reklamları satın almadıysa remlam ekle icerige
-      //if ( _views.indexOf(_activeView) == _views.length - 2) return _getMoreSlides(++page);
-      //İlk resmi varsayılan vap
-      if (_views.length == 0) _activeView = _newViews[0];
-      bool _checkShowingAd = await widget.adManager.checkShowingAd();
-      widget.viewChanged(_activeView);
-      _views.addAll(_newViews); // view leri listeye ekle
-      if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
+      if (_newViews.length > 0) {
+        // Imajları cache et.
+        prefetchImages(_newViews);
+        //Reklamları satın almadıysa remlam ekle icerige
+        //if ( _views.indexOf(_activeView) == _views.length - 2) return _getMoreSlides(++page);
+        //İlk resmi varsayılan vap
+        if (_views.length == 0) _activeView = _newViews[0];
+        bool _checkShowingAd = await widget.adManager.checkShowingAd();
+        widget.viewChanged(_activeView);
+        _views.addAll(_newViews); // view leri listeye ekle
+        if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
+      }
+      return true;
+    } catch (e) {
+      Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
     }
-    return true;
   }
 
   // imajları cache eder
@@ -131,15 +139,19 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   }
 
   Future<Log> getLog() async {
-    Log _log;
+    try {
+      Log _log;
 
-    Model logsModel = (await Log().where(filters: {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}));
-    if (logsModel.response.length > 0)
-      _log = logsModel.response[0];
-    else
-      _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid(), lastViewPictureId: 0).store();
+      Model logsModel = (await Log().where(filters: {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}));
+      if (logsModel.response.length > 0)
+        _log = logsModel.response[0];
+      else
+        _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid(), lastViewPictureId: 0).store();
 
-    return _log;
+      return _log;
+    } catch (e) {
+      Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
+    }
   }
 }
 

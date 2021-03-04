@@ -81,4 +81,23 @@ class Settings {
       return Text("");
     }
   }
+
+  static Widget showErrorDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = ElevatedButton(
+      child: Text("Tamam"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    return AlertDialog(
+      title: Text("Bir hata oluştu."),
+      content: Text("Bir hatayla karşılaşıldı. Lütfen tekrar deneyiniz."),
+      actions: [
+        okButton,
+      ],
+    );
+  }
 }

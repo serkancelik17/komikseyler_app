@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komix/business/models/category.dart';
+import 'package:komix/ui/pages/error_page.dart';
 import 'package:komix/ui/pages/home_page.dart';
 import 'package:komix/ui/pages/views_page.dart';
 
@@ -14,19 +15,17 @@ class AppRouter {
 
   Route onGenerateRoute(settings) {
     final arguments = settings.arguments;
-
-    print(settings.name);
     switch (settings.name) {
       case '/sections':
         return MaterialPageRoute(
           builder: (_) => ViewsPage(section: arguments[0]),
         );
         break;
-/*      case '/error':
+      case '/error':
         return MaterialPageRoute(
-          builder: (_) => ErrorPage(error: arguments),
+          builder: (_) => ErrorPage(exception: arguments[0]),
         );
-        break;*/
+        break;
     }
 
     String page = 'home';

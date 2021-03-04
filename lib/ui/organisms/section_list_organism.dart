@@ -23,8 +23,12 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _device = await Device().find(id: await Settings.getUuid());
-      getSections;
+      try {
+        _device = await Device().find(id: await Settings.getUuid());
+        getSections;
+      } catch (e) {
+        Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
+      }
     });
   }
 
