@@ -42,7 +42,6 @@ class _ViewsPageState extends State<ViewsPage> {
       }, onError: (error) {
         // handle error here.
       });
-      adManager.initStoreInfo();
     });
   }
 
@@ -56,6 +55,7 @@ class _ViewsPageState extends State<ViewsPage> {
           Device().find(id: uuid).then((device) {
             _device = device;
             adManager = AdManager(device);
+            adManager.initStoreInfo();
             setState(() {
               _view = ViewsTemplate(widget.section, adManager, activeView);
             });
@@ -65,7 +65,6 @@ class _ViewsPageState extends State<ViewsPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     subscription.cancel();
     super.dispose();
   }

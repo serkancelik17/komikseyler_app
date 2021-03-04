@@ -21,7 +21,6 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _device = await Device().find(id: await Settings.getUuid());

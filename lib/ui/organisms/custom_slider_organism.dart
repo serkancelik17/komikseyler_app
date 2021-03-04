@@ -37,7 +37,6 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {

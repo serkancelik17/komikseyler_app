@@ -37,7 +37,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     reward = AdmobReward(

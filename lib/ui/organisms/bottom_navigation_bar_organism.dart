@@ -25,7 +25,6 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
   Color moveBoxColor = Colors.white;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _device = await Device().find(id: await Settings.getUuid());

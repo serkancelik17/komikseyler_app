@@ -22,7 +22,7 @@ class SimplePaginateResponse extends Response {
 
   Map<String, dynamic> toJson() => {
         "success": success == null ? null : success,
-        //"data": data == null ? null : Data.map((x) => x.toString())),
+        "metaData": metaData == null ? null : SimplePaginateMetaData().toJson(),
         "message": message == null ? null : message,
       };
 }
