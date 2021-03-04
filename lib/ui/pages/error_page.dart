@@ -4,6 +4,7 @@ import 'package:komix/ui/templates/ErrorTemplate.dart';
 class ErrorPage extends StatelessWidget {
   final Exception exception;
 
+  //Error constructor
   ErrorPage({this.exception});
 
   @override
