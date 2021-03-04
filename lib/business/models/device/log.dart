@@ -13,12 +13,14 @@ class Log extends Model {
     this.deviceUuid,
     this.categoryId,
     this.lastViewPictureId,
+    this.viewCount,
   }) : super(endPoint: '/device_logs', uniqueId: id, paginateType: PaginateType.none);
 
   int id;
   String deviceUuid;
   int categoryId;
   int lastViewPictureId;
+  int viewCount;
 
   Log fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -27,12 +29,14 @@ class Log extends Model {
         deviceUuid: json["device_uuid"] == null ? null : json["device_uuid"],
         categoryId: json["category_id"] == null ? null : json["category_id"],
         lastViewPictureId: json["last_view_picture_id"] == null ? null : json["last_view_picture_id"],
+        viewCount: json["view_count"] == null ? 0 : json["view_count"],
       );
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "device_uuid": deviceUuid == null ? null : deviceUuid,
         "category_id": categoryId == null ? null : categoryId,
         "last_view_picture_id": lastViewPictureId == null ? null : lastViewPictureId,
+        "view_count": viewCount == null ? 0 : viewCount,
       };
 
   @override

@@ -151,7 +151,16 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   Future<void> _buildSmallBanner() async {
     try {
       bool _checkShowingAd = await adManager.checkShowingAd();
-      _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(adManager, reward) : BannerMolecule()) : Text("");
+      if (_checkShowingAd) {
+        if (activeView is Ad) {
+          _logStore(); // Logu kaydet
+          _smartBanner = BannerButtonsMolecule(adManager, reward);
+        } else {
+          _smartBanner = BannerMolecule();
+        }
+      } else {
+        _smartBanner = Text("");
+      }
     } catch (e) {}
   }
 
@@ -161,6 +170,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
 
   void goToBack() {
     _logStore();
-    return Navigator.of(context).pop(widget.section);
+    Navigator.of(context).popAndPushNamed('/');
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komix/ui/templates/ErrorTemplate.dart';
+import 'package:komix/ui/templates/error_template.dart';
 
 class ErrorPage extends StatelessWidget {
   final Exception exception;

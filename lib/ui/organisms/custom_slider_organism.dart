@@ -43,7 +43,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       try {
         _log = await getLog();
         await _getMoreSlides();
-      } catch (e) {
+      } catch (e, s) {
+        print(s.toString());
         Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
       }
     });
@@ -109,7 +110,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
         if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
       }
       return true;
-    } catch (e) {
+    } catch (e, s) {
+      print(s.toString());
       Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
     }
   }
@@ -135,6 +137,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     if (_activeView.id > _lastViewPictureId) {
       widget.logChanged(_log); // Log degisti bilgisini üste gonder
       _lastViewPictureId = _activeView.id;
+      _log.lastViewPictureId = _lastViewPictureId;
+      _log.viewCount++;
     }
   }
 
@@ -146,10 +150,11 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       if (logsModel.response.length > 0)
         _log = logsModel.response[0];
       else
-        _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid(), lastViewPictureId: 0).store();
+        _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid()).store();
 
       return _log;
-    } catch (e) {
+    } catch (e, s) {
+      print(s.toString());
       Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
     }
   }

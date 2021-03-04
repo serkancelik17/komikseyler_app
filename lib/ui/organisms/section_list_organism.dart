@@ -26,7 +26,8 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
       try {
         _device = await Device().find(id: await Settings.getUuid());
         getSections;
-      } catch (e) {
+      } catch (e, s) {
+        print(s.toString());
         Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
       }
     });
