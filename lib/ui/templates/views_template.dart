@@ -60,7 +60,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
       },
     );
     WidgetsBinding.instance.addObserver(this);
-    buildSmallBanner();
+    _buildSmallBanner();
     reward.load();
   }
 
@@ -91,7 +91,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
               CustomSliderOrganism(
                 section: widget.section,
                 viewChanged: (activeView) {
-                  buildSmallBanner();
+                  _buildSmallBanner();
                   setState(() {
                     this.activeView = activeView;
                   });
@@ -148,9 +148,11 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
     _logStore();
   }
 
-  Future<void> buildSmallBanner() async {
-    bool _checkShowingAd = await adManager.checkShowingAd();
-    _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(adManager, reward) : BannerMolecule()) : Text("");
+  Future<void> _buildSmallBanner() async {
+    try {
+      bool _checkShowingAd = await adManager.checkShowingAd();
+      _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(adManager, reward) : BannerMolecule()) : Text("");
+    } catch (e) {}
   }
 
   void _logStore() {

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:komix/business/util/config/env.dart';
 
 class ApiProvider {
-  String _apiUrl = Env.baseUrl + "/api/v1";
+  String _apiUrl = Env.apiUrl;
   DefaultCacheManager defaultCacheManager;
 
   ApiProvider({this.defaultCacheManager}) {
@@ -18,27 +18,23 @@ class ApiProvider {
     final url = _apiUrl + endpoint;
     String _response;
     debugPrint("[GET] Request Url : " + url);
-    try {
-      //Cache yoksa httpden indir
-      if (!Env.isCached) {
-        http.Response response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          _response = response.body;
-        }
-      } else {
-        // Varsa DCM yi kullan
-        File response = await defaultCacheManager.getSingleFile(url);
-        print("[GET CACHED] : " + response.absolute.toString());
-        if (await response.exists()) {
-          _response = await response.readAsString();
-        } else {
-          throw Exception("GET Problem!.");
-        }
+    //Cache yoksa httpden indir
+    if (!Env.isCached) {
+      http.Response response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        _response = response.body;
       }
-      return _response;
-    } catch (e) {
-      rethrow;
+    } else {
+      // Varsa DCM yi kullan
+      File response = await defaultCacheManager.getSingleFile(url);
+      print("[GET CACHED] : " + response.absolute.toString());
+      if (await response.exists()) {
+        _response = await response.readAsString();
+      } else {
+        throw Exception("GET Problem!.");
+      }
     }
+    return _response;
   }
 
   Future<String> post(String endpoint, String body) async {
