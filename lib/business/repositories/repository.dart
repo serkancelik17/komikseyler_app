@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/models/response/paginate_response.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
-import 'package:komik_seyler/business/models/response/simple_paginate_response.dart';
-import 'package:komik_seyler/business/providers/api_provider.dart';
+import 'package:komix/business/models/model.dart';
+import 'package:komix/business/models/response/paginate_response.dart';
+import 'package:komix/business/models/response/response.dart';
+import 'package:komix/business/models/response/simple_paginate_response.dart';
+import 'package:komix/business/providers/api_provider.dart';
 
 class Repository {
   ApiProvider apiProvider;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/atoms/button_atom.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/ui/atoms/button_atom.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class ButtonWithIconMolecule extends ButtonAtom {
   final Widget child;

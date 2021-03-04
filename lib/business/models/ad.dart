@@ -1,5 +1,5 @@
-import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
-import 'package:komik_seyler/business/models/model.dart';
+import 'package:komix/business/models/mixins/view_mixin.dart';
+import 'package:komix/business/models/model.dart';
 
 class Ad extends Model implements ViewMixin {
   @override

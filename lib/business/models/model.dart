@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/interfaces/json_able.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
-import 'package:komik_seyler/business/repositories/repository.dart';
+import 'package:komix/business/models/device.dart';
+import 'package:komix/business/models/interfaces/json_able.dart';
+import 'package:komix/business/models/response/response.dart';
+import 'package:komix/business/repositories/repository.dart';
 
 abstract class Model with JsonAble {
   dynamic uniqueId;
   Repository repository;
   String endPoint;
   Device device;
-  List<Model> _response;
+  List<Model> response;
   PaginateType paginateType;
 
   Model({repository, @required this.endPoint, @required dynamic uniqueId, PaginateType paginateType})
@@ -45,16 +45,16 @@ abstract class Model with JsonAble {
     //Eğer field istegi varsa parametrelere ekle
     if (fields.length > 0) parameters.addAll(fields);
 
-    _response = (await repository.where(model: this, parameters: parameters, paginateType: this.paginateType));
+    response = (await repository.where(model: this, parameters: parameters, paginateType: this.paginateType));
     return this;
   }
 
   Model first() {
-    return _response[0];
+    return response[0];
   }
 
   List<Model> get() {
-    return _response;
+    return response;
   }
 
   Future<Model> store() async {

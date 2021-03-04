@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/molecules/title_color_molecule.dart';
-import 'package:komik_seyler/ui/templates/home_template.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/ui/molecules/title_color_molecule.dart';
+import 'package:komix/ui/templates/home_template.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: HomeTemplate(
-        title: TitleColorMolecule(text: "Komik Şeyler", colors: [Colors.black, CustomColors.purple]),
+        title: TitleColorMolecule(text: "Komix", colors: [Colors.black, CustomColors.purple]),
       ),
     );
   }

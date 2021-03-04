@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/atoms/row_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
+import 'package:komix/ui/atoms/row_atom.dart';
+import 'package:komix/ui/atoms/text_atom.dart';
 
 class TitleColorMolecule extends StatelessWidget {
   final String text;

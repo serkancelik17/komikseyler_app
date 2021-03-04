@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/model.dart';
+import 'package:komix/business/models/model.dart';
 
 abstract class JsonAble {
   Model fromJson(Map<String, dynamic> json);

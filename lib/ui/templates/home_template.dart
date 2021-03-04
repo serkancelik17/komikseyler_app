@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
-import 'package:komik_seyler/ui/organisms/section_list_organism.dart';
+import 'package:komix/ui/organisms/app_bar_organism.dart';
+import 'package:komix/ui/organisms/section_list_organism.dart';
 
 class HomeTemplate extends StatelessWidget {
   final Widget title;

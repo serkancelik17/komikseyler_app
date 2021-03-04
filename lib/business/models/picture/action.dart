@@ -2,7 +2,7 @@
 //
 //     final pictureAction = pictureActionFromJson(jsonString);
 
-import 'package:komik_seyler/business/models/model.dart';
+import 'package:komix/business/models/model.dart';
 
 class PictureAction extends Model {
   int id;

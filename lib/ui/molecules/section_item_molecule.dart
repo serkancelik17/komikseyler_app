@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/ui/atoms/LinearIndicatorAtom.dart';
-import 'package:komik_seyler/ui/atoms/column_atom.dart';
-import 'package:komik_seyler/ui/atoms/sized_box_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
-import 'package:komik_seyler/ui/molecules/gradient_icon_molecule.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
+import 'package:komix/ui/atoms/LinearIndicatorAtom.dart';
+import 'package:komix/ui/atoms/column_atom.dart';
+import 'package:komix/ui/atoms/sized_box_atom.dart';
+import 'package:komix/ui/atoms/text_atom.dart';
+import 'package:komix/ui/molecules/gradient_icon_molecule.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class SectionItemMolecule extends StatelessWidget {
   final SectionMixin section;
@@ -21,7 +21,7 @@ class SectionItemMolecule extends StatelessWidget {
         SizedBoxAtom(
           height: 5,
         ),
-        TextAtom(text: section.getTitle(), fontSize: 16, color: color),
+        TextAtom(text: section.getTitle() ?? '{No Title}', fontSize: 16, color: color),
         SizedBoxAtom(
           height: 5,
         ),

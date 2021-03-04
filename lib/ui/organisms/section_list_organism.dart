@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/action.dart' as Local;
-import 'package:komik_seyler/business/models/category.dart';
-import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/util/config/env.dart';
-import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/ui/atoms/center_atom.dart';
-import 'package:komik_seyler/ui/atoms/circular_progress_indicator_atom.dart';
-import 'package:komik_seyler/ui/molecules/rounded_container_molecule.dart';
-import 'package:komik_seyler/ui/molecules/section_item_molecule.dart';
+import 'package:komix/business/models/action.dart' as Local;
+import 'package:komix/business/models/category.dart';
+import 'package:komix/business/models/device.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
+import 'package:komix/business/util/config/env.dart';
+import 'package:komix/business/util/settings.dart';
+import 'package:komix/ui/atoms/center_atom.dart';
+import 'package:komix/ui/atoms/circular_progress_indicator_atom.dart';
+import 'package:komix/ui/molecules/rounded_container_molecule.dart';
+import 'package:komix/ui/molecules/section_item_molecule.dart';
 
 class SectionListOrganism extends StatefulWidget {
   @override
@@ -46,20 +46,16 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
                       return RoundedContainerMolecule(
                         child: SectionItemMolecule(section: _sections[index]),
                         onTap: () async => await Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]).then((section) {
-                          setState(() {
-                            _sections[index] = section;
-                            // refresh state of Page1
-                          });
+                          _sections[index] = section;
+                          setState(() {});
                         }),
                       );
                     }),
               ),
-              (Env.env != 'prod')
-                  ? Text(
-                      "Device# " + _device.uuid ?? '',
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
-                    )
-                  : null,
+              Text(
+                (Env.env != 'prod') ? "Device# " + _device?.uuid ?? '' : "",
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              )
             ],
           );
   }

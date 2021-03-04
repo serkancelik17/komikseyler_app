@@ -3,8 +3,8 @@
 //     final paginateResponse = paginateResponseFromJson(jsonString);
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/response/absctracts/response_meta_data_abstract.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
+import 'package:komix/business/models/response/absctracts/response_meta_data_abstract.dart';
+import 'package:komix/business/models/response/response.dart';
 
 class PaginateResponse extends Response {
   PaginateResponse({

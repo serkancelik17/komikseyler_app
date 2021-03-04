@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 mixin SectionMixin {
   int viewCount;
@@ -29,10 +29,12 @@ mixin SectionMixin {
   }
 
   Color getColor() {
-    return sectionImgMap[this.getUniqueName()]['color'] ?? CustomColors.purple;
+    String _uniqueName = getUniqueName();
+    return sectionImgMap[_uniqueName]['color'] ?? CustomColors.purple;
   }
 
   IconData _getFaIcon() {
-    return sectionImgMap[this.getUniqueName()]['icon'] ?? FontAwesomeIcons.folderOpen;
+    String _uniqueName = getUniqueName();
+    return sectionImgMap[_uniqueName]['icon'] ?? FontAwesomeIcons.folderOpen;
   }
 }

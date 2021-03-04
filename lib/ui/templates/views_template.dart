@@ -1,18 +1,19 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/ad.dart';
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/ui/molecules/banner_buttons_molecule.dart';
-import 'package:komik_seyler/ui/molecules/banner_molecule.dart';
-import 'package:komik_seyler/ui/molecules/center_text_molecule.dart';
-import 'package:komik_seyler/ui/molecules/title_color_molecule.dart';
-import 'package:komik_seyler/ui/organisms/app_bar_organism.dart';
-import 'package:komik_seyler/ui/organisms/bottom_navigation_bar_organism.dart';
-import 'package:komik_seyler/ui/organisms/custom_slider_organism.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/business/models/ad.dart';
+import 'package:komix/business/models/device/log.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
+import 'package:komix/business/models/mixins/view_mixin.dart';
+import 'package:komix/business/models/picture.dart';
+import 'package:komix/business/util/ad_manager.dart';
+import 'package:komix/ui/molecules/banner_buttons_molecule.dart';
+import 'package:komix/ui/molecules/banner_molecule.dart';
+import 'package:komix/ui/molecules/center_text_molecule.dart';
+import 'package:komix/ui/molecules/title_color_molecule.dart';
+import 'package:komix/ui/organisms/app_bar_organism.dart';
+import 'package:komix/ui/organisms/bottom_navigation_bar_organism.dart';
+import 'package:komix/ui/organisms/custom_slider_organism.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class ViewsTemplate extends StatefulWidget {
   final SectionMixin section;
@@ -25,10 +26,11 @@ class ViewsTemplate extends StatefulWidget {
   _ViewsTemplateState createState() => _ViewsTemplateState(activeView);
 }
 
-class _ViewsTemplateState extends State<ViewsTemplate> {
+class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserver {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   ViewMixin activeView;
   AdmobReward reward;
+  Log _log;
   Widget _smartBanner = Text("");
 
   _ViewsTemplateState(this.activeView);
@@ -45,42 +47,54 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
         handleRewardAdEvent(context, event, args);
       },
     );
+    WidgetsBinding.instance.addObserver(this);
     buildSmallBanner();
     reward.load();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldState,
-      appBar: AppBarOrganism(
-        leading: IconButton(icon: Icon(Icons.west), onPressed: () => Navigator.of(context).pop(widget.section)),
-        title: CenterMolecule(TitleColorMolecule(
-          text: widget.section.getTitle() ?? '{{title}}',
-          colors: [
-            Colors.black,
-            CustomColors.purple,
-          ],
-        )),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            CustomSliderOrganism(
+    return new WillPopScope(
+      onWillPop: () async {
+        goToBack();
+        return false;
+      },
+      child: Scaffold(
+        key: scaffoldState,
+        appBar: AppBarOrganism(
+          leading: IconButton(icon: Icon(Icons.west), onPressed: () => goToBack()),
+          title: CenterMolecule(TitleColorMolecule(
+            text: widget.section.getTitle() ?? '{{title}}',
+            colors: [
+              Colors.black,
+              CustomColors.purple,
+            ],
+          )),
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CustomSliderOrganism(
                 section: widget.section,
                 viewChanged: (activeView) {
                   buildSmallBanner();
                   setState(() {
                     this.activeView = activeView;
                   });
-                }),
-            _smartBanner
-          ],
+                },
+                logChanged: (changedLog) {
+                  _log = changedLog;
+                },
+                adManager: widget.adManager,
+              ),
+              _smartBanner
+            ],
+          ),
         ),
+        bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
       ),
-      bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
     );
   }
 
@@ -112,13 +126,26 @@ class _ViewsTemplateState extends State<ViewsTemplate> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    WidgetsBinding.instance.removeObserver(this);
     reward.dispose();
     super.dispose();
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _logStore();
   }
 
   Future<void> buildSmallBanner() async {
     bool _checkShowingAd = await widget.adManager.checkShowingAd();
     _smartBanner = _checkShowingAd ? ((activeView is Ad) ? BannerButtonsMolecule(widget.adManager, reward) : BannerMolecule()) : Text("");
+  }
+
+  void _logStore() {
+    if (_log != null) _log.update();
+  }
+
+  void goToBack() {
+    _logStore();
+    return Navigator.of(context).pop(widget.section);
   }
 }

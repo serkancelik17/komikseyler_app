@@ -2,9 +2,9 @@
 //
 //     final category = categoryFromJson(jsonString);
 
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
+import 'package:komix/business/models/model.dart';
+import 'package:komix/business/models/response/response.dart';
 
 class Category extends Model with SectionMixin {
   Category({

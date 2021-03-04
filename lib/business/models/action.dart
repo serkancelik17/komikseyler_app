@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
 
 import 'model.dart';
 

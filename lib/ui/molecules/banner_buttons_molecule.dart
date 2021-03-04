@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/ui/atoms/button_atom.dart';
-import 'package:komik_seyler/ui/molecules/button_with_icon_molecule.dart';
+import 'package:komix/business/util/ad_manager.dart';
+import 'package:komix/ui/atoms/button_atom.dart';
+import 'package:komix/ui/molecules/button_with_icon_molecule.dart';
 
 class BannerButtonsMolecule extends StatelessWidget {
   final AdManager adManager;

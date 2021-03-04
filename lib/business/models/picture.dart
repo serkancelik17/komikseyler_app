@@ -2,10 +2,10 @@
 //
 //     final picture = pictureFromJson(jsonString);
 
-import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
-import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/models/picture/action.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
+import 'package:komix/business/models/mixins/view_mixin.dart';
+import 'package:komix/business/models/model.dart';
+import 'package:komix/business/models/picture/action.dart';
+import 'package:komix/business/models/response/response.dart';
 
 class Picture extends Model with ViewMixin {
   Picture({
@@ -47,9 +47,11 @@ class Picture extends Model with ViewMixin {
       };
 
   Model findPictureAction(int actionId) {
-    Model _model = actions.firstWhere((element) => element.actionId == actionId, orElse: () {
-      return null;
-    });
+    Model _model;
+    if (actions != null)
+      _model = actions.firstWhere((element) => element.actionId == actionId, orElse: () {
+        return null;
+      });
     return _model;
   }
 }

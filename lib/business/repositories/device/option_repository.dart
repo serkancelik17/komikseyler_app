@@ -1,4 +1,4 @@
-import 'package:komik_seyler/business/repositories/repository.dart';
+import 'package:komix/business/repositories/repository.dart';
 
 class OptionRepository extends Repository {
   OptionRepository();

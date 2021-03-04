@@ -1,133 +1,135 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/ad.dart';
-import 'package:komik_seyler/business/models/device/log.dart';
-import 'package:komik_seyler/business/models/mixins/section_mixin.dart';
-import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/business/util/config/env.dart';
-import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/ui/molecules/slide_molecule.dart';
+import 'package:komix/business/models/ad.dart';
+import 'package:komix/business/models/device/log.dart';
+import 'package:komix/business/models/mixins/section_mixin.dart';
+import 'package:komix/business/models/mixins/view_mixin.dart';
+import 'package:komix/business/models/model.dart';
+import 'package:komix/business/models/picture.dart';
+import 'package:komix/business/util/ad_manager.dart';
+import 'package:komix/business/util/config/env.dart';
+import 'package:komix/business/util/settings.dart';
+import 'package:komix/ui/molecules/slide_molecule.dart';
 
 class CustomSliderOrganism extends StatefulWidget {
   final SectionMixin section;
   final ValueChanged<ViewMixin> viewChanged;
+  final ValueChanged<Log> logChanged;
+  final AdManager adManager;
 
-  CustomSliderOrganism({Key key, this.section, this.viewChanged}) : super(key: key);
+  CustomSliderOrganism({Key key, this.section, this.viewChanged, this.logChanged, this.adManager}) : super(key: key);
 
   @override
   _CustomSliderOrganismState createState() => _CustomSliderOrganismState();
 }
 
-class _CustomSliderOrganismState extends State<CustomSliderOrganism> with WidgetsBindingObserver {
+class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   _CustomSliderOrganismState();
 
   List<ViewMixin> _views = [];
   ViewMixin _activeView;
   Log _log;
-  int maxIndex = 0;
-  int _page = 1;
-  AdManager _adManager = AdManager();
+  int _slideIndex = 0;
+  int _lastViewPictureId = 1;
+  CarouselController carouselController = CarouselController();
+  SliderDirection _direction;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    getMore();
-    getLog();
-
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _log = await getLog();
+      await _getMoreSlides();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    CarouselSlider _carouseSlider = CarouselSlider(
+      carouselController: carouselController,
+      options: CarouselOptions(
+        height: MediaQuery.of(context).size.height * 0.6,
+        onPageChanged: (index, reason) {
+          _onPageChanged(index, reason);
+        },
+        enlargeCenterPage: true,
+        enableInfiniteScroll: false,
+        viewportFraction: 1,
+      ),
+      items: _views.map((view) {
+        return SlideMolecule(view: view);
+      }).toList(),
+    );
     return (_views == null || _views.length == 0)
         ? Center(child: CircularProgressIndicator())
         : Flexible(
             child: Column(
               children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    onPageChanged: (index, reason) {
-                      _onPageChange(index, reason);
-                    },
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1,
-                  ),
-                  items: _views.map((view) {
-                    return SlideMolecule(view: view);
-                  }).toList(),
-                ),
+                _carouseSlider,
                 Text(
-                  (Env.env == 'dev') ? "Picture #" + _activeView.id.toString() : "",
-                  style: TextStyle(color: Colors.grey),
+                  (Env.env == 'dev')
+                      ? "${_direction.toString()} activeWPI/lastWPI:${_activeView?.id}/${_lastViewPictureId.toString()} slideIndex:${_slideIndex.toString()} "
+                              "picture:#" +
+                          _activeView?.id.toString()
+                      : "",
+                  style: TextStyle(color: Colors.grey, fontSize: 11),
                 ),
+/*                ElevatedButton(
+                    onPressed: () {
+                      carouselController.jumpToPage(2);
+                    },
+                    child: Text("Jump 2"))*/
               ],
             ),
           );
   }
 
-  Future<void> getMore() async {
+  Future<void> _getMoreSlides() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-    List<ViewMixin> _newViews = (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'limit': Env.pagePictureLimit, 'page': _page++})).get().cast<ViewMixin>();
+    List<ViewMixin> _newViews =
+        (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'last_view_picture_id': _lastViewPictureId, 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
       //Reklamları satın almadıysa remlam ekle icerige
+      //if ( _views.indexOf(_activeView) == _views.length - 2) return _getMoreSlides(++page);
       //İlk resmi varsayılan vap
       if (_views.length == 0) _activeView = _newViews[0];
-      bool _checkShowingAd = await _adManager.checkShowingAd();
-      setState(() {
-        widget.viewChanged(_activeView);
-        _views.addAll(_newViews);
-        if (_checkShowingAd) _views.add(Ad());
-      });
+      bool _checkShowingAd = await widget.adManager.checkShowingAd();
+      widget.viewChanged(_activeView);
+      _views.addAll(_newViews); // view leri listeye ekle
+      if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
     }
   }
 
-  _onPageChange(int index, CarouselPageChangedReason reason) {
+  _onPageChanged(int index, CarouselPageChangedReason reason) {
     setState(() {
-      _activeView = _views[index];
+      _slideIndex = index;
+      _activeView = _views[_slideIndex];
       widget.viewChanged(_activeView);
     });
-    //Update lastView
-    if (index > maxIndex && _activeView is Picture) {
-      maxIndex = index;
-      _log.viewCount = widget.section.viewCount++; // Sayıyı bir arttır.
-      _log.lastViewPictureId = _activeView.id;
-      _saveData(); //@todo kaldırılacak.
+
+    if (index > _views.length - 2) _getMoreSlides();
+
+    if (_activeView.id > _lastViewPictureId) {
+      widget.logChanged(_log); // Log degisti bilgisini üste gonder
+      _lastViewPictureId = _activeView.id;
     }
-
-    if (index == _views.length - 1) getMore();
   }
 
-  _saveData() async {
-    _log.update(); // Logu güncelle
-  }
+  Future<Log> getLog() async {
+    Log _log;
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+    Model logsModel = (await Log().where(filters: {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}));
+    if (logsModel.response.length > 0)
+      _log = logsModel.response[0];
+    else
+      _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid(), lastViewPictureId: 0).store();
 
-  /* @override @TODO sayfa cıkışlarında ve back button da calıstırılacak.
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    _saveData();
-  }*/
-
-  Future<void> getLog() async {
-    Log log = (await Log().where(filters: {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()})).first();
-
-    print(log.toString());
-
-    debugger(when: log == null, message: "log null döndü");
-    this._log = log ?? Log(categoryId: widget.section.getId());
+    return _log;
   }
 }
+
+enum SliderDirection { backward, forward }

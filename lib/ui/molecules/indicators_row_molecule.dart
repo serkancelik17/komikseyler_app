@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/business/models/mixins/view_mixin.dart';
-import 'package:komik_seyler/ui/atoms/indicatior_atom.dart';
+import 'package:komix/business/models/mixins/view_mixin.dart';
+import 'package:komix/ui/atoms/indicatior_atom.dart';
 
 class IndicatorsRowMolecule extends StatelessWidget {
   final List<ViewMixin> views;

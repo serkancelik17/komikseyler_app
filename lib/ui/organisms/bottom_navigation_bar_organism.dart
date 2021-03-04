@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/business/models/action.dart' as Local;
-import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/models/picture/action.dart';
-import 'package:komik_seyler/business/util/settings.dart';
-import 'package:komik_seyler/ui/molecules/rounded_button_molecule.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/business/models/action.dart' as Local;
+import 'package:komix/business/models/device.dart';
+import 'package:komix/business/models/picture.dart';
+import 'package:komix/business/models/picture/action.dart';
+import 'package:komix/business/util/settings.dart';
+import 'package:komix/ui/molecules/rounded_button_molecule.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class BottomNavigationBarOrganism extends StatefulWidget {
   final Picture activeView;

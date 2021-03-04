@@ -1,11 +1,11 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:komik_seyler/ui/atoms/column_atom.dart';
-import 'package:komik_seyler/ui/atoms/fa_icon_atom.dart';
-import 'package:komik_seyler/ui/atoms/text_atom.dart';
-import 'package:komik_seyler/ui/molecules/rounded_container_molecule.dart';
-import 'package:komik_seyler/ui/themes/custom_colors.dart';
+import 'package:komix/ui/atoms/column_atom.dart';
+import 'package:komix/ui/atoms/fa_icon_atom.dart';
+import 'package:komix/ui/atoms/text_atom.dart';
+import 'package:komix/ui/molecules/rounded_container_molecule.dart';
+import 'package:komix/ui/themes/custom_colors.dart';
 
 class RoundedButtonMolecule extends StatelessWidget {
   final IconData iconData;
@@ -18,8 +18,9 @@ class RoundedButtonMolecule extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final int badgeCount;
 
-  RoundedButtonMolecule({this.iconData = FontAwesomeIcons.image, this.onTap, this.text, this.color, activeColor, this.active = false, this.margin, this.activeIconData, this.badgeCount = 0})
-      : activeColor = activeColor ?? CustomColors.purple;
+  RoundedButtonMolecule({this.iconData = FontAwesomeIcons.image, this.onTap, this.text, this.color, activeColor, this.active = false, this.margin, this.activeIconData, badgeCount})
+      : activeColor = activeColor ?? CustomColors.purple,
+        badgeCount = badgeCount ?? 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class RoundedButtonMolecule extends StatelessWidget {
             ColumnAtom(
               children: [
                 Badge(
-                  showBadge: badgeCount > 0,
+                  showBadge: (this.badgeCount > 0),
                   toAnimate: true,
                   position: BadgePosition.topEnd(end: -35, top: -10),
                   badgeColor: CustomColors.purple,

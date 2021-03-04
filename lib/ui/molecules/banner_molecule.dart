@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/atoms/banner_atom.dart';
+import 'package:komix/ui/atoms/banner_atom.dart';
 
 class BannerMolecule extends StatelessWidget {
   @override

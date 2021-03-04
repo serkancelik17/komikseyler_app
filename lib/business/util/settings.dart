@@ -5,9 +5,9 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:komik_seyler/business/models/picture.dart';
-import 'package:komik_seyler/business/util/ad_manager.dart';
-import 'package:komik_seyler/business/util/config/env.dart';
+import 'package:komix/business/models/picture.dart';
+import 'package:komix/business/util/ad_manager.dart';
+import 'package:komix/business/util/config/env.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -49,7 +49,7 @@ class Settings {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       centerTitle: true,
-      title: Text(title ?? 'Komik Şeyler'),
+      title: Text(title ?? 'Komix'),
     );
   }
 

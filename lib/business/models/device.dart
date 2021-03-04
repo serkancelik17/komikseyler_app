@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-import 'package:komik_seyler/business/models/device/option.dart';
-import 'package:komik_seyler/business/models/model.dart';
-import 'package:komik_seyler/business/models/response/response.dart';
+import 'package:komix/business/models/device/option.dart';
+import 'package:komix/business/models/model.dart';
+import 'package:komix/business/models/response/response.dart';
 
 class Device extends Model {
   int id;

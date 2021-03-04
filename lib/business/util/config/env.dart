@@ -1,7 +1,7 @@
 class Env {
   static const String env = 'dev';
 
-  static const String baseUrl = '${env == 'dev' ? 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public' : 'https://komikseyler.serkancelik.web.tr'}';
+  static const String baseUrl = '${env == 'dev' ? 'http://192.168.1.20/komix.serkancelik.web.tr/public' : 'https://komix.serkancelik.web.tr'}';
 
   static const String imageAssetsUrl = '$baseUrl/assets/images';
 

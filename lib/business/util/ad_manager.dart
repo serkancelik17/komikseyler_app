@@ -6,15 +6,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intl/intl.dart';
-import 'package:komik_seyler/business/models/device.dart';
-import 'package:komik_seyler/business/util/settings.dart';
+import 'package:komix/business/models/device.dart';
+import 'package:komix/business/util/settings.dart';
 
 class AdManager {
   Platform platform;
   Set<String> _productIds = {'subscription_yearly', 'subscription_three_month', 'subscription_six_month', 'subscription_one_month'};
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
-  Device _device;
+  Device device;
+
+  AdManager(this.device);
 
   static String get appId {
     if (Platform.isAndroid) {
@@ -60,8 +62,7 @@ class AdManager {
   }
 
   Future<bool> checkShowingAd() async {
-    await _getDevice();
-    if (!kIsWeb && (DateTime.now().isBefore(_device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
+    if (!kIsWeb && (DateTime.now().isBefore(device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     } else {
       return true;
@@ -91,9 +92,8 @@ class AdManager {
   }
 
   Future<bool> removeAds({BuildContext ctx, Duration duration}) async {
-    await this._getDevice();
     String adsShowAfter = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().add(duration));
-    await this._device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
+    await this.device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
     return true;
   }
 
@@ -165,9 +165,5 @@ class AdManager {
         okButton,
       ],
     );
-  }
-
-  Future<void> _getDevice() async {
-    this._device = this._device ?? await Device().find(id: await Settings.getUuid());
   }
 }

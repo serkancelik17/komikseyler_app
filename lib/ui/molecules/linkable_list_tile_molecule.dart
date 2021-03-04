@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik_seyler/ui/atoms/inkwell_atom.dart';
-import 'package:komik_seyler/ui/atoms/list_tile_atom.dart';
+import 'package:komix/ui/atoms/inkwell_atom.dart';
+import 'package:komix/ui/atoms/list_tile_atom.dart';
 
 class LinkableListTileMolecule extends StatelessWidget {
   final Widget title;
