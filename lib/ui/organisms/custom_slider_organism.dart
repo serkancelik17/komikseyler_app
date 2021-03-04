@@ -86,12 +86,14 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
           );
   }
 
-  Future<void> _getMoreSlides() async {
+  Future<bool> _getMoreSlides() async {
     //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
     List<ViewMixin> _newViews =
         (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'last_view_picture_id': _lastViewPictureId, 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
     if (_newViews.length > 0) {
+      // Imajları cache et.
+      prefetchImages(_newViews);
       //Reklamları satın almadıysa remlam ekle icerige
       //if ( _views.indexOf(_activeView) == _views.length - 2) return _getMoreSlides(++page);
       //İlk resmi varsayılan vap
@@ -101,6 +103,16 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       _views.addAll(_newViews); // view leri listeye ekle
       if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
     }
+    return true;
+  }
+
+  // imajları cache eder
+  bool prefetchImages(List<ViewMixin> pictures) {
+    pictures.forEach((picture) {
+      String imageUrl = Env.imageAssetsUrl + "/" + picture.path;
+      precacheImage(NetworkImage(imageUrl), context);
+    });
+    return true;
   }
 
   _onPageChanged(int index, CarouselPageChangedReason reason) {
