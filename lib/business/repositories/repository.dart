@@ -19,7 +19,7 @@ class Repository {
 
   Future<Model> store({@required Model model}) async {
     Model _model;
-    Response response = Response().fromRawJson(await apiProvider.post(await model.getEndPoint(), json.encode(model.toJson())));
+    Response response = Response().fromRawJson(await apiProvider.post(model.getEndPoint(), json.encode(model.toJson())));
     if (response.success)
       _model = model.fromJson(response.metaData.data[0]);
     else
@@ -29,13 +29,13 @@ class Repository {
   }
 
   Future<bool> update({@required Model model}) async {
-    String _endPoint = await model.getEndPoint() + '/' + model.uniqueId.toString();
+    String _endPoint = model.getEndPoint() + '/' + model.uniqueId.toString();
     Response response = Response().fromRawJson(await apiProvider.patch(_endPoint, jsonEncode(model)));
     return response.success;
   }
 
   Future<bool> destroy({@required Model model}) async {
-    String _endPoint = await model.getEndPoint() + '/' + model.uniqueId.toString();
+    String _endPoint = model.getEndPoint() + '/' + model.uniqueId.toString();
     Response response = Response().fromRawJson(await apiProvider.delete(_endPoint));
     return response.success;
   }
