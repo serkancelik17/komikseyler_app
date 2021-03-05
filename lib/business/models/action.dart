@@ -52,14 +52,4 @@ class Action extends Model with SectionMixin {
   double getPercent() {
     return 0;
   }
-
-  @override
-  bool calculatePercent() {
-    return false;
-  }
-
-  @override
-  SectionMixin setViewCount(int viewCount) {
-    return this;
-  }
 }

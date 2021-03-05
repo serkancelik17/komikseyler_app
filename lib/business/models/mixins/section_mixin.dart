@@ -21,9 +21,6 @@ mixin SectionMixin {
     'action5': {'icon': FontAwesomeIcons.share, 'color': CustomColors.lightBlue},
   };
 
-  SectionMixin setViewCount(int viewCount);
-  bool calculatePercent();
-
   IconData getIcon() {
     return _getFaIcon();
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komix/business/models/mixins/section_mixin.dart';
-import 'package:komix/ui/atoms/LinearIndicatorAtom.dart';
+import 'package:komix/ui/atoms/linear_indicator_atom.dart';
 import 'package:komix/ui/atoms/column_atom.dart';
 import 'package:komix/ui/atoms/sized_box_atom.dart';
 import 'package:komix/ui/atoms/text_atom.dart';

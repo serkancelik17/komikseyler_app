@@ -55,17 +55,6 @@ class Category extends Model with SectionMixin {
     return this.viewCount / this.picturesCount;
   }
 
-  @override
-  bool calculatePercent() {
-    return false;
-  }
-
-  @override
-  SectionMixin setViewCount(int viewCount) {
-    this.viewCount = viewCount;
-    return this;
-  }
-
   String toRawJson() {
     return null;
   }
