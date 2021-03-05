@@ -1,4 +1,4 @@
-package tr.web.serkancelik.komik_seyler
+package tr.web.serkancelik.komix
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -63,7 +63,7 @@ class AdManager {
 
   Future<bool> checkShowingAd() async {
     device ??= await Device().find(id: await Settings.getUuid());
-    if (!kIsWeb && (DateTime.now().isBefore(device.option?.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
+    if (!kIsWeb && (DateTime.now().isBefore(device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     } else {
       return true;
