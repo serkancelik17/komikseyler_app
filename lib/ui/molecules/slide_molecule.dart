@@ -13,7 +13,11 @@ class SlideMolecule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (view is Ad)
-        ? BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
+        ? Container(
+            width: 300,
+            height: 250,
+            child: BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE),
+          )
         : Container(
             // child: FullScreenWidget(
             child: FadeInImage.assetNetwork(
