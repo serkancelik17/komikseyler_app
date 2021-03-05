@@ -26,9 +26,7 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _device = await Device().find(id: await Settings.getUuid());
-    });
+    _getDevice();
   }
 
   @override
@@ -162,5 +160,10 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
       widget.activeView.favoriteCount += i;
     else if (pa.actionId == 5) //share
       widget.activeView.shareCount += i;
+  }
+
+  Future<void> _getDevice() async {
+    _device = await Device().find(id: await Settings.getUuid());
+    setState(() {});
   }
 }
