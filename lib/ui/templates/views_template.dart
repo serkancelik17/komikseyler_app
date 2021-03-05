@@ -136,7 +136,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
         await adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         _logUpdate(); // Logu kaydet
         print("removeAds reklamlar kaldirildi.");
-        DialogMolecule.showAlertDialog(ctx);
+        DialogMolecule.showAlertDialog(ctx, () => Navigator.of(context).popAndPushNamed("/sections", arguments: [widget.section]));
         break;
       default:
     }

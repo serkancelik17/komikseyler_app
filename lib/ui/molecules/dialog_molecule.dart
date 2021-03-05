@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DialogMolecule {
-  DialogMolecule.showAlertDialog(BuildContext context) {
+  DialogMolecule.showAlertDialog(BuildContext context, VoidCallback onPress) {
     // set up the button
     Widget okButton = ElevatedButton(
       child: Text("Teşekkürler"),
-      onPressed: () {
-        Navigator.of(context).pushReplacementNamed("/");
-      },
+      onPressed: onPress,
     );
 
     // set up the AlertDialog
