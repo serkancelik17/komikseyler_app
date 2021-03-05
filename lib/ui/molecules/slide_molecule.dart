@@ -4,7 +4,6 @@ import 'package:komix/business/models/ad.dart';
 import 'package:komix/business/models/mixins/view_mixin.dart';
 import 'package:komix/business/util/config/env.dart';
 import 'package:komix/ui/atoms/banner_atom.dart';
-import 'package:pinch_zoom/pinch_zoom.dart';
 
 class SlideMolecule extends StatelessWidget {
   final ViewMixin view;
@@ -17,16 +16,10 @@ class SlideMolecule extends StatelessWidget {
         ? BannerAtom(bannerSize: AdmobBannerSize.MEDIUM_RECTANGLE)
         : Container(
             // child: FullScreenWidget(
-            child: PinchZoom(
-              image: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/loading.gif',
-                image: Env.imageAssetsUrl + "/" + view.path,
-                fit: BoxFit.contain,
-              ),
-              /* imageUrl:
-                      placeholder: (context, url) => CenterAtom(child: CircularProgressIndicatorAtom()),
-                      errorWidget: (context, url, error) => IconAtom(icon: Icons.error),
-                    ),*/
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/loading.gif',
+              image: Env.imageAssetsUrl + "/" + view.path,
+              fit: BoxFit.contain,
             ),
             // ),
           );

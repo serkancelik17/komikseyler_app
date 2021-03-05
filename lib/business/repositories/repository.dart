@@ -52,7 +52,7 @@ class Repository {
       }
     });
 
-    String _endPoint = await model.getEndPoint() + "?" + _parameterList.join("&");
+    String _endPoint = model.getEndPoint() + ((_parameterList.length > 0) ? "?" + _parameterList.join("&") : '').toString();
     List<Model> _models = [];
     String _apiResponse = await apiProvider.get(_endPoint);
     Response _response;

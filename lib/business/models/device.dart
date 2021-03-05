@@ -31,7 +31,7 @@ class Device extends Model {
         id: json["id"] == null ? null : json["id"],
         uuid: json["uuid"] == null ? null : json["uuid"],
         note: json["note"],
-        option: json["option"] == null ? new Option() : Option().fromJson(json["option"]),
+        option: json["option"] == null ? new Option(deviceUuid: json['uuid']) : Option(deviceUuid: json['uuid']).fromJson(json["option"]),
       );
 
   Map<String, dynamic> toJson() => {

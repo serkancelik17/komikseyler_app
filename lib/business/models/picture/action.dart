@@ -2,11 +2,14 @@
 //
 //     final pictureAction = pictureActionFromJson(jsonString);
 
+import 'package:flutter/cupertino.dart';
 import 'package:komix/business/models/model.dart';
 
 class PictureAction extends Model {
   int id;
+  @required
   String deviceUuid;
+  @required
   int pictureId;
   int actionId;
 
@@ -15,7 +18,7 @@ class PictureAction extends Model {
     this.deviceUuid,
     this.pictureId,
     this.actionId,
-  }) : super(endPoint: "/picture_actions", uniqueId: id);
+  }) : super(endPoint: "/devices/" + deviceUuid + "/pictures/" + pictureId.toString() + "/actions", uniqueId: id);
 
   PictureAction fromJson(Map<String, dynamic> json) => PictureAction(
         id: json["id"] == null ? null : json["id"],

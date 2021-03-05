@@ -94,7 +94,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   Future<bool> _getMoreSlides() async {
     try {
       //List<ViewMixin> _newViews = await widget.section.getRepository().views(section: widget.section, page: _page++, limit: Env.pagePictureLimit);
-      List<ViewMixin> _newViews = (await Picture().where(filters: {'category_id': widget.section.getId()}, fields: {'device_uuid': await Settings.getUuid(), 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
+      List<ViewMixin> _newViews =
+          (await Picture().setEndPoint('/devices/' + await Settings.getUuid() + '/categories/' + widget.section.getId().toString() + '/pictures').where(fields: {'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
       if (_newViews.length > 0) {
         // Imajları cache et.
@@ -145,7 +146,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     try {
       Log _log;
 
-      Model logsModel = (await Log().where(filters: {'device_uuid': (await Settings.getUuid()), 'category_id': widget.section.getId()}));
+      Model logsModel = (await Log(deviceUuid: await Settings.getUuid()).where(filters: {'category_id': widget.section.getId()}));
       if (logsModel.response.length > 0)
         _log = logsModel.response[0];
       else

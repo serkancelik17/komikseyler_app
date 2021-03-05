@@ -26,12 +26,19 @@ abstract class Model with JsonAble {
 
   Future<Model> find({dynamic id}) async {
     id ??= this.uniqueId;
-    Model _model = (await this.where(filters: {((this is Device) ? 'uuid' : 'id'): id})).first();
+    this.paginateType = PaginateType.none;
+    setEndPoint(getEndPoint() + "/" + id.toString());
+    Model _model = (await this.where()).first();
     return _model;
   }
 
-  Future<String> getEndPoint() async {
+  String getEndPoint() {
     return this.endPoint;
+  }
+
+  Model setEndPoint(String endPoint) {
+    this.endPoint = endPoint;
+    return this;
   }
 
   Future<Model> where({Map<String, dynamic> filters, Map<String, dynamic> fields}) async {

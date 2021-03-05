@@ -6,7 +6,7 @@ import 'package:komix/ui/themes/custom_colors.dart';
 
 class ErrorTemplate extends StatelessWidget {
   final Widget title;
-  final Exception exception;
+  final dynamic exception;
 
   ErrorTemplate({@required this.title, this.exception});
 

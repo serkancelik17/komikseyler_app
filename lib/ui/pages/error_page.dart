@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komix/ui/templates/error_template.dart';
 
 class ErrorPage extends StatelessWidget {
-  final Exception exception;
+  final dynamic exception;
 
   //Error constructor
   ErrorPage({this.exception});

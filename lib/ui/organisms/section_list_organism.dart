@@ -61,7 +61,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   }
 
   Future<bool> get getSections async {
-    List<SectionMixin> categories = (await Category().where(filters: {'device_uuid': await Settings.getUuid()})).get().cast<SectionMixin>();
+    List<SectionMixin> categories = (await Category().setEndPoint('/devices/' + await Settings.getUuid() + '/categories').where()).get().cast<SectionMixin>();
     _sections.addAll(categories);
 /*    List<SectionMixin> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),

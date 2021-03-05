@@ -1,24 +1,19 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:komix/business/models/model.dart';
 import 'package:komix/business/models/response/response.dart';
 
 class Option extends Model {
   Option({
     this.id,
-    this.deviceUuid,
+    @required this.deviceUuid,
     this.isAdmin,
     this.adsShowAfter,
-  }) : super(endPoint: '/device_options', uniqueId: id, paginateType: PaginateType.none);
+  }) : super(endPoint: '/devices/' + deviceUuid + '/options', uniqueId: id, paginateType: PaginateType.none);
 
   int id;
   String deviceUuid;
   int isAdmin;
   DateTime adsShowAfter;
-
-  factory Option.fromRawJson(String str) => Option().fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   Option fromJson(Map<String, dynamic> json) => Option(
         id: json["id"] == null ? null : json["id"],

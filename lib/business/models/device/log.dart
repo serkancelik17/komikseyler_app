@@ -2,27 +2,24 @@
 //
 //     final log = logFromJson(jsonString);
 
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:komix/business/models/model.dart';
 import 'package:komix/business/models/response/response.dart';
 
 class Log extends Model {
   Log({
     this.id,
-    this.deviceUuid,
+    @required this.deviceUuid,
     this.categoryId,
     this.lastViewPictureId,
     this.viewCount,
-  }) : super(endPoint: '/device_logs', uniqueId: id, paginateType: PaginateType.none);
+  }) : super(endPoint: '/devices/' + deviceUuid + '/logs', uniqueId: id, paginateType: PaginateType.none);
 
   int id;
   String deviceUuid;
   int categoryId;
   int lastViewPictureId;
   int viewCount;
-
-  Log fromRawJson(String str) => fromJson(json.decode(str));
 
   Log fromJson(Map<String, dynamic> json) => Log(
         id: json["id"] == null ? null : json["id"],
@@ -41,6 +38,6 @@ class Log extends Model {
 
   @override
   String toString() {
-    return 'Log{categoryId: $categoryId}';
+    return 'Log{id: $id, deviceUuid: $deviceUuid, categoryId: $categoryId, lastViewPictureId: $lastViewPictureId, viewCount: $viewCount}';
   }
 }
