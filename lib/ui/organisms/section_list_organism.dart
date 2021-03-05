@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komix/business/models/action.dart' as Local;
 import 'package:komix/business/models/category.dart';
 import 'package:komix/business/models/device.dart';
+import 'package:komix/business/models/device/option.dart';
 import 'package:komix/business/models/mixins/section_mixin.dart';
 import 'package:komix/business/util/config/env.dart';
 import 'package:komix/business/util/settings.dart';
@@ -17,14 +18,16 @@ class SectionListOrganism extends StatefulWidget {
 
 class _SectionListOrganismState extends State<SectionListOrganism> {
   List<SectionMixin> _sections = [];
-  Device _device = Device();
+  Device _device;
+  Option _option;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       try {
-        _device = await Device().find(id: await Settings.getUuid());
+        _device = await Device().firstOrCreate({'uuid': await Settings.getUuid()});
+        _option = await Option(deviceUuid: _device.uuid).firstOrCreate({'device_uuid': await Settings.getUuid()});
         getSections;
       } catch (e, s) {
         print(s.toString());

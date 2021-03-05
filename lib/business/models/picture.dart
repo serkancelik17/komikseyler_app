@@ -33,7 +33,7 @@ class Picture extends Model with ViewMixin {
         likeCount: json["like_count"] == null ? null : json["like_count"],
         favoriteCount: json["favorite_count"] == null ? null : json["favorite_count"],
         shareCount: json["share_count"] == null ? null : json["share_count"],
-        actions: json["actions"] == null ? null : List<PictureAction>.from(json["actions"].map((x) => PictureAction().fromJson(x))),
+        actions: json["actions"] == null ? null : List<PictureAction>.from(json["actions"].map((x) => PictureAction(deviceUuid: 'x', pictureId: 0).fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

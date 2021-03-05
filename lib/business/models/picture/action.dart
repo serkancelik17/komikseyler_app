@@ -2,14 +2,11 @@
 //
 //     final pictureAction = pictureActionFromJson(jsonString);
 
-import 'package:flutter/cupertino.dart';
 import 'package:komix/business/models/model.dart';
 
 class PictureAction extends Model {
   int id;
-  @required
   String deviceUuid;
-  @required
   int pictureId;
   int actionId;
 

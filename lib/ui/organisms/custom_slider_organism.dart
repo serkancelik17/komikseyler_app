@@ -12,6 +12,7 @@ import 'package:komix/business/models/picture.dart';
 import 'package:komix/business/util/ad_manager.dart';
 import 'package:komix/business/util/config/env.dart';
 import 'package:komix/business/util/settings.dart';
+import 'package:komix/ui/atoms/center_atom.dart';
 import 'package:komix/ui/atoms/fa_icon_atom.dart';
 import 'package:komix/ui/molecules/slide_molecule.dart';
 import 'package:komix/ui/themes/custom_colors.dart';
@@ -37,8 +38,10 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   int _slideIndex = 0;
   int _lastViewPictureId = 1;
   CarouselController carouselController = CarouselController();
-  SliderDirection _direction;
   bool _isLoading = true;
+  int _page = 1;
+  bool _isEmpty = false;
+  bool _isFinished = false;
 
   @override
   void initState() {
@@ -59,56 +62,86 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   Widget build(BuildContext context) {
     return (_isLoading == true)
         ? Center(child: CircularProgressIndicator())
-        : (_views.length == 0)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FaIconAtom(
-                    icon: FontAwesomeIcons.exclamationCircle,
-                    size: 100,
-                    color: CustomColors.purple,
-                  ),
-                  Center(
-                      child: Text(
-                    'Herhangi bir içerik bulunamadı.',
-                    style: TextStyle(color: CustomColors.lightPurple),
-                  )),
-                ],
-              )
-            : Flexible(
-                child: Column(
-                  children: [
-                    CarouselSlider(
-                      carouselController: carouselController,
-                      options: CarouselOptions(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        onPageChanged: (index, reason) {
-                          _onPageChanged(index, reason);
-                        },
-                        enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 1,
-                      ),
-                      items: _views.map((view) {
-                        return SlideMolecule(view: view);
-                      }).toList(),
-                    ),
-                    Text(
-                      (Env.env == 'dev')
-                          ? "${_direction.toString()} activeWPI/lastWPI:${_activeView?.id}/${_lastViewPictureId.toString()} slideIndex:${_slideIndex.toString()} "
-                                  "picture:#" +
-                              _activeView?.id.toString()
-                          : "",
-                      style: TextStyle(color: Colors.grey, fontSize: 11),
-                    ),
-/*                ElevatedButton(
-                    onPressed: () {
-                      carouselController.jumpToPage(2);
-                    },
-                    child: Text("Jump 2"))*/
-                  ],
-                ),
-              );
+        : (_isEmpty)
+            ? buildIsEmpty()
+            : (_isFinished)
+                ? buildIsFinished()
+                : buildCarouselSlider(context);
+  }
+
+  Flexible buildCarouselSlider(BuildContext context) {
+    return Flexible(
+      child: Column(
+        children: [
+          CarouselSlider(
+            carouselController: carouselController,
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.6,
+              onPageChanged: (index, reason) {
+                _onPageChanged(index, reason);
+              },
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+              viewportFraction: 1,
+              initialPage: _slideIndex,
+            ),
+            items: _views.map((view) {
+              return SlideMolecule(view: view);
+            }).toList(),
+          ),
+          Text(
+            (Env.env == 'dev')
+                ? "activeWPI/lastWPI:${_activeView?.id}/${_lastViewPictureId.toString()} slideIndex:${_slideIndex.toString()} "
+                        "picture:#" +
+                    _activeView?.id.toString()
+                : "",
+            style: TextStyle(color: Colors.grey, fontSize: 11),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column buildIsFinished() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FaIconAtom(
+          icon: FontAwesomeIcons.images,
+          size: 100,
+          color: CustomColors.purple,
+        ),
+        Center(
+            child: Text(
+          'Bu kategorideki tüm içeriği gördünüz.',
+          style: TextStyle(color: CustomColors.lightPurple),
+        )),
+        CenterAtom(
+          child: Text(
+            "Başka bir kategoriye geçebilirsiniz.",
+            style: TextStyle(color: CustomColors.lightPurple),
+          ),
+        )
+      ],
+    );
+  }
+
+  Column buildIsEmpty() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FaIconAtom(
+          icon: FontAwesomeIcons.exclamationCircle,
+          size: 100,
+          color: CustomColors.purple,
+        ),
+        Center(
+            child: Text(
+          'Herhangi bir içerik bulunamadı.',
+          style: TextStyle(color: CustomColors.lightPurple),
+        )),
+      ],
+    );
   }
 
   Future<bool> _getMoreSlides() async {
@@ -116,7 +149,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
       _isLoading = true;
       Picture _picture = Picture();
       _picture.setEndPoint('/devices/' + await Settings.getUuid() + '/' + ((widget.section is Category) ? 'categories' : 'actions') + '/' + widget.section.getId().toString() + '/pictures');
-      List<ViewMixin> _newViews = (await _picture.where(fields: {'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
+      List<ViewMixin> _newViews = (await _picture.where(fields: {'page': (_page++).toString(), 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
 
       if (_newViews.length > 0) {
         // Imajları cache et.
@@ -128,15 +161,19 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
         bool _checkShowingAd = await widget.adManager.checkShowingAd();
         widget.viewChanged(_activeView);
         _views.addAll(_newViews); // view leri listeye ekle
-        if (_checkShowingAd) _views.add(Ad()); // Reklamı ekle
+        if (_checkShowingAd && widget.section is Category) _views.add(Ad()); // Reklamı ekle
       } else {
-        _views = null;
+        if (_page == 2)
+          _isEmpty = true;
+        else
+          _isFinished = true;
       }
     } catch (e, s) {
       print(s.toString());
       Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
     } finally {
       _isLoading = false;
+      setState(() {});
     }
     return true;
   }
@@ -182,5 +219,3 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     return _log;
   }
 }
-
-enum SliderDirection { backward, forward }

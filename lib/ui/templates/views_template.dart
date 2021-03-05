@@ -93,18 +93,20 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomSliderOrganism(
-                section: widget.section,
-                viewChanged: (activeView) {
-                  _buildSmallBanner();
-                  setState(() {
-                    this.activeView = activeView;
-                  });
-                },
-                logChanged: (changedLog) {
-                  _log = changedLog;
-                },
-                adManager: adManager,
+              Container(
+                child: CustomSliderOrganism(
+                  section: widget.section,
+                  viewChanged: (activeView) {
+                    _buildSmallBanner();
+                    setState(() {
+                      this.activeView = activeView;
+                    });
+                  },
+                  logChanged: (changedLog) {
+                    _log = changedLog;
+                  },
+                  adManager: adManager,
+                ),
               ),
               _smartBanner
             ],
@@ -132,6 +134,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
         break;*/
       case AdmobAdEvent.rewarded:
         await adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
+        _logUpdate(); // Logu kaydet
         print("removeAds reklamlar kaldirildi.");
         DialogMolecule.showAlertDialog(ctx);
         break;
@@ -148,7 +151,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    _logStore();
+    _logUpdate();
   }
 
   Future<void> _buildSmallBanner() async {
@@ -156,7 +159,6 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
       bool _checkShowingAd = await adManager.checkShowingAd();
       if (_checkShowingAd) {
         if (activeView is Ad) {
-          _logStore(); // Logu kaydet
           _smartBanner = BannerButtonsMolecule(adManager, reward);
         } else {
           _smartBanner = BannerMolecule();
@@ -167,12 +169,12 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
     } catch (e) {}
   }
 
-  void _logStore() {
+  void _logUpdate() {
     if (_log != null) _log.update();
   }
 
   void goToBack() {
-    _logStore();
+    _logUpdate();
     Navigator.of(context).popAndPushNamed('/');
   }
 
