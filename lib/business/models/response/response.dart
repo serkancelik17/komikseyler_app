@@ -16,6 +16,12 @@ class Response {
     this.message,
   });
 
+  Map<String, dynamic> toJson() => {
+        "succes": success == null ? null : success,
+        "data": metaData == null ? null : metaData.toJson(),
+        "message": message == null ? null : message,
+      };
+
   Response fromJson(Map<String, dynamic> json) {
     Response _pagelessResponse = Response(
       success: json["success"] == null ? null : json["success"],
@@ -35,9 +41,9 @@ class GetMetaData extends ResponseMetaDataAbstract {
   GetMetaData({data}) : super(data: data);
 
   @override
-  Map<String, dynamic> toJson() {
-    throw UnimplementedError();
-  }
+  Map<String, dynamic> toJson() => {
+        "data": data == null ? null : data.map((e) => e).toList(),
+      };
 }
 
 enum PaginateType {

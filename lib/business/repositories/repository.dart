@@ -10,16 +10,21 @@ import 'package:komix/business/providers/api_provider.dart';
 
 class Repository {
   ApiProvider apiProvider;
+  Response response;
 
-  Repository({apiProvider}) {
+  Repository({apiProvider, response}) {
     this.apiProvider = apiProvider ?? ApiProvider();
+    this.response ??= Response();
   }
 
   //Future<Model> find() => Future.value(Device());
 
   Future<Model> store({@required Model model}) async {
     Model _model;
-    Response response = Response().fromRawJson(await apiProvider.post(model.getEndPoint(), json.encode(model.toJson())));
+    String _modelJson = json.encode(model.toJson());
+    String _endPoint = model.getEndPoint();
+    String _apiResponse = await apiProvider.post(_endPoint, _modelJson);
+    Response response = this.response.fromRawJson(_apiResponse);
     if (response.success)
       _model = model.fromJson(response.metaData.data[0]);
     else
@@ -30,7 +35,8 @@ class Repository {
 
   Future<bool> update({@required Model model}) async {
     String _endPoint = model.getEndPoint() + '/' + model.uniqueId.toString();
-    Response response = Response().fromRawJson(await apiProvider.patch(_endPoint, jsonEncode(model)));
+    String _rawJson = await apiProvider.patch(_endPoint, jsonEncode(model));
+    Response response = this.response.fromRawJson(_rawJson);
     return response.success;
   }
 
@@ -67,7 +73,7 @@ class Repository {
     if (_response.success == true)
       _data = _response.metaData.data;
     else // Response sorunu var
-      log(_response.message, name: "response_error");
+      throw Exception('Veri getirilirken hata oluştu.(whereResponseProblem');
 
     debugger(when: _data == null, message: 'data boş döndü');
 

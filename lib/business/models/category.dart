@@ -55,7 +55,8 @@ class Category extends Model with SectionMixin {
     return this.viewCount / this.picturesCount;
   }
 
-  String toRawJson() {
-    return null;
+  @override
+  String toString() {
+    return 'Category{id: $id, name: $name, picturesCount: $picturesCount, viewCount: $viewCount}';
   }
 }

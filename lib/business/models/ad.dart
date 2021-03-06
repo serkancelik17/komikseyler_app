@@ -14,11 +14,13 @@ class Ad extends Model implements ViewMixin {
 
   @override
   Model fromJson(Map<String, dynamic> json) {
-    return null;
+    // TODO: implement fromJson
+    throw UnimplementedError();
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return null;
+    // TODO: implement toJson
+    throw UnimplementedError();
   }
 }

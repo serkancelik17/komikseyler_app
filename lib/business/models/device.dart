@@ -14,18 +14,10 @@ class Device extends Model {
   dynamic note;
   Option option;
 
-  Device({
-    this.id,
-    this.uuid,
-    this.note,
-    this.option,
-    repository,
-  }) : super(uniqueId: uuid, endPoint: '/devices', paginateType: PaginateType.simple);
+  Device({this.id, this.uuid, this.note, this.option}) : super(uniqueId: uuid, endPoint: '/devices', paginateType: PaginateType.simple);
 
   //---
   factory Device.fromRawJson(String str) => Device().fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],

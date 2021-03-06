@@ -8,8 +8,12 @@ environment_config:
 
     baseUrl:
       default: "${env =='dev'
-      ? 'http://192.168.1.20/komikseyler.serkancelik.web.tr/public'
-      : 'https://komikseyler.serkancelik.web.tr'}"
+      ? 'http://192.168.1.11/komix.serkancelik.web.tr/public'
+      : 'https://komix.serkancelik.web.tr'}"
+      type: String
+
+    apiUrl:
+      default: "$baseUrl/api/v1"
       type: String
 
     imageAssetsUrl:
