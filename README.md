@@ -1,4 +1,13 @@
-# komik_seyler
+[![codecov](https://codecov.io/gh/serkancelik17/komikseyler_app/branch/develop/graph/badge.svg?token=H3UCGEM0HL)](https://codecov.io/gh/serkancelik17/komikseyler_app)
+![Flutter CI](https://github.com/serkancelik17/komikseyler_app/workflows/Flutter%20CI/badge.svg?branch=develop)
+![Website](https://img.shields.io/website?url=http%3A%2F%2Fkomix.serkancelik.web.tr)
+![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m786905210-e4076189a0051ba5d845e1c3)
+![Security Headers](https://img.shields.io/security-headers?url=http%3A%2F%2Fkomix.serkancelik.web.tr)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/serkancelik17/komikseyler_app)
+![GitHub repo size](https://img.shields.io/github/repo-size/serkancelik17/komikseyler_app)
+![W3C Validation](https://img.shields.io/w3c-validation/html?targetUrl=http%3A%2F%2Fkomix.serkancelik.web.tr)
+
+# komix
 
 Komik Olan Hersey Bu Uygulamada
 
