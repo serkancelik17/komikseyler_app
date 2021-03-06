@@ -2,7 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:komix/business/models/category.dart';
 
 void main() {
-  Category category = Category(id: 1, name: 'Category Name', picturesCount: 100, viewCount: 50);
+  Category category =
+      Category(id: 1, name: 'Category Name', picturesCount: 100, viewCount: 50);
 
   test("category.FromJson must be return Action", () {
     var actual = category.fromJson({});

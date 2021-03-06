@@ -14,7 +14,11 @@ class Category extends Model with SectionMixin, EquatableMixin {
     this.picturesCount,
     this.viewCount,
     repository,
-  }) : super(endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple, repository: repository ?? null);
+  }) : super(
+            endPoint: "/categories",
+            uniqueId: id,
+            paginateType: PaginateType.simple,
+            repository: repository ?? null);
 
   int id;
   String name;
@@ -25,7 +29,8 @@ class Category extends Model with SectionMixin, EquatableMixin {
   fromJson(Map<String, dynamic> json) => Category(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
-        picturesCount: json["pictures_count"] == null ? null : json["pictures_count"],
+        picturesCount:
+            json["pictures_count"] == null ? null : json["pictures_count"],
         viewCount: json["view_count"] == null ? null : json["view_count"],
       );
 

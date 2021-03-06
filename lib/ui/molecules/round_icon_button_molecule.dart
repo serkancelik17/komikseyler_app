@@ -43,9 +43,12 @@ class RoundIconButtonMolecule extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: new BoxDecoration(shape: BoxShape.circle, color: boxColor ?? Colors.white, boxShadow: [
-        new BoxShadow(color: const Color(0x11000000), blurRadius: 10.0),
-      ]),
+      decoration: new BoxDecoration(
+          shape: BoxShape.circle,
+          color: boxColor ?? Colors.white,
+          boxShadow: [
+            new BoxShadow(color: const Color(0x11000000), blurRadius: 10.0),
+          ]),
       child: new RawMaterialButton(
         shape: new CircleBorder(),
         elevation: 0.0,

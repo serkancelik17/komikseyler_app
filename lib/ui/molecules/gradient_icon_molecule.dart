@@ -5,7 +5,8 @@ class GradientIconMolecule extends StatelessWidget {
   final double size;
   final Gradient gradient;
 
-  GradientIconMolecule({@required this.icon, @required this.size, @required this.gradient});
+  GradientIconMolecule(
+      {@required this.icon, @required this.size, @required this.gradient});
 
   @override
   Widget build(BuildContext context) {

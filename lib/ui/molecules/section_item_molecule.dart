@@ -11,7 +11,8 @@ class SectionItemMolecule extends StatelessWidget {
   final SectionMixin section;
   final Color color;
 
-  SectionItemMolecule({@required this.section, color}) : color = color ?? CustomColors.lightPurple;
+  SectionItemMolecule({@required this.section, color})
+      : color = color ?? CustomColors.lightPurple;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,10 @@ class SectionItemMolecule extends StatelessWidget {
         SizedBoxAtom(
           height: 5,
         ),
-        TextAtom(text: section.getTitle() ?? '{No Title}', fontSize: 16, color: color),
+        TextAtom(
+            text: section.getTitle() ?? '{No Title}',
+            fontSize: 16,
+            color: color),
         SizedBoxAtom(
           height: 5,
         ),

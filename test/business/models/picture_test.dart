@@ -3,8 +3,16 @@ import 'package:komix/business/models/picture.dart';
 import 'package:komix/business/models/picture/action.dart';
 
 void main() {
-  PictureAction pictureAction = PictureAction(id: 1, deviceUuid: 'xxx', pictureId: 1, actionId: 1);
-  Picture picture = Picture(id: 1, categoryId: 1, path: 'xxx/yyy', actions: [pictureAction], favoriteCount: 5, likeCount: 3, shareCount: 2);
+  PictureAction pictureAction =
+      PictureAction(id: 1, deviceUuid: 'xxx', pictureId: 1, actionId: 1);
+  Picture picture = Picture(
+      id: 1,
+      categoryId: 1,
+      path: 'xxx/yyy',
+      actions: [pictureAction],
+      favoriteCount: 5,
+      likeCount: 3,
+      shareCount: 2);
 
   test("picture.FromJson must be return Action", () {
     var actual = picture.fromJson({});

@@ -15,7 +15,13 @@ class PictureAction extends Model {
     this.deviceUuid,
     this.pictureId,
     this.actionId,
-  }) : super(endPoint: "/devices/" + deviceUuid + "/pictures/" + pictureId.toString() + "/actions", uniqueId: id);
+  }) : super(
+            endPoint: "/devices/" +
+                deviceUuid +
+                "/pictures/" +
+                pictureId.toString() +
+                "/actions",
+            uniqueId: id);
 
   PictureAction fromJson(Map<String, dynamic> json) => PictureAction(
         id: json["id"] == null ? null : json["id"],

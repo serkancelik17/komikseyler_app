@@ -7,7 +7,12 @@ class MockRepository extends Mock implements Repository {}
 
 void main() {
   Repository mockRepository = MockRepository();
-  Category category = Category(id: 1, name: "Karikatürler", viewCount: 50, picturesCount: 100, repository: mockRepository);
+  Category category = Category(
+      id: 1,
+      name: "Karikatürler",
+      viewCount: 50,
+      picturesCount: 100,
+      repository: mockRepository);
   test("model.fromRawJson() must be return Model", () {
     var actual = category.fromRawJson(category.toRawJson());
     expect(actual, category);
@@ -25,7 +30,12 @@ void main() {
     //expect(actual, category);
   });
   test("model.getEndPoint() must be return String", () {
-    Category category = Category(id: 1, name: "Karikatürler", viewCount: 50, picturesCount: 100, repository: mockRepository);
+    Category category = Category(
+        id: 1,
+        name: "Karikatürler",
+        viewCount: 50,
+        picturesCount: 100,
+        repository: mockRepository);
     expect(category.getEndPoint(), "/categories");
   });
   test("model.setEndPoint() must be set endPoint and return Model", () {
@@ -153,7 +163,8 @@ void main() {
     expect(category.createFilters({"key": "value"}), {"filters[key]": "value"});
   });
   test("model.destroy() must be return true", () async {
-    when(mockRepository.destroy(model: anyNamed("model"))).thenAnswer((realInvocation) async => true);
+    when(mockRepository.destroy(model: anyNamed("model")))
+        .thenAnswer((realInvocation) async => true);
 
     var actual = await category.destroy();
     expect(actual, true);

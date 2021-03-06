@@ -7,7 +7,11 @@ class RowAtom extends StatelessWidget {
   final Key key;
 
   final List<Widget> children;
-  RowAtom({this.mainAxisAlignment = MainAxisAlignment.start, this.children, this.crossAxisAlignment = CrossAxisAlignment.start, this.key});
+  RowAtom(
+      {this.mainAxisAlignment = MainAxisAlignment.start,
+      this.children,
+      this.crossAxisAlignment = CrossAxisAlignment.start,
+      this.key});
 
   @override
   Widget build(BuildContext context) {

@@ -18,7 +18,16 @@ class RoundedButtonMolecule extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final int badgeCount;
 
-  RoundedButtonMolecule({this.iconData = FontAwesomeIcons.image, this.onTap, this.text, this.color, activeColor, this.active = false, this.margin, this.activeIconData, badgeCount})
+  RoundedButtonMolecule(
+      {this.iconData = FontAwesomeIcons.image,
+      this.onTap,
+      this.text,
+      this.color,
+      activeColor,
+      this.active = false,
+      this.margin,
+      this.activeIconData,
+      badgeCount})
       : activeColor = activeColor ?? CustomColors.purple,
         badgeCount = badgeCount ?? 0;
 
@@ -41,18 +50,23 @@ class RoundedButtonMolecule extends StatelessWidget {
                   badgeColor: CustomColors.purple,
                   badgeContent: Text(
                     badgeCount.toString(),
-                    style: TextStyle(fontSize: 10, color: CustomColors.darkGrey),
+                    style:
+                        TextStyle(fontSize: 10, color: CustomColors.darkGrey),
                   ),
                   child: FaIconAtom(
                     icon: this.active ? activeIconData ?? iconData : iconData,
                     size: 30,
-                    color: this.active ? activeColor : this.color ?? CustomColors.boldGrey,
+                    color: this.active
+                        ? activeColor
+                        : this.color ?? CustomColors.boldGrey,
                   ),
                 ),
                 TextAtom(
                   text: (this.text ?? "{{icon_text}}"),
                   fontSize: 14,
-                  color: this.active ? activeColor : this.color ?? CustomColors.boldGrey,
+                  color: this.active
+                      ? activeColor
+                      : this.color ?? CustomColors.boldGrey,
                 ),
               ],
             ),

@@ -16,7 +16,10 @@ class Picture extends Model with ViewMixin {
     this.favoriteCount,
     this.shareCount,
     this.actions,
-  }) : super(uniqueId: id, endPoint: '/pictures', paginateType: PaginateType.simple);
+  }) : super(
+            uniqueId: id,
+            endPoint: '/pictures',
+            paginateType: PaginateType.simple);
 
   int id;
   int categoryId;
@@ -31,9 +34,13 @@ class Picture extends Model with ViewMixin {
         categoryId: json["category_id"] == null ? null : json["category_id"],
         path: json["path"] == null ? null : json["path"],
         likeCount: json["like_count"] == null ? null : json["like_count"],
-        favoriteCount: json["favorite_count"] == null ? null : json["favorite_count"],
+        favoriteCount:
+            json["favorite_count"] == null ? null : json["favorite_count"],
         shareCount: json["share_count"] == null ? null : json["share_count"],
-        actions: json["actions"] == null ? null : List<PictureAction>.from(json["actions"].map((x) => PictureAction(deviceUuid: 'x', pictureId: 0).fromJson(x))),
+        actions: json["actions"] == null
+            ? null
+            : List<PictureAction>.from(json["actions"].map((x) =>
+                PictureAction(deviceUuid: 'x', pictureId: 0).fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,13 +50,16 @@ class Picture extends Model with ViewMixin {
         "like_count": likeCount == null ? null : likeCount,
         "favorite_count": favoriteCount == null ? null : favoriteCount,
         "share_count": shareCount == null ? null : shareCount,
-        "actions": actions == null ? null : List<dynamic>.from(actions.map((x) => x.toJson())),
+        "actions": actions == null
+            ? null
+            : List<dynamic>.from(actions.map((x) => x.toJson())),
       };
 
   Model findPictureAction(int actionId) {
     Model _model;
     if (actions != null)
-      _model = actions.firstWhere((element) => element.actionId == actionId, orElse: () {
+      _model = actions.firstWhere((element) => element.actionId == actionId,
+          orElse: () {
         return null;
       });
     return _model;

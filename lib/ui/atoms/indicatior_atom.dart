@@ -12,7 +12,9 @@ class IndicatorAtom extends StatelessWidget {
       width: 8.0,
       height: 8.0,
       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-      decoration: BoxDecoration(shape: BoxShape.circle, color: active ? CustomColors.purple : CustomColors.boldGrey),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: active ? CustomColors.purple : CustomColors.boldGrey),
     );
   }
 }

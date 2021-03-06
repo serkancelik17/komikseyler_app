@@ -22,7 +22,9 @@ class BannerButtonsMolecule extends StatelessWidget {
         adManager.buyProduct();
       },
       label: Text('Reklamları Kaldır'),
-      icon: FaIcon((Platform.isAndroid) ? FontAwesomeIcons.googlePay : FontAwesomeIcons.applePay),
+      icon: FaIcon((Platform.isAndroid)
+          ? FontAwesomeIcons.googlePay
+          : FontAwesomeIcons.applePay),
     ));
 
     buttons.add(ButtonWithIconMolecule(

@@ -30,7 +30,14 @@ class AppRouter {
 
     String page = 'home';
     //if (page == 'viewTemplate') return MaterialPageRoute(builder: (_) => ViewsTemplate());
-    if (page == 'view') return MaterialPageRoute(builder: (_) => ViewsPage(section: Category(id: 1, name: "{category_title}", picturesCount: 0, viewCount: 0)));
+    if (page == 'view')
+      return MaterialPageRoute(
+          builder: (_) => ViewsPage(
+              section: Category(
+                  id: 1,
+                  name: "{category_title}",
+                  picturesCount: 0,
+                  viewCount: 0)));
     return MaterialPageRoute(builder: (_) => HomePage());
   }
 }

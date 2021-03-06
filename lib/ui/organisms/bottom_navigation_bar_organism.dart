@@ -13,13 +13,16 @@ class BottomNavigationBarOrganism extends StatefulWidget {
   final Picture activeView;
   final BuildContext context;
 
-  BottomNavigationBarOrganism({@required this.context, @required this.activeView});
+  BottomNavigationBarOrganism(
+      {@required this.context, @required this.activeView});
 
   @override
-  _BottomNavigationBarOrganismState createState() => _BottomNavigationBarOrganismState();
+  _BottomNavigationBarOrganismState createState() =>
+      _BottomNavigationBarOrganismState();
 }
 
-class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganism> {
+class _BottomNavigationBarOrganismState
+    extends State<BottomNavigationBarOrganism> {
   Device _device;
   Color destroyBoxColor = Colors.white;
   Color moveBoxColor = Colors.white;
@@ -97,12 +100,14 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
   }
 
   move() {
-    PictureAction _pa = new PictureAction(deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 4);
+    PictureAction _pa = new PictureAction(
+        deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 4);
     storeAction(_pa);
   }
 
   Future<bool> share() async {
-    PictureAction _pa = new PictureAction(deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 5);
+    PictureAction _pa = new PictureAction(
+        deviceUuid: _device.uuid, pictureId: widget.activeView.id, actionId: 5);
     bool result = await Settings.share(picture: widget.activeView);
     if (result) storeAction(_pa);
     return result ? true : false;
@@ -110,7 +115,11 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
 
   //Aksiyonu toogle et
   Future<bool> toggleAction({@required Local.Action action}) async {
-    PictureAction _pa = widget.activeView.findPictureAction(action.id) ?? PictureAction(actionId: action.id, pictureId: widget.activeView.id, deviceUuid: _device.uuid);
+    PictureAction _pa = widget.activeView.findPictureAction(action.id) ??
+        PictureAction(
+            actionId: action.id,
+            pictureId: widget.activeView.id,
+            deviceUuid: _device.uuid);
 
     if (_pa.id == null)
       await storeAction(_pa);
@@ -124,7 +133,8 @@ class _BottomNavigationBarOrganismState extends State<BottomNavigationBarOrganis
     try {
       setState(() {
         changeActionCount(_pa, -1);
-        widget.activeView.actions.removeWhere((pictureAction) => pictureAction.id == _pa.id);
+        widget.activeView.actions
+            .removeWhere((pictureAction) => pictureAction.id == _pa.id);
       });
       await _pa.destroy();
     } catch (e) {

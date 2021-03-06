@@ -16,9 +16,18 @@ mixin SectionMixin {
     'category4': {'icon': FontAwesomeIcons.camera},
     'category5': {'icon': FontAwesomeIcons.film},
     'category6': {'icon': FontAwesomeIcons.laughBeam},
-    'action1': {'icon': FontAwesomeIcons.solidHeart, 'color': CustomColors.lightRed},
-    'action2': {'icon': FontAwesomeIcons.solidStar, 'color': CustomColors.lightYellow},
-    'action5': {'icon': FontAwesomeIcons.share, 'color': CustomColors.lightBlue},
+    'action1': {
+      'icon': FontAwesomeIcons.solidHeart,
+      'color': CustomColors.lightRed
+    },
+    'action2': {
+      'icon': FontAwesomeIcons.solidStar,
+      'color': CustomColors.lightYellow
+    },
+    'action5': {
+      'icon': FontAwesomeIcons.share,
+      'color': CustomColors.lightBlue
+    },
   };
 
   IconData getIcon() {

@@ -19,7 +19,8 @@ void main() {
   final mockDevice = MockDevice();
   final mockApiProvider = MockApiProvider();
   final mockResponse = MockResponse();
-  final repository = Repository(apiProvider: mockApiProvider, response: mockResponse);
+  final repository =
+      Repository(apiProvider: mockApiProvider, response: mockResponse);
   //Map<String, dynamic> jsonData = {'device_uuid': 'xxx'};
   //final _response = Response(success: true, metaData: GetMetaData(data: [jsonData]), message: "");
 
@@ -42,14 +43,17 @@ void main() {
 */
 
   test('update bool döndürmeli', () async {
-    when(mockApiProvider.patch(any, any)).thenAnswer((_) async => '{"success":true}');
+    when(mockApiProvider.patch(any, any))
+        .thenAnswer((_) async => '{"success":true}');
     expect(await repository.update(model: mockDevice), isA<bool>());
   });
 
   test('where model döndürmeli', () {});
   test('where paginateType is none response response olmalı', () {});
-  test('where paginateType is simple response SimplePaginateResponse olmalı', () {});
-  test('where paginateType is paginate response PaginateResponse olmalı', () {});
+  test('where paginateType is simple response SimplePaginateResponse olmalı',
+      () {});
+  test(
+      'where paginateType is paginate response PaginateResponse olmalı', () {});
   test('where store response false ise null model döndürmeli', () {});
   test('where _response success false ise exception firlatmali', () {});
 }

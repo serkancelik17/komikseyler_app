@@ -15,7 +15,8 @@ class PaginateResponse extends Response {
 
   fromJson(Map<String, dynamic> json) => PaginateResponse(
         success: json["success"] == null ? null : json["success"],
-        metaData: json["data"] == null ? null : PaginateData().fromJson(json["data"]),
+        metaData:
+            json["data"] == null ? null : PaginateData().fromJson(json["data"]),
         message: json["message"] == null ? null : json["message"],
       );
 }
@@ -58,27 +59,37 @@ class PaginateData extends ResponseMetaDataAbstract {
   fromJson(Map<String, dynamic> json) => PaginateData(
         currentPage: json["current_page"] == null ? null : json["current_page"],
         data: json["data"] == null ? null : json["data"],
-        firstPageUrl: json["first_page_url"] == null ? null : json["first_page_url"],
+        firstPageUrl:
+            json["first_page_url"] == null ? null : json["first_page_url"],
         from: json["from"] == null ? null : json["from"],
         lastPage: json["last_page"] == null ? null : json["last_page"],
-        lastPageUrl: json["last_page_url"] == null ? null : json["last_page_url"],
-        links: json["links"] == null ? null : List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
-        nextPageUrl: json["next_page_url"] == null ? null : json["next_page_url"],
+        lastPageUrl:
+            json["last_page_url"] == null ? null : json["last_page_url"],
+        links: json["links"] == null
+            ? null
+            : List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
+        nextPageUrl:
+            json["next_page_url"] == null ? null : json["next_page_url"],
         path: json["path"] == null ? null : json["path"],
         perPage: json["per_page"] == null ? null : json["per_page"],
-        prevPageUrl: json["prev_page_url"] == null ? null : json["prev_page_url"],
+        prevPageUrl:
+            json["prev_page_url"] == null ? null : json["prev_page_url"],
         to: json["to"] == null ? null : json["to"],
         total: json["total"] == null ? null : json["total"],
       );
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage == null ? null : currentPage,
-        "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toString())),
+        "data": data == null
+            ? null
+            : List<dynamic>.from(data.map((x) => x.toString())),
         "first_page_url": firstPageUrl == null ? null : firstPageUrl,
         "from": from == null ? null : from,
         "last_page": lastPage == null ? null : lastPage,
         "last_page_url": lastPageUrl == null ? null : lastPageUrl,
-        "links": links == null ? null : List<dynamic>.from(links.map((x) => x.toJson())),
+        "links": links == null
+            ? null
+            : List<dynamic>.from(links.map((x) => x.toJson())),
         "next_page_url": nextPageUrl == null ? null : nextPageUrl,
         "path": path == null ? null : path,
         "per_page": perPage == null ? null : perPage,

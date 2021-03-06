@@ -18,7 +18,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: HomeTemplate(
-        title: TitleColorMolecule(text: "Komix", colors: [Colors.black, CustomColors.purple]),
+        title: TitleColorMolecule(
+            text: "Komix", colors: [Colors.black, CustomColors.purple]),
       ),
     );
   }

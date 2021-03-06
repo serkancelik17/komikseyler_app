@@ -23,7 +23,13 @@ class CustomSliderOrganism extends StatefulWidget {
   final ValueChanged<Log> logChanged;
   final AdManager adManager;
 
-  CustomSliderOrganism({Key key, this.section, this.viewChanged, this.logChanged, this.adManager}) : super(key: key);
+  CustomSliderOrganism(
+      {Key key,
+      this.section,
+      this.viewChanged,
+      this.logChanged,
+      this.adManager})
+      : super(key: key);
 
   @override
   _CustomSliderOrganismState createState() => _CustomSliderOrganismState();
@@ -148,8 +154,19 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
     try {
       _isLoading = true;
       Picture _picture = Picture();
-      _picture.setEndPoint('/devices/' + await Settings.getUuid() + '/' + ((widget.section is Category) ? 'categories' : 'actions') + '/' + widget.section.getId().toString() + '/pictures');
-      List<ViewMixin> _newViews = (await _picture.where(fields: {'page': (_page++).toString(), 'limit': Env.pagePictureLimit})).get().cast<ViewMixin>();
+      _picture.setEndPoint('/devices/' +
+          await Settings.getUuid() +
+          '/' +
+          ((widget.section is Category) ? 'categories' : 'actions') +
+          '/' +
+          widget.section.getId().toString() +
+          '/pictures');
+      List<ViewMixin> _newViews = (await _picture.where(fields: {
+        'page': (_page++).toString(),
+        'limit': Env.pagePictureLimit
+      }))
+          .get()
+          .cast<ViewMixin>();
 
       if (_newViews.length > 0) {
         // Imajları cache et.
@@ -161,7 +178,8 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
         bool _checkShowingAd = await widget.adManager.checkShowingAd();
         widget.viewChanged(_activeView);
         _views.addAll(_newViews); // view leri listeye ekle
-        if (_checkShowingAd && widget.section is Category) _views.add(Ad()); // Reklamı ekle
+        if (_checkShowingAd && widget.section is Category)
+          _views.add(Ad()); // Reklamı ekle
       } else {
         if (_page == 2)
           _isEmpty = true;
@@ -207,11 +225,15 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   Future<Log> getLog() async {
     Log _log;
     try {
-      Model logsModel = (await Log(deviceUuid: await Settings.getUuid()).where(filters: {'category_id': widget.section.getId()}));
+      Model logsModel = (await Log(deviceUuid: await Settings.getUuid())
+          .where(filters: {'category_id': widget.section.getId()}));
       if (logsModel.response.length > 0)
         _log = logsModel.response[0];
       else
-        _log = await Log(categoryId: widget.section.getId(), deviceUuid: await Settings.getUuid()).store();
+        _log = await Log(
+                categoryId: widget.section.getId(),
+                deviceUuid: await Settings.getUuid())
+            .store();
     } catch (e, s) {
       print(s.toString());
       Navigator.pushReplacementNamed(context, "/error", arguments: [e]);

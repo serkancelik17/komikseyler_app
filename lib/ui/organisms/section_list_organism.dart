@@ -26,8 +26,10 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       try {
-        _device = await Device().firstOrCreate({'uuid': await Settings.getUuid()});
-        _option = await Option(deviceUuid: _device.uuid).firstOrCreate({'device_uuid': await Settings.getUuid()});
+        _device =
+            await Device().firstOrCreate({'uuid': await Settings.getUuid()});
+        _option = await Option(deviceUuid: _device.uuid)
+            .firstOrCreate({'device_uuid': await Settings.getUuid()});
         getSections;
       } catch (e, s) {
         print(s.toString());
@@ -46,13 +48,15 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
                 child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 2.3),
+                      childAspectRatio: MediaQuery.of(context).size.width /
+                          (MediaQuery.of(context).size.height / 2.3),
                     ),
                     itemCount: _sections.length,
                     itemBuilder: (context, index) {
                       return RoundedContainerMolecule(
                         child: SectionItemMolecule(section: _sections[index]),
-                        onTap: () => Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]),
+                        onTap: () => Navigator.pushNamed(context, '/sections',
+                            arguments: [_sections[index]]),
                       );
                     }),
               ),
@@ -65,7 +69,11 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   }
 
   Future<bool> get getSections async {
-    List<SectionMixin> categories = (await Category().setEndPoint('/devices/' + await Settings.getUuid() + '/categories').where()).get().cast<SectionMixin>();
+    List<SectionMixin> categories = (await Category()
+            .setEndPoint('/devices/' + await Settings.getUuid() + '/categories')
+            .where())
+        .get()
+        .cast<SectionMixin>();
     _sections.addAll(categories);
     List<SectionMixin> additionalSections = [
       Local.Action(name: "like", title: "Beğendiklerim", id: 1),

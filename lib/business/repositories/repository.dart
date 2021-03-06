@@ -42,11 +42,15 @@ class Repository {
 
   Future<bool> destroy({@required Model model}) async {
     String _endPoint = model.getEndPoint() + '/' + model.uniqueId.toString();
-    Response response = Response().fromRawJson(await apiProvider.delete(_endPoint));
+    Response response =
+        Response().fromRawJson(await apiProvider.delete(_endPoint));
     return response.success;
   }
 
-  Future<List<Model>> where({@required Model model, @required Map<String, dynamic> parameters, paginateType}) async {
+  Future<List<Model>> where(
+      {@required Model model,
+      @required Map<String, dynamic> parameters,
+      paginateType}) async {
     List _parameterList = [];
     parameters.forEach((key, value) {
       if (value is String || value is int) _parameterList.add('$key=$value');
@@ -58,7 +62,9 @@ class Repository {
       }
     });
 
-    String _endPoint = model.getEndPoint() + ((_parameterList.length > 0) ? "?" + _parameterList.join("&") : '').toString();
+    String _endPoint = model.getEndPoint() +
+        ((_parameterList.length > 0) ? "?" + _parameterList.join("&") : '')
+            .toString();
     List<Model> _models = [];
     String _apiResponse = await apiProvider.get(_endPoint);
     Response _response;

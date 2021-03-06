@@ -8,10 +8,15 @@ class ButtonWithIconMolecule extends ButtonAtom {
   final VoidCallback onTap;
   final Widget label;
 
-  ButtonWithIconMolecule({this.onTap, this.child, this.icon, this.label}) : super(child: child);
+  ButtonWithIconMolecule({this.onTap, this.child, this.icon, this.label})
+      : super(child: child);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(onPressed: onTap, icon: icon, label: label, style: ElevatedButton.styleFrom(primary: CustomColors.lightPurple));
+    return ElevatedButton.icon(
+        onPressed: onTap,
+        icon: icon,
+        label: label,
+        style: ElevatedButton.styleFrom(primary: CustomColors.lightPurple));
   }
 }

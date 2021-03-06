@@ -15,44 +15,64 @@ void main() {
   final mockHttpClient = MockHttpClient();
   final mockEnv = MockEnv();
   final mockDefaultCacheManager = MockDefaultCacheManager();
-  final apiProvider = ApiProvider(httpClient: mockHttpClient, env: mockEnv, defaultCacheManager: mockDefaultCacheManager);
+  final apiProvider = ApiProvider(
+      httpClient: mockHttpClient,
+      env: mockEnv,
+      defaultCacheManager: mockDefaultCacheManager);
   final endPoint = '/devices/xxx';
 
   test('get fonksiyonu string getirmeli', () async {
-    when(mockHttpClient.get(Uri.parse(Env.apiUrl + endPoint))).thenAnswer((_) async => http.Response('{"status": true}', 200));
+    when(mockHttpClient.get(Uri.parse(Env.apiUrl + endPoint)))
+        .thenAnswer((_) async => http.Response('{"status": true}', 200));
     expect(await apiProvider.get(endPoint), isA<String>());
   });
   test('get 200 den farkli ise dondugunde expection fırlatmalı', () async {
-    when(mockHttpClient.get(Uri.parse(Env.apiUrl + endPoint))).thenAnswer((_) async => http.Response('{"status": true}', 404));
+    when(mockHttpClient.get(Uri.parse(Env.apiUrl + endPoint)))
+        .thenAnswer((_) async => http.Response('{"status": true}', 404));
     expect(() async => await apiProvider.get(endPoint), throwsException);
   });
 
   test('post string dondurmeli', () async {
-    when(mockHttpClient.post(Uri.parse(Env.apiUrl + endPoint), headers: {'Content-Type': 'application/json; charset=UTF-8'}, body: '{}')).thenAnswer((_) async => http.Response('{"status": true}', 200));
+    when(mockHttpClient.post(Uri.parse(Env.apiUrl + endPoint),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            body: '{}'))
+        .thenAnswer((_) async => http.Response('{"status": true}', 200));
     expect(await apiProvider.post(endPoint, '{}'), isA<String>());
   });
 
   test('post 200 den farkli ise dondugunde expection fırlatmalı', () async {
-    when(mockHttpClient.post(Uri.parse(Env.apiUrl + endPoint), headers: {'Content-Type': 'application/json; charset=UTF-8'}, body: '{}')).thenAnswer((_) async => http.Response('{"status": true}', 404));
+    when(mockHttpClient.post(Uri.parse(Env.apiUrl + endPoint),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            body: '{}'))
+        .thenAnswer((_) async => http.Response('{"status": true}', 404));
     expect(() async => await apiProvider.post(endPoint, '{}'), throwsException);
   });
 
   test('patch string döndürmeli', () async {
-    when(mockHttpClient.patch(Uri.parse(Env.apiUrl + endPoint), headers: {'Content-Type': 'application/json; charset=UTF-8'}, body: '{}')).thenAnswer((_) async => http.Response('{"status": true}', 200));
+    when(mockHttpClient.patch(Uri.parse(Env.apiUrl + endPoint),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            body: '{}'))
+        .thenAnswer((_) async => http.Response('{"status": true}', 200));
     expect(await apiProvider.patch(endPoint, '{}'), isA<String>());
   });
 
   test('patch 200 den farkli ise dondugunde expection fırlatmalı', () async {
-    when(mockHttpClient.patch(Uri.parse(Env.apiUrl + endPoint), headers: {'Content-Type': 'application/json; charset=UTF-8'}, body: '{}')).thenAnswer((_) async => http.Response('{"status": true}', 404));
-    expect(() async => await apiProvider.patch(endPoint, '{}'), throwsException);
+    when(mockHttpClient.patch(Uri.parse(Env.apiUrl + endPoint),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            body: '{}'))
+        .thenAnswer((_) async => http.Response('{"status": true}', 404));
+    expect(
+        () async => await apiProvider.patch(endPoint, '{}'), throwsException);
   });
 
   test('delete string döndürmeli', () async {
-    when(mockHttpClient.delete(any, headers: anyNamed("headers"))).thenAnswer((_) async => http.Response('{"status": true}', 200));
+    when(mockHttpClient.delete(any, headers: anyNamed("headers")))
+        .thenAnswer((_) async => http.Response('{"status": true}', 200));
     expect(await apiProvider.delete(endPoint), isA<String>());
   });
   test('delete 200 den farkli ise dondugunde expection fırlatmalı', () async {
-    when(mockHttpClient.delete(any, headers: anyNamed('headers'))).thenAnswer((_) async => http.Response('{"status": true}', 404));
+    when(mockHttpClient.delete(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('{"status": true}', 404));
     expect(() async => await apiProvider.delete(endPoint), throwsException);
   });
 }

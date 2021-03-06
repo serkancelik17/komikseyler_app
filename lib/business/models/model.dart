@@ -15,7 +15,11 @@ abstract class Model with JsonAble {
   List<Model> response;
   PaginateType paginateType;
 
-  Model({repository, @required this.endPoint, @required dynamic uniqueId, PaginateType paginateType})
+  Model(
+      {repository,
+      @required this.endPoint,
+      @required dynamic uniqueId,
+      PaginateType paginateType})
       : uniqueId = uniqueId ?? 0,
         repository = repository ?? Repository(),
         paginateType = paginateType;
@@ -41,7 +45,8 @@ abstract class Model with JsonAble {
     return this;
   }
 
-  Future<Model> where({Map<String, dynamic> filters, Map<String, dynamic> fields}) async {
+  Future<Model> where(
+      {Map<String, dynamic> filters, Map<String, dynamic> fields}) async {
     print("PaginateType is " + this.paginateType.toString());
     Map<String, dynamic> parameters = {};
     filters ??= {};
@@ -52,7 +57,8 @@ abstract class Model with JsonAble {
     //Eğer field istegi varsa parametrelere ekle
     if (fields.length > 0) parameters.addAll(fields);
 
-    response = (await repository.where(model: this, parameters: parameters, paginateType: this.paginateType));
+    response = (await repository.where(
+        model: this, parameters: parameters, paginateType: this.paginateType));
     return this;
   }
 
@@ -92,13 +98,15 @@ abstract class Model with JsonAble {
       _model = this.fromJson(fields);
       _model = await _model.store();
 
-      if (!(_model is Model)) throw HttpException('Model store edilemedi.' + _model.toString());
+      if (!(_model is Model))
+        throw HttpException('Model store edilemedi.' + _model.toString());
     }
     return _model;
   }
 
   /// Veriyi gunceller veya kaydeder
-  Future<Model> updateOrCreate(Map<String, dynamic> matches, Map<String, dynamic> changes) async {
+  Future<Model> updateOrCreate(
+      Map<String, dynamic> matches, Map<String, dynamic> changes) async {
     Model _model;
 
     //Model var mı yok mu kontrol et.
@@ -110,7 +118,8 @@ abstract class Model with JsonAble {
       //Yeni modeli kaydet
       _model = await this.fromJson(matches).store();
 
-      if (!(_model is Model)) throw HttpException('Model kayıt edilemedi.' + _model.toString());
+      if (!(_model is Model))
+        throw HttpException('Model kayıt edilemedi.' + _model.toString());
     } else {
       changes.forEach((key, value) {
         Map modelJson = _model.toJson();

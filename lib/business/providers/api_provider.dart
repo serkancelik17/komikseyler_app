@@ -41,11 +41,14 @@ class ApiProvider {
     debugPrint("[POST] Request Url : " + url);
     debugPrint("[POST] Request Url Body : " + body);
     try {
-      http.Response responseRaw = await httpClient.post(Uri.parse(url), headers: headers, body: body);
+      http.Response responseRaw =
+          await httpClient.post(Uri.parse(url), headers: headers, body: body);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {
-        throw Exception("POST Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
+        throw Exception("POST Problem!. (Status code is: " +
+            responseRaw.statusCode.toString() +
+            ")");
       }
     } catch (e) {
       rethrow;
@@ -58,11 +61,14 @@ class ApiProvider {
     debugPrint("[PATCH] Request Url : " + url);
     debugPrint("[PATCH] Request Url Body : " + body);
     try {
-      http.Response responseRaw = await httpClient.patch(Uri.parse(url), headers: headers, body: body);
+      http.Response responseRaw =
+          await httpClient.patch(Uri.parse(url), headers: headers, body: body);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {
-        throw Exception("PATCH Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
+        throw Exception("PATCH Problem!. (Status code is: " +
+            responseRaw.statusCode.toString() +
+            ")");
       }
     } catch (e) {
       rethrow;
@@ -74,11 +80,14 @@ class ApiProvider {
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     debugPrint("[DELETE] Request Url : " + url);
     try {
-      http.Response responseRaw = await httpClient.delete(Uri.parse(url), headers: headers);
+      http.Response responseRaw =
+          await httpClient.delete(Uri.parse(url), headers: headers);
       if (responseRaw.statusCode == 200) {
         return responseRaw.body;
       } else {
-        throw Exception("DELETE Problem!. (Status code is: " + responseRaw.statusCode.toString() + ")");
+        throw Exception("DELETE Problem!. (Status code is: " +
+            responseRaw.statusCode.toString() +
+            ")");
       }
     } catch (e) {
       rethrow;

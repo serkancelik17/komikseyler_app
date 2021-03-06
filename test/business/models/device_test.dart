@@ -3,10 +3,15 @@ import 'package:komix/business/models/device.dart';
 import 'package:komix/business/models/device/option.dart';
 
 void main() {
-  Device device = Device(id: 1, uuid: "xxx", note: "yyy", option: Option(deviceUuid: 'xxx', id: 2, adsShowAfter: null, isAdmin: 0));
+  Device device = Device(
+      id: 1,
+      uuid: "xxx",
+      note: "yyy",
+      option: Option(deviceUuid: 'xxx', id: 2, adsShowAfter: null, isAdmin: 0));
 
   test("device.FromJson must be return Device", () {
-    var actual = device.fromJson(device.toJson()); //TODO ayni classtan diger fonksiyonu kullanmadan çözülmesi gerekir.
+    var actual = device.fromJson(device
+        .toJson()); //TODO ayni classtan diger fonksiyonu kullanmadan çözülmesi gerekir.
     expect(actual, isA<Device>());
   });
 

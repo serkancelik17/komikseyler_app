@@ -12,7 +12,8 @@ class TextAtom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       this.text,
-      style: TextStyle(color: color, fontSize: fontSize, fontWeight: fontWeight),
+      style:
+          TextStyle(color: color, fontSize: fontSize, fontWeight: fontWeight),
     );
   }
 }

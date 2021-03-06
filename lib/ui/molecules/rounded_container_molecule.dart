@@ -10,7 +10,14 @@ class RoundedContainerMolecule extends StatelessWidget {
   final double width;
   final double height;
 
-  RoundedContainerMolecule({this.onTap, this.child, this.borderRadius = 20, this.margin = const EdgeInsets.all(10), this.padding = const EdgeInsets.all(5), this.width, this.height});
+  RoundedContainerMolecule(
+      {this.onTap,
+      this.child,
+      this.borderRadius = 20,
+      this.margin = const EdgeInsets.all(10),
+      this.padding = const EdgeInsets.all(5),
+      this.width,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
