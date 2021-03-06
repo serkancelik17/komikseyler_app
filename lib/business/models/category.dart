@@ -2,17 +2,19 @@
 //
 //     final category = categoryFromJson(jsonString);
 
+import 'package:equatable/equatable.dart';
 import 'package:komix/business/models/mixins/section_mixin.dart';
 import 'package:komix/business/models/model.dart';
 import 'package:komix/business/models/response/response.dart';
 
-class Category extends Model with SectionMixin {
+class Category extends Model with SectionMixin, EquatableMixin {
   Category({
     this.id,
     this.name,
     this.picturesCount,
     this.viewCount,
-  }) : super(endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple);
+    repository,
+  }) : super(endPoint: "/categories", uniqueId: id, paginateType: PaginateType.simple, repository: repository ?? null);
 
   int id;
   String name;
@@ -59,4 +61,8 @@ class Category extends Model with SectionMixin {
   String toString() {
     return 'Category{id: $id, name: $name, picturesCount: $picturesCount, viewCount: $viewCount}';
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => ['id', 'name', 'picturesCount', 'viewCount'];
 }

@@ -2,8 +2,6 @@
 //
 //     final device = deviceFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:komix/business/models/device/option.dart';
 import 'package:komix/business/models/model.dart';
 import 'package:komix/business/models/response/response.dart';
@@ -15,9 +13,6 @@ class Device extends Model {
   Option option;
 
   Device({this.id, this.uuid, this.note, this.option}) : super(uniqueId: uuid, endPoint: '/devices', paginateType: PaginateType.simple);
-
-  //---
-  factory Device.fromRawJson(String str) => Device().fromJson(json.decode(str));
 
   fromJson(Map<String, dynamic> json) => Device(
         id: json["id"] == null ? null : json["id"],
