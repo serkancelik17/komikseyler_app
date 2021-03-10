@@ -1,5 +1,11 @@
-import 'package:flutter_test/flutter_test.dart';
-
+/*
 void main() {
-  testWidgets("", (WidgetTester tester) async {});
+  testWidgets("must be contain Teşekkürler", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: DialogMolecule(context,(){})
+        )));
+    await tester.pump();
+    expect(find.text("xxx"), findsOneWidget);
+  });
 }
+*/

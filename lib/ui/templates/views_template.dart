@@ -28,8 +28,7 @@ class ViewsTemplate extends StatefulWidget {
   _ViewsTemplateState createState() => _ViewsTemplateState();
 }
 
-class _ViewsTemplateState extends State<ViewsTemplate>
-    with WidgetsBindingObserver {
+class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserver {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   AdManager adManager = AdManager();
   ViewMixin activeView;
@@ -44,8 +43,7 @@ class _ViewsTemplateState extends State<ViewsTemplate>
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       //In APP Purchase
-      Stream purchaseUpdated =
-          InAppPurchaseConnection.instance.purchaseUpdatedStream;
+      Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
       subscription = purchaseUpdated.listen((purchaseDetailsList) {
         adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
       }, onDone: () {
@@ -80,9 +78,8 @@ class _ViewsTemplateState extends State<ViewsTemplate>
       child: Scaffold(
         key: scaffoldState,
         appBar: AppBarOrganism(
-          leading:
-              IconButton(icon: Icon(Icons.west), onPressed: () => goToBack()),
-          title: CenterMolecule(
+          leading: IconButton(icon: Icon(Icons.west), onPressed: () => goToBack()),
+          title: CenterTextMolecule(
               child: TitleColorMolecule(
             text: widget.section.getTitle() ?? '{{title}}',
             colors: [
@@ -115,16 +112,12 @@ class _ViewsTemplateState extends State<ViewsTemplate>
             ],
           ),
         ),
-        bottomNavigationBar: (activeView is Picture)
-            ? BottomNavigationBarOrganism(
-                context: context, activeView: activeView)
-            : null,
+        bottomNavigationBar: (activeView is Picture) ? BottomNavigationBarOrganism(context: context, activeView: activeView) : null,
       ),
     );
   }
 
-  Future<void> handleRewardAdEvent(
-      BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) async {
+  Future<void> handleRewardAdEvent(BuildContext ctx, AdmobAdEvent event, Map<String, dynamic> args) async {
     print("Admob event is " + event.toString());
     switch (event) {
       /* case AdmobAdEvent.loaded:
@@ -143,10 +136,7 @@ class _ViewsTemplateState extends State<ViewsTemplate>
         await adManager.removeAds(ctx: ctx, duration: Duration(minutes: 30));
         _logUpdate(); // Logu kaydet
         print("removeAds reklamlar kaldirildi.");
-        DialogMolecule.showAlertDialog(
-            ctx,
-            () => Navigator.of(context)
-                .popAndPushNamed("/sections", arguments: [widget.section]));
+        DialogMolecule.showAlertDialog(ctx, () => Navigator.of(context).popAndPushNamed("/sections", arguments: [widget.section]));
         break;
       default:
     }
@@ -200,8 +190,7 @@ class _ViewsTemplateState extends State<ViewsTemplate>
     // set up the AlertDialog
     return AlertDialog(
       title: Text("Ödeme Alındı."),
-      content: Text(
-          "Teşekkürler. Satın aldığınız süre kadar reklam göstermeyeceğiz."),
+      content: Text("Teşekkürler. Satın aldığınız süre kadar reklam göstermeyeceğiz."),
       actions: [
         okButton,
       ],
