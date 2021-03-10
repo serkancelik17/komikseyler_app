@@ -1,41 +1,39 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:komix/business/models/category.dart';
+import 'package:komix/business/providers/api_provider.dart';
 import 'package:komix/business/repositories/repository.dart';
 import 'package:mockito/mockito.dart';
 
 class MockRepository extends Mock implements Repository {}
 
+class MockApiProvider extends Mock implements ApiProvider {}
+
 void main() {
   Repository mockRepository = MockRepository();
-  Category category = Category(
-      id: 1,
-      name: "Karikatürler",
-      viewCount: 50,
-      picturesCount: 100,
-      repository: mockRepository);
-  test("model.fromRawJson() must be return Model", () {
+  ApiProvider mockApiProvider = MockApiProvider();
+  mockRepository.apiProvider = mockApiProvider;
+
+  Category category = Category(id: 1, name: "Karikatürler", viewCount: 50, picturesCount: 100, repository: mockRepository);
+
+  test("model.fromRawJson() must be return category", () {
     var actual = category.fromRawJson(category.toRawJson());
     expect(actual, category);
   });
-  test("model.find() must be return Model", () async {
+
+  test("model.find() must be return category", () async {
     when(mockRepository.where(
       model: anyNamed("model"),
       parameters: anyNamed("parameters"),
       paginateType: anyNamed("paginateType"),
     )).thenAnswer((realInvocation) async => [category]);
-    var actual = await category.find(id: 1);
+    var actual = await category.find();
     expect(actual, category);
 
     //var actual = category.fromRawJson(category.toRawJson());
     //expect(actual, category);
   });
   test("model.getEndPoint() must be return String", () {
-    Category category = Category(
-        id: 1,
-        name: "Karikatürler",
-        viewCount: 50,
-        picturesCount: 100,
-        repository: mockRepository);
+    Category category = Category(id: 1, name: "Karikatürler", viewCount: 50, picturesCount: 100, repository: mockRepository);
     expect(category.getEndPoint(), "/categories");
   });
   test("model.setEndPoint() must be set endPoint and return Model", () {
@@ -111,24 +109,22 @@ void main() {
       paginateType: anyNamed("paginateType"),
     )).thenAnswer((realInvocation) async => [category]);
 
-    var actual = await category.firstOrCreate({});
+    var actual = await category.firstOrCreate(category.toJson());
     expect(actual, category);
   });
 
-/*
-  test("when model is null model.firstOrCreate() must be return Model", () async {
+/*  test("when model is null model.firstOrCreate() must be return Model", () async {
     when(mockRepository.where(
       model: anyNamed("model"),
       parameters: anyNamed("parameters"),
       paginateType: anyNamed("paginateType"),
     )).thenAnswer((realInvocation) async => [null]);
 
-    when(mockRepository.store(model: anyNamed("model"))).thenAnswer((realInvocation) async => category);
+    when(mockRepository.store(model: anyNamed("model"))).thenAnswer((realInvocation) async => null);
 
     var actual = await category.firstOrCreate({});
-    expect(actual, category);
-  });
-*/
+    expect(actual, null);
+  });*/
 
   test("given model and model.updateOrCreate() must be return Model", () async {
     when(mockRepository.where(
@@ -163,8 +159,7 @@ void main() {
     expect(category.createFilters({"key": "value"}), {"filters[key]": "value"});
   });
   test("model.destroy() must be return true", () async {
-    when(mockRepository.destroy(model: anyNamed("model")))
-        .thenAnswer((realInvocation) async => true);
+    when(mockRepository.destroy(model: anyNamed("model"))).thenAnswer((realInvocation) async => true);
 
     var actual = await category.destroy();
     expect(actual, true);

@@ -42,15 +42,11 @@ class Repository {
 
   Future<bool> destroy({@required Model model}) async {
     String _endPoint = model.getEndPoint() + '/' + model.uniqueId.toString();
-    Response response =
-        Response().fromRawJson(await apiProvider.delete(_endPoint));
+    Response response = Response().fromRawJson(await apiProvider.delete(_endPoint));
     return response.success;
   }
 
-  Future<List<Model>> where(
-      {@required Model model,
-      @required Map<String, dynamic> parameters,
-      paginateType}) async {
+  Future<List<Model>> where({@required Model model, @required Map<String, dynamic> parameters, @required paginateType}) async {
     List _parameterList = [];
     parameters.forEach((key, value) {
       if (value is String || value is int) _parameterList.add('$key=$value');
@@ -62,24 +58,21 @@ class Repository {
       }
     });
 
-    String _endPoint = model.getEndPoint() +
-        ((_parameterList.length > 0) ? "?" + _parameterList.join("&") : '')
-            .toString();
+    String _endPoint = model.getEndPoint() + ((_parameterList.length > 0) ? "?" + _parameterList.join("&") : '').toString();
     List<Model> _models = [];
     String _apiResponse = await apiProvider.get(_endPoint);
-    Response _response;
     List<dynamic> _data;
     if (paginateType == PaginateType.simple) {
-      _response = SimplePaginateResponse().fromRawJson(_apiResponse);
+      this.response = SimplePaginateResponse().fromRawJson(_apiResponse);
     } else if (paginateType == PaginateType.paginate) {
-      _response = PaginateResponse().fromRawJson(_apiResponse);
+      this.response = PaginateResponse().fromRawJson(_apiResponse);
     } else if (paginateType == PaginateType.none) {
-      _response = Response().fromRawJson(_apiResponse);
+      this.response = Response().fromRawJson(_apiResponse);
     }
-    if (_response.success == true)
-      _data = _response.metaData.data;
+    if (this.response.success == true)
+      _data = this.response.metaData.data;
     else // Response sorunu var
-      throw Exception('Veri getirilirken hata oluştu.(whereResponseProblem');
+      throw Exception('Veri getirilirken hata oluştu.(whereResponseProblem)');
 
     debugger(when: _data == null, message: 'data boş döndü');
 

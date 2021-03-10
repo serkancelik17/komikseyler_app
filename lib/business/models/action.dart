@@ -2,13 +2,9 @@
 //
 //     final action = actionFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:komix/business/models/mixins/section_mixin.dart';
 
 import 'model.dart';
-
-String actionToJson(Action data) => json.encode(data.toJson());
 
 class Action extends Model with SectionMixin {
   Action({
