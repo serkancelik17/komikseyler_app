@@ -72,10 +72,10 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
             ? buildIsEmpty()
             : (_isFinished)
                 ? buildIsFinished()
-                : buildCarouselSlider(context);
+                : buildCaroSlider(context);
   }
 
-  Flexible buildCarouselSlider(BuildContext context) {
+  Flexible buildCaroSlider(BuildContext context) {
     return Flexible(
       child: Column(
         children: [
