@@ -12,10 +12,10 @@ import 'package:komix/business/util/settings.dart';
 class AdManager {
   Platform platform;
   Set<String> _productIds = {
-    'subscription_yearly',
+    'subscription_one_month',
     'subscription_three_month',
     'subscription_six_month',
-    'subscription_one_month'
+    'subscription_yearly',
   };
   InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
@@ -68,9 +68,7 @@ class AdManager {
 
   Future<bool> checkShowingAd() async {
     device ??= await Device().find(id: await Settings.getUuid());
-    if (!kIsWeb &&
-        (DateTime.now().isBefore(device.option.adsShowAfter ??
-            DateTime.now().subtract(Duration(days: 1))))) {
+    if (!kIsWeb && (DateTime.now().isBefore(device.option.adsShowAfter ?? DateTime.now().subtract(Duration(days: 1))))) {
       return false;
     } else {
       return true;
@@ -100,16 +98,12 @@ class AdManager {
   }
 
   Future<bool> removeAds({BuildContext ctx, Duration duration}) async {
-    String adsShowAfter =
-        DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().add(duration));
-    await this.device.option.updateOrCreate(
-        {'device_uuid': await Settings.getUuid()},
-        {'ads_show_after': adsShowAfter});
+    String adsShowAfter = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now().add(duration));
+    await this.device.option.updateOrCreate({'device_uuid': await Settings.getUuid()}, {'ads_show_after': adsShowAfter});
     return true;
   }
 
-  listenToPurchaseUpdated(
-      BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
+  listenToPurchaseUpdated(BuildContext ctx, List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         // show progress bar or something
@@ -125,8 +119,7 @@ class AdManager {
             _dayNumber = 3 * 30;
           else if (purchaseDetails.productID == "subscription_six_month")
             _dayNumber = 6 * 30;
-          else if (purchaseDetails.productID == "subscription_one_month")
-            _dayNumber = 30;
+          else if (purchaseDetails.productID == "subscription_one_month") _dayNumber = 30;
           this.removeAds(ctx: ctx, duration: Duration(days: _dayNumber));
           // show success message and deliver the product.
         }
@@ -134,10 +127,9 @@ class AdManager {
     });
   }
 
-  buyProduct() {
+  buyProduct(productIndex) {
     if (_products.length > 0) {
-      final PurchaseParam purchaseParam =
-          PurchaseParam(productDetails: _products[0]);
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: _products[productIndex]);
       _connection.buyConsumable(purchaseParam: purchaseParam);
     } else {
       print("HATA: Product bulunamadı");
@@ -164,9 +156,10 @@ class AdManager {
   }
 
   initStoreInfo() async {
-    ProductDetailsResponse productDetailResponse =
-        await _connection.queryProductDetails(this._productIds);
-    if (productDetailResponse.error == null) {}
-    _products = productDetailResponse.productDetails;
+    final ProductDetailsResponse response = await InAppPurchaseConnection.instance.queryProductDetails(_productIds);
+    if (response.notFoundIDs.isNotEmpty) {
+      // Handle the error.
+    }
+    _products = response.productDetails;
   }
 }
