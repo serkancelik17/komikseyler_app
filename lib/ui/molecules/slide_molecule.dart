@@ -23,7 +23,6 @@ class SlideMolecule extends StatelessWidget {
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/loading.gif',
               image: Env.imageAssetsUrl + "/" + view.path,
-              fit: BoxFit.contain,
             ),
             // ),
           );
