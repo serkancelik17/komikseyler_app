@@ -1,4 +1,3 @@
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:komix/business/providers/api_provider.dart';
@@ -9,16 +8,12 @@ class MockHttpClient extends Mock implements http.Client {}
 
 class MockEnv extends Mock implements Env {}
 
-class MockDefaultCacheManager extends Mock implements DefaultCacheManager {}
-
 void main() {
   final mockHttpClient = MockHttpClient();
   final mockEnv = MockEnv();
-  final mockDefaultCacheManager = MockDefaultCacheManager();
   final apiProvider = ApiProvider(
       httpClient: mockHttpClient,
-      env: mockEnv,
-      defaultCacheManager: mockDefaultCacheManager);
+      env: mockEnv);
   final endPoint = '/devices/xxx';
 
   test('get fonksiyonu string getirmeli', () async {

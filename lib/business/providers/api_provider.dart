@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:komix/business/util/config/env.dart';
 
 class ApiProvider {
   String _apiUrl;
-  DefaultCacheManager defaultCacheManager;
   http.Client httpClient;
   Env env;
 
-  ApiProvider({this.defaultCacheManager, this.httpClient, this.env}) {
-    this.defaultCacheManager ??= DefaultCacheManager();
+  ApiProvider({this.httpClient, this.env}) {
     httpClient ??= http.Client();
     env ??= Env();
     _apiUrl = Env.apiUrl;
