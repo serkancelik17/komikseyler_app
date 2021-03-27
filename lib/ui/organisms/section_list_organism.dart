@@ -8,6 +8,7 @@ import 'package:komix/business/util/config/env.dart';
 import 'package:komix/business/util/settings.dart';
 import 'package:komix/ui/atoms/center_atom.dart';
 import 'package:komix/ui/atoms/circular_progress_indicator_atom.dart';
+import 'package:komix/ui/molecules/loading_molecule.dart';
 import 'package:komix/ui/molecules/rounded_container_molecule.dart';
 import 'package:komix/ui/molecules/section_item_molecule.dart';
 
@@ -41,7 +42,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   @override
   Widget build(BuildContext context) {
     return (_sections != null && _sections.length == 0)
-        ? CenterAtom(child: CircularProgressIndicatorAtom())
+        ? LoadingMolecule()
         : Column(
             children: [
               Flexible(

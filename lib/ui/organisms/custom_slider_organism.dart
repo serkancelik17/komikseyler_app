@@ -14,6 +14,7 @@ import 'package:komix/business/util/config/env.dart';
 import 'package:komix/business/util/settings.dart';
 import 'package:komix/ui/atoms/center_atom.dart';
 import 'package:komix/ui/atoms/fa_icon_atom.dart';
+import 'package:komix/ui/molecules/loading_molecule.dart';
 import 'package:komix/ui/molecules/slide_molecule.dart';
 import 'package:komix/ui/themes/custom_colors.dart';
 
@@ -67,7 +68,7 @@ class _CustomSliderOrganismState extends State<CustomSliderOrganism> {
   @override
   Widget build(BuildContext context) {
     return (_isLoading == true)
-        ? Center(child: CircularProgressIndicator())
+        ? LoadingMolecule()
         : (_isEmpty)
             ? buildIsEmpty()
             : (_isFinished)
