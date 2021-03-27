@@ -1,0 +1,5 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "34662dd5fea265e27e0922f5922f50ad"
+build_time: [1615733514, 782747000]
+inputs:
+  "/Users/sc/Desktop/development/komikseyler_app/ios/Runner/AppDelegate.swift": [1614275587, 0]
