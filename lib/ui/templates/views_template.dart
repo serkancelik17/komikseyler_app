@@ -41,17 +41,15 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      //In APP Purchase
-      Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
-      subscription = purchaseUpdated.listen((purchaseDetailsList) {
-        adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
-      }, onDone: () {
-        showPaymentSuccessAlertDialog(context);
-        subscription.cancel();
-      }, onError: (error) {
-        // handle error here.
-      });
+    //In APP Purchase
+    Stream purchaseUpdated = InAppPurchaseConnection.instance.purchaseUpdatedStream;
+    subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      adManager.listenToPurchaseUpdated(context, purchaseDetailsList);
+    }, onDone: () {
+      showPaymentSuccessAlertDialog(context);
+      subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
     });
 
     adManager.initStoreInfo();

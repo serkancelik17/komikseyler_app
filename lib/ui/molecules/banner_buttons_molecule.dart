@@ -16,11 +16,11 @@ class BannerButtonsMolecule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List _buttonList = ['1 Ay', "3 Ay", "6 Ay", "12 Ay"];
+    Map _buttonList = {0: '1 Ay', 2: "3 Ay", 1: "6 Ay", 3: "1 Yıl"};
 
     List<ButtonAtom> inAppButtons = [];
 
-    _buttonList.asMap().forEach((index, value) {
+    _buttonList.forEach((index, value) {
       inAppButtons.add(ButtonAtom(
         onPressed: () {
           adManager.buyProduct(index);
@@ -45,7 +45,7 @@ class BannerButtonsMolecule extends StatelessWidget {
       Center(child: TextAtom(text: "Reklam Gösterme")),
       _adRow1,
       CenterAtom(
-        child: TextAtom(text: '- veya -'),
+        child: TextAtom(text: 'veya'),
       ),
       button30Minutes,
     ]);
