@@ -73,7 +73,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
     return new WillPopScope(
       onWillPop: () async {
         goToBack();
-        return false;
+        return true;
       },
       child: Scaffold(
         key: scaffoldState,
@@ -175,7 +175,7 @@ class _ViewsTemplateState extends State<ViewsTemplate> with WidgetsBindingObserv
 
   void goToBack() {
     _logUpdate();
-    Navigator.of(context).popAndPushNamed('/');
+    Navigator.of(context).pop();
   }
 
   showPaymentSuccessAlertDialog(BuildContext context) {
