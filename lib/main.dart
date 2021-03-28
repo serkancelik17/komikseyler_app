@@ -29,6 +29,7 @@ class _HomeState extends State<MyApp> {
     return MaterialApp(
       //showPerformanceOverlay: false,
       //debugShowMaterialGrid: true,
+      debugShowCheckedModeBanner: false,
       title: 'Komix',
       theme: CustomTheme.lightTheme,
       onGenerateRoute: _appRouter.onGenerateRoute,
