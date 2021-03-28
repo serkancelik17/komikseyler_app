@@ -5,7 +5,7 @@ class LoadingMolecule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CenterAtom(
-      child: Image.asset('assets/images/loading.gif', width: 100),
+      child: Image.asset('assets/images/loading.gif', width: 75),
     );
   }
 }
