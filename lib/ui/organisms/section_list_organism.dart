@@ -23,14 +23,14 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
   @override
   void initState() {
     super.initState();
+    getSections;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       try {
         _device = await Device().firstOrCreate({'uuid': await Settings.getUuid()});
         _option = await Option(deviceUuid: _device.uuid).firstOrCreate({'device_uuid': await Settings.getUuid()});
-        getSections;
       } catch (e, s) {
         print(s.toString());
-        Navigator.pushReplacementNamed(context, "/error", arguments: [e]);
+        Navigator.of(context).pushReplacementNamed("/error", arguments: [e]);
       }
     });
   }
@@ -52,7 +52,7 @@ class _SectionListOrganismState extends State<SectionListOrganism> {
                       return RoundedContainerMolecule(
                         child: SectionItemMolecule(section: _sections[index]),
                         onTap: () {
-                          Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]);
+                          return Navigator.pushNamed(context, '/sections', arguments: [_sections[index]]);
                         },
                       );
                     }),

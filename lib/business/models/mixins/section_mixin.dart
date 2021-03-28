@@ -18,15 +18,15 @@ mixin SectionMixin {
     'category6': {'icon': FontAwesomeIcons.laughBeam},
     'action1': {
       'icon': FontAwesomeIcons.solidHeart,
-      'color': CustomColors.lightRed
+      // 'color': CustomColors.lightRed
     },
     'action2': {
       'icon': FontAwesomeIcons.solidStar,
-      'color': CustomColors.lightYellow
+      // 'color': CustomColors.lightYellow
     },
     'action5': {
       'icon': FontAwesomeIcons.share,
-      'color': CustomColors.lightBlue
+      //  'color': CustomColors.lightBlue
     },
   };
 
