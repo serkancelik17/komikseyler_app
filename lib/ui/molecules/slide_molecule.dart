@@ -22,7 +22,7 @@ class SlideMolecule extends StatelessWidget {
             // child: FullScreenWidget(
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/loading.gif',
-              placeholderScale: 4,
+              placeholderScale: 1.5,
               image: Env.imageAssetsUrl + "/" + view.path,
             ),
             // ),
