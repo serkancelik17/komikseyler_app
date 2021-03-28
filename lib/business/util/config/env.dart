@@ -1,5 +1,5 @@
 class Env {
-  static const String env = 'dev';
+  static const String env = 'prod';
 
   static const String baseUrl = '${env == 'dev' ? 'https://komix.serkancelik.web.tr' : 'https://komix.serkancelik.web.tr'}';
 
